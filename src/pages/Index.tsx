@@ -7,7 +7,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden">
-      {/* Background wave decoration */}
+      {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -bottom-20 -left-20 w-96 h-96 rounded-full bg-primary/5 blur-3xl" />
         <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-accent/5 blur-3xl" />
@@ -19,7 +19,6 @@ const Index = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="text-center relative z-10 max-w-md"
       >
-        {/* Logo / Icon */}
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
@@ -36,7 +35,7 @@ const Index = () => {
           Find the perfect Polynesian name for your little one
         </p>
         <p className="text-sm text-muted-foreground/70 font-body mb-10">
-          Cook Islands · Samoa
+          NZ Māori · Cook Islands · Samoa · Tonga · Fiji · Hawai'i · Niue · Tahiti
         </p>
 
         <motion.button

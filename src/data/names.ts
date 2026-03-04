@@ -1,4 +1,4 @@
-export type Culture = "Cook Islands" | "Samoa";
+export type Culture = "NZ Māori" | "Cook Islands" | "Samoa" | "Tonga" | "Fiji" | "Hawaii" | "Niue" | "Tahiti";
 export type Gender = "male" | "female" | "unisex";
 
 export interface PolynesianName {
@@ -10,6 +10,23 @@ export interface PolynesianName {
 }
 
 export const polynesianNames: PolynesianName[] = [
+  // NZ Māori names
+  { id: "nzm-1", name: "Aroha", meaning: "Love, compassion", culture: "NZ Māori", gender: "female" },
+  { id: "nzm-2", name: "Nikau", meaning: "Palm tree native to NZ", culture: "NZ Māori", gender: "male" },
+  { id: "nzm-3", name: "Manaia", meaning: "Beautiful, prestigious", culture: "NZ Māori", gender: "unisex" },
+  { id: "nzm-4", name: "Tūī", meaning: "Native songbird", culture: "NZ Māori", gender: "unisex" },
+  { id: "nzm-5", name: "Kaia", meaning: "Sea, food", culture: "NZ Māori", gender: "female" },
+  { id: "nzm-6", name: "Wiremu", meaning: "Determined protector", culture: "NZ Māori", gender: "male" },
+  { id: "nzm-7", name: "Ataahua", meaning: "Beautiful", culture: "NZ Māori", gender: "female" },
+  { id: "nzm-8", name: "Rawiri", meaning: "Beloved", culture: "NZ Māori", gender: "male" },
+  { id: "nzm-9", name: "Māreikura", meaning: "Heavenly being", culture: "NZ Māori", gender: "female" },
+  { id: "nzm-10", name: "Tane", meaning: "God of forests and birds", culture: "NZ Māori", gender: "male" },
+  { id: "nzm-11", name: "Anahera", meaning: "Angel", culture: "NZ Māori", gender: "female" },
+  { id: "nzm-12", name: "Kauri", meaning: "Great tree of the forest", culture: "NZ Māori", gender: "male" },
+  { id: "nzm-13", name: "Mereana", meaning: "Graceful waters", culture: "NZ Māori", gender: "female" },
+  { id: "nzm-14", name: "Rua", meaning: "Two, wisdom", culture: "NZ Māori", gender: "unisex" },
+  { id: "nzm-15", name: "Hemi", meaning: "Supplanter", culture: "NZ Māori", gender: "male" },
+
   // Cook Islands names
   { id: "ci-1", name: "Tangaroa", meaning: "God of the sea", culture: "Cook Islands", gender: "male" },
   { id: "ci-2", name: "Moana", meaning: "Ocean, deep water", culture: "Cook Islands", gender: "unisex" },
@@ -46,4 +63,86 @@ export const polynesianNames: PolynesianName[] = [
   { id: "sa-16", name: "Alofa", meaning: "Love", culture: "Samoa", gender: "unisex" },
   { id: "sa-17", name: "Nafanua", meaning: "Legendary warrior goddess", culture: "Samoa", gender: "female" },
   { id: "sa-18", name: "Malietoa", meaning: "Great warrior chief", culture: "Samoa", gender: "male" },
+
+  // Tongan names
+  { id: "to-1", name: "Sione", meaning: "God is gracious", culture: "Tonga", gender: "male" },
+  { id: "to-2", name: "Mele", meaning: "Song, melody", culture: "Tonga", gender: "female" },
+  { id: "to-3", name: "Tupou", meaning: "Royal lineage", culture: "Tonga", gender: "unisex" },
+  { id: "to-4", name: "Vaha'i", meaning: "Open sea", culture: "Tonga", gender: "male" },
+  { id: "to-5", name: "Heilala", meaning: "National flower of Tonga", culture: "Tonga", gender: "female" },
+  { id: "to-6", name: "Tevita", meaning: "Beloved one", culture: "Tonga", gender: "male" },
+  { id: "to-7", name: "Salote", meaning: "Peace", culture: "Tonga", gender: "female" },
+  { id: "to-8", name: "Maka", meaning: "Rock, strength", culture: "Tonga", gender: "male" },
+  { id: "to-9", name: "'Ana", meaning: "Cave, sacred place", culture: "Tonga", gender: "female" },
+  { id: "to-10", name: "Taufa", meaning: "Firstborn", culture: "Tonga", gender: "unisex" },
+  { id: "to-11", name: "Fīnau", meaning: "Determined", culture: "Tonga", gender: "male" },
+  { id: "to-12", name: "Lupe", meaning: "Dove, pigeon", culture: "Tonga", gender: "female" },
+  { id: "to-13", name: "Kaloni", meaning: "Crown", culture: "Tonga", gender: "male" },
+  { id: "to-14", name: "Maata", meaning: "Visionary", culture: "Tonga", gender: "female" },
+  { id: "to-15", name: "Havea", meaning: "Chief of high rank", culture: "Tonga", gender: "male" },
+
+  // Fijian names
+  { id: "fi-1", name: "Mere", meaning: "Beloved, cherished", culture: "Fiji", gender: "female" },
+  { id: "fi-2", name: "Josefa", meaning: "God will increase", culture: "Fiji", gender: "male" },
+  { id: "fi-3", name: "Adi", meaning: "Princess, noble woman", culture: "Fiji", gender: "female" },
+  { id: "fi-4", name: "Ratu", meaning: "Chief, nobleman", culture: "Fiji", gender: "male" },
+  { id: "fi-5", name: "Vasiti", meaning: "Beautiful star", culture: "Fiji", gender: "female" },
+  { id: "fi-6", name: "Seru", meaning: "Comb of the warrior", culture: "Fiji", gender: "male" },
+  { id: "fi-7", name: "Litia", meaning: "Joyful", culture: "Fiji", gender: "female" },
+  { id: "fi-8", name: "Waisea", meaning: "Of the water", culture: "Fiji", gender: "male" },
+  { id: "fi-9", name: "Kelera", meaning: "Grace", culture: "Fiji", gender: "female" },
+  { id: "fi-10", name: "Tevita", meaning: "Beloved", culture: "Fiji", gender: "male" },
+  { id: "fi-11", name: "Sala", meaning: "Path, journey", culture: "Fiji", gender: "unisex" },
+  { id: "fi-12", name: "Epeli", meaning: "Breath of God", culture: "Fiji", gender: "male" },
+  { id: "fi-13", name: "Talei", meaning: "Precious, beautiful", culture: "Fiji", gender: "female" },
+  { id: "fi-14", name: "Ioane", meaning: "God is gracious", culture: "Fiji", gender: "male" },
+  { id: "fi-15", name: "Seini", meaning: "Graceful", culture: "Fiji", gender: "female" },
+
+  // Hawaiian names
+  { id: "ha-1", name: "Kai", meaning: "Sea, ocean", culture: "Hawaii", gender: "unisex" },
+  { id: "ha-2", name: "Leilani", meaning: "Heavenly garland", culture: "Hawaii", gender: "female" },
+  { id: "ha-3", name: "Koa", meaning: "Warrior, brave", culture: "Hawaii", gender: "male" },
+  { id: "ha-4", name: "Mahina", meaning: "Moon, moonlight", culture: "Hawaii", gender: "female" },
+  { id: "ha-5", name: "Keanu", meaning: "Cool mountain breeze", culture: "Hawaii", gender: "male" },
+  { id: "ha-6", name: "Nalani", meaning: "The heavens", culture: "Hawaii", gender: "female" },
+  { id: "ha-7", name: "Makoa", meaning: "Fearless, bold", culture: "Hawaii", gender: "male" },
+  { id: "ha-8", name: "Lani", meaning: "Sky, heaven, royal", culture: "Hawaii", gender: "unisex" },
+  { id: "ha-9", name: "Kaimana", meaning: "Power of the ocean", culture: "Hawaii", gender: "unisex" },
+  { id: "ha-10", name: "Malia", meaning: "Calm, peaceful waters", culture: "Hawaii", gender: "female" },
+  { id: "ha-11", name: "Akamu", meaning: "Of the red earth", culture: "Hawaii", gender: "male" },
+  { id: "ha-12", name: "Noelani", meaning: "Heavenly mist", culture: "Hawaii", gender: "female" },
+  { id: "ha-13", name: "Ikaika", meaning: "Strong, powerful", culture: "Hawaii", gender: "male" },
+  { id: "ha-14", name: "Haukea", meaning: "White snow", culture: "Hawaii", gender: "female" },
+  { id: "ha-15", name: "Kalani", meaning: "The heavens, chief", culture: "Hawaii", gender: "unisex" },
+
+  // Niuean names
+  { id: "ni-1", name: "Tāoga", meaning: "Treasure, precious", culture: "Niue", gender: "unisex" },
+  { id: "ni-2", name: "Hina", meaning: "Goddess of the moon", culture: "Niue", gender: "female" },
+  { id: "ni-3", name: "Toeumu", meaning: "Enduring strength", culture: "Niue", gender: "male" },
+  { id: "ni-4", name: "Talahiva", meaning: "Story of the stars", culture: "Niue", gender: "female" },
+  { id: "ni-5", name: "Matagi", meaning: "Wind", culture: "Niue", gender: "unisex" },
+  { id: "ni-6", name: "Kele", meaning: "Earth, soil", culture: "Niue", gender: "male" },
+  { id: "ni-7", name: "Fifine", meaning: "Woman, lady", culture: "Niue", gender: "female" },
+  { id: "ni-8", name: "Tama", meaning: "Child, boy", culture: "Niue", gender: "male" },
+  { id: "ni-9", name: "Lagi", meaning: "Sky, heavens", culture: "Niue", gender: "unisex" },
+  { id: "ni-10", name: "Puhala", meaning: "Pandanus tree", culture: "Niue", gender: "female" },
+  { id: "ni-11", name: "Mohe", meaning: "Dream, rest", culture: "Niue", gender: "unisex" },
+  { id: "ni-12", name: "Vaka", meaning: "Canoe, vessel", culture: "Niue", gender: "male" },
+
+  // Tahitian names
+  { id: "ta-1", name: "Teva", meaning: "Wanderer, traveler", culture: "Tahiti", gender: "male" },
+  { id: "ta-2", name: "Vaitiare", meaning: "Water flower", culture: "Tahiti", gender: "female" },
+  { id: "ta-3", name: "Maui", meaning: "Legendary demigod", culture: "Tahiti", gender: "male" },
+  { id: "ta-4", name: "Heirani", meaning: "Crown of heaven", culture: "Tahiti", gender: "female" },
+  { id: "ta-5", name: "Tamatoa", meaning: "Warrior child", culture: "Tahiti", gender: "male" },
+  { id: "ta-6", name: "Moea", meaning: "Dream", culture: "Tahiti", gender: "female" },
+  { id: "ta-7", name: "Tehani", meaning: "Adorned, beautiful", culture: "Tahiti", gender: "female" },
+  { id: "ta-8", name: "Teriitahi", meaning: "First chief", culture: "Tahiti", gender: "male" },
+  { id: "ta-9", name: "Poerava", meaning: "Black pearl", culture: "Tahiti", gender: "female" },
+  { id: "ta-10", name: "Manua", meaning: "Heart, spirit", culture: "Tahiti", gender: "unisex" },
+  { id: "ta-11", name: "Raiatea", meaning: "Faraway heaven", culture: "Tahiti", gender: "female" },
+  { id: "ta-12", name: "Teiki", meaning: "Chief, leader", culture: "Tahiti", gender: "male" },
+  { id: "ta-13", name: "Hinano", meaning: "Pandanus blossom", culture: "Tahiti", gender: "female" },
+  { id: "ta-14", name: "Taaroa", meaning: "Supreme creator god", culture: "Tahiti", gender: "male" },
+  { id: "ta-15", name: "Titaua", meaning: "Essence of war", culture: "Tahiti", gender: "female" },
 ];
