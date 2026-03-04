@@ -1,6 +1,7 @@
 import { motion, useMotionValue, useTransform, PanInfo } from "framer-motion";
 import { PolynesianName } from "@/data/names";
 import { Heart, X } from "lucide-react";
+import { useApp } from "@/context/AppContext";
 
 interface SwipeCardProps {
   name: PolynesianName;
@@ -10,8 +11,14 @@ interface SwipeCardProps {
 }
 
 const cultureEmoji: Record<string, string> = {
+  "NZ Māori": "🇳🇿",
   "Cook Islands": "🇨🇰",
   "Samoa": "🇼🇸",
+  "Tonga": "🇹🇴",
+  "Fiji": "🇫🇯",
+  "Hawaii": "🇺🇸",
+  "Niue": "🇳🇺",
+  "Tahiti": "🇵🇫",
 };
 
 const genderLabel: Record<string, string> = {
@@ -21,6 +28,7 @@ const genderLabel: Record<string, string> = {
 };
 
 const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop }: SwipeCardProps) => {
+  const { showNamePreview, lastName, middleName } = useApp();
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-18, 18]);
   const likeOpacity = useTransform(x, [0, 100], [0, 1]);
@@ -33,6 +41,10 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop }: SwipeCardProps) =
       onSwipeLeft();
     }
   };
+
+  const namePreview = showNamePreview
+    ? [name.name, middleName, lastName].filter(Boolean).join(" ")
+    : null;
 
   return (
     <motion.div
@@ -81,6 +93,13 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop }: SwipeCardProps) =
           <h2 className="text-5xl md:text-6xl font-display text-foreground mb-6 text-center">
             {name.name}
           </h2>
+
+          {/* Name preview with last/middle */}
+          {namePreview && (
+            <p className="text-base text-muted-foreground font-body mb-4 text-center">
+              {namePreview}
+            </p>
+          )}
 
           {/* Meaning */}
           <p className="text-xl text-muted-foreground font-body italic text-center max-w-xs mb-6">
