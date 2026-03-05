@@ -7,7 +7,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden">
-      {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -bottom-20 -left-20 w-96 h-96 rounded-full bg-primary/5 blur-3xl" />
         <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-accent/5 blur-3xl" />
@@ -41,10 +40,10 @@ const Index = () => {
         <motion.button
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
-          onClick={() => navigate("/browse")}
+          onClick={() => navigate("/auth")}
           className="w-full max-w-xs mx-auto py-4 px-8 rounded-2xl gradient-ocean text-primary-foreground font-body font-semibold text-lg shadow-glow-ocean hover:shadow-card-hover transition-shadow"
         >
-          Start Exploring
+          Get Started
         </motion.button>
 
         <p className="mt-6 text-xs text-muted-foreground font-body">
