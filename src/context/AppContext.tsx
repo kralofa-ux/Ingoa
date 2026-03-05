@@ -1,5 +1,7 @@
-import { createContext, useContext, useState, ReactNode, useCallback } from "react";
+import { createContext, useContext, useState, ReactNode, useCallback, useEffect } from "react";
 import { PolynesianName, Culture, Gender } from "@/data/names";
+import { useAuth } from "@/context/AuthContext";
+import { supabase } from "@/lib/supabase";
 
 interface AppState {
   mode: "solo" | "couple";
@@ -42,7 +44,8 @@ export const useApp = () => {
 };
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  const [mode, setMode] = useState<"solo" | "couple">("solo");
+  const { profile, user } = useAuth();
+  const [mode, setModeState] = useState<"solo" | "couple">("solo");
   const [currentPartner, setCurrentPartner] = useState<"A" | "B">("A");
   const [likedNamesA, setLikedNamesA] = useState<PolynesianName[]>([]);
   const [likedNamesB, setLikedNamesB] = useState<PolynesianName[]>([]);
@@ -54,38 +57,87 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [showNamePreview, setShowNamePreview] = useState(false);
   const [swipeHistory, setSwipeHistory] = useState<{ name: PolynesianName; action: "like" | "pass" }[]>([]);
 
+  // Sync profile preferences
+  useEffect(() => {
+    if (profile) {
+      setModeState(profile.mode as "solo" | "couple");
+      setLastName(profile.last_name || "");
+      setMiddleName(profile.middle_name || "");
+      if (profile.gender_preference === "boy") setGenderFilter("male");
+      else if (profile.gender_preference === "girl") setGenderFilter("female");
+      else setGenderFilter("all");
+    }
+  }, [profile]);
+
+  // Load liked/passed from cloud
+  useEffect(() => {
+    if (!user) return;
+    const loadSwipeData = async () => {
+      const [likedRes, passedRes] = await Promise.all([
+        supabase.from("liked_names").select("name_id").eq("user_id", user.id),
+        supabase.from("passed_names").select("name_id").eq("user_id", user.id),
+      ]);
+      if (passedRes.data) {
+        setPassedIds(new Set(passedRes.data.map((r) => r.name_id)));
+      }
+      // We store liked name IDs; actual PolynesianName objects resolved from local catalog
+      if (likedRes.data) {
+        const { polynesianNames } = await import("@/data/names");
+        const likedObjs = likedRes.data
+          .map((r) => polynesianNames.find((n) => n.id === r.name_id))
+          .filter(Boolean) as PolynesianName[];
+        setLikedNamesA(likedObjs);
+      }
+    };
+    loadSwipeData();
+  }, [user]);
+
+  const setMode = useCallback((m: "solo" | "couple") => {
+    setModeState(m);
+  }, []);
+
   const switchPartner = useCallback(() => {
     setCurrentPartner((p) => (p === "A" ? "B" : "A"));
   }, []);
 
   const likeName = useCallback(
-    (name: PolynesianName) => {
+    async (name: PolynesianName) => {
       if (mode === "solo" || currentPartner === "A") {
         setLikedNamesA((prev) => (prev.find((n) => n.id === name.id) ? prev : [...prev, name]));
       } else {
         setLikedNamesB((prev) => (prev.find((n) => n.id === name.id) ? prev : [...prev, name]));
       }
       setSwipeHistory((prev) => [...prev, { name, action: "like" }]);
+      // Persist to cloud
+      if (user) {
+        await supabase.from("liked_names").upsert({ user_id: user.id, name_id: name.id });
+      }
     },
-    [mode, currentPartner]
+    [mode, currentPartner, user]
   );
 
-  const passName = useCallback((id: string, name?: PolynesianName) => {
+  const passName = useCallback(async (id: string, name?: PolynesianName) => {
     setPassedIds((prev) => new Set(prev).add(id));
     if (name) {
       setSwipeHistory((prev) => [...prev, { name, action: "pass" }]);
     }
-  }, []);
+    if (user) {
+      await supabase.from("passed_names").upsert({ user_id: user.id, name_id: id });
+    }
+  }, [user]);
 
   const removeLikedName = useCallback(
-    (id: string) => {
+    async (id: string) => {
       if (mode === "solo" || currentPartner === "A") {
         setLikedNamesA((prev) => prev.filter((n) => n.id !== id));
       } else {
         setLikedNamesB((prev) => prev.filter((n) => n.id !== id));
       }
+      if (user) {
+        await supabase.from("liked_names").delete().eq("user_id", user.id).eq("name_id", id);
+      }
     },
-    [mode, currentPartner]
+    [mode, currentPartner, user]
   );
 
   const undoLastSwipe = useCallback(() => {
@@ -94,36 +146,49 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     setSwipeHistory((prev) => prev.slice(0, -1));
 
     if (last.action === "like") {
-      // Remove from liked
       if (mode === "solo" || currentPartner === "A") {
         setLikedNamesA((prev) => prev.filter((n) => n.id !== last.name.id));
       } else {
         setLikedNamesB((prev) => prev.filter((n) => n.id !== last.name.id));
       }
+      if (user) {
+        supabase.from("liked_names").delete().eq("user_id", user.id).eq("name_id", last.name.id);
+      }
     } else {
-      // Remove from passed
       setPassedIds((prev) => {
         const next = new Set(prev);
         next.delete(last.name.id);
         return next;
       });
+      if (user) {
+        supabase.from("passed_names").delete().eq("user_id", user.id).eq("name_id", last.name.id);
+      }
     }
     return true;
-  }, [swipeHistory, mode, currentPartner]);
+  }, [swipeHistory, mode, currentPartner, user]);
 
-  const refreshDeck = useCallback(() => {
+  const refreshDeck = useCallback(async () => {
     setPassedIds(new Set());
-  }, []);
+    if (user) {
+      await supabase.from("passed_names").delete().eq("user_id", user.id);
+    }
+  }, [user]);
 
   const matchedNames = likedNamesA.filter((a) => likedNamesB.some((b) => b.id === a.id));
   const likedNames = mode === "solo" || currentPartner === "A" ? likedNamesA : likedNamesB;
 
-  const resetAll = useCallback(() => {
+  const resetAll = useCallback(async () => {
     setLikedNamesA([]);
     setLikedNamesB([]);
     setPassedIds(new Set());
     setSwipeHistory([]);
-  }, []);
+    if (user) {
+      await Promise.all([
+        supabase.from("liked_names").delete().eq("user_id", user.id),
+        supabase.from("passed_names").delete().eq("user_id", user.id),
+      ]);
+    }
+  }, [user]);
 
   return (
     <AppContext.Provider
