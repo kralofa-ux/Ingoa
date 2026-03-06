@@ -9,7 +9,7 @@ interface AppState {
   likedNamesA: PolynesianName[];
   likedNamesB: PolynesianName[];
   passedIds: Set<string>;
-  cultureFilter: Culture | "all";
+  cultureFilter: Culture[];
   genderFilter: Gender | "all";
   lastName: string;
   middleName: string;
@@ -23,7 +23,7 @@ interface AppContextType extends AppState {
   likeName: (name: PolynesianName) => void;
   passName: (id: string, name?: PolynesianName) => void;
   removeLikedName: (id: string) => void;
-  setCultureFilter: (c: Culture | "all") => void;
+  setCultureFilter: (c: Culture[]) => void;
   setGenderFilter: (g: Gender | "all") => void;
   matchedNames: PolynesianName[];
   likedNames: PolynesianName[];
@@ -50,7 +50,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [likedNamesA, setLikedNamesA] = useState<PolynesianName[]>([]);
   const [likedNamesB, setLikedNamesB] = useState<PolynesianName[]>([]);
   const [passedIds, setPassedIds] = useState<Set<string>>(new Set());
-  const [cultureFilter, setCultureFilter] = useState<Culture | "all">("all");
+  const [cultureFilter, setCultureFilter] = useState<Culture[]>([]);
   const [genderFilter, setGenderFilter] = useState<Gender | "all">("all");
   const [lastName, setLastName] = useState("");
   const [middleName, setMiddleName] = useState("");
@@ -63,6 +63,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setModeState(profile.mode as "solo" | "couple");
       setLastName(profile.last_name || "");
       setMiddleName(profile.middle_name || "");
+      if (profile.selected_cultures && profile.selected_cultures.length > 0) {
+        setCultureFilter(profile.selected_cultures as Culture[]);
+      }
       if (profile.gender_preference === "boy") setGenderFilter("male");
       else if (profile.gender_preference === "girl") setGenderFilter("female");
       else setGenderFilter("all");
