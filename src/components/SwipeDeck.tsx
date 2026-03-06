@@ -15,13 +15,20 @@ const SwipeDeck = () => {
   const { toast } = useToast();
 
   const filteredNames = useMemo(() => {
-    return polynesianNames.filter((n) => {
-      if (cultureFilter !== "all" && n.culture !== cultureFilter) return false;
-      if (genderFilter !== "all" && n.gender !== genderFilter) return false;
+    const filtered = polynesianNames.filter((n) => {
+      if (cultureFilter.length > 0 && !cultureFilter.includes(n.culture)) return false;
+      if (genderFilter !== "all" && n.gender !== genderFilter && n.gender !== "unisex") return false;
       if (passedIds.has(n.id)) return false;
       if (likedNames.find((l) => l.id === n.id)) return false;
       return true;
     });
+    // Shuffle using Fisher-Yates
+    const shuffled = [...filtered];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
   }, [cultureFilter, genderFilter, passedIds, likedNames]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
