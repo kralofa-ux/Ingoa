@@ -1,25 +1,27 @@
 import { useApp } from "@/context/AppContext";
 import { Culture, Gender } from "@/data/names";
+import { useState } from "react";
+import { ChevronDown, Check } from "lucide-react";
 
 const FilterBar = () => {
   const { cultureFilter, setCultureFilter, genderFilter, setGenderFilter } = useApp();
+  const [showCultures, setShowCultures] = useState(false);
 
-  const cultures: { value: Culture; label: string }[] = [
-    { value: "NZ Māori", label: "🇳🇿 NZ Māori" },
-    { value: "Cook Islands", label: "🇨🇰 Cook Islands" },
-    { value: "Samoa", label: "🇼🇸 Samoa" },
-    { value: "Tonga", label: "🇹🇴 Tonga" },
-    { value: "Fiji", label: "🇫🇯 Fiji" },
-    { value: "Hawaii", label: "🇺🇸 Hawai'i" },
-    { value: "Niue", label: "🇳🇺 Niue" },
-    { value: "Tahiti", label: "🇵🇫 Tahiti" },
+  const cultures: { value: Culture; label: string; emoji: string }[] = [
+    { value: "NZ Māori", label: "NZ Māori", emoji: "🇳🇿" },
+    { value: "Cook Islands", label: "Cook Islands", emoji: "🇨🇰" },
+    { value: "Samoa", label: "Samoa", emoji: "🇼🇸" },
+    { value: "Tonga", label: "Tonga", emoji: "🇹🇴" },
+    { value: "Fiji", label: "Fiji", emoji: "🇫🇯" },
+    { value: "Hawaii", label: "Hawai'i", emoji: "🇺🇸" },
+    { value: "Niue", label: "Niue", emoji: "🇳🇺" },
+    { value: "Tahiti", label: "Tahiti", emoji: "🇵🇫" },
   ];
 
   const genders: { value: Gender | "all"; label: string }[] = [
     { value: "all", label: "All" },
     { value: "male", label: "Tāne" },
     { value: "female", label: "Wahine" },
-    { value: "unisex", label: "Unisex" },
   ];
 
   const toggleCulture = (culture: Culture) => {
@@ -30,42 +32,59 @@ const FilterBar = () => {
     }
   };
 
-  const allSelected = cultureFilter.length === 0;
+  const cultureLabel =
+    cultureFilter.length === 0
+      ? "All Cultures"
+      : cultureFilter.length === 1
+        ? cultures.find((c) => c.value === cultureFilter[0])?.label || cultureFilter[0]
+        : `${cultureFilter.length} cultures`;
 
   return (
-    <div className="space-y-3 px-4">
-      {/* Culture multi-select chips */}
-      <div className="flex flex-wrap gap-1.5 justify-center">
+    <div className="flex gap-2 justify-center px-4">
+      {/* Culture dropdown */}
+      <div className="relative">
         <button
-          onClick={() => setCultureFilter([])}
-          className={`px-3 py-1.5 rounded-full text-xs font-body font-medium transition-all border ${
-            allSelected
-              ? "bg-primary text-primary-foreground border-primary shadow-sm"
-              : "bg-secondary text-muted-foreground border-border hover:text-foreground"
-          }`}
+          onClick={() => setShowCultures(!showCultures)}
+          className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-sm font-body font-medium text-foreground border border-border"
         >
-          All
+          {cultureLabel}
+          <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showCultures ? "rotate-180" : ""}`} />
         </button>
-        {cultures.map((c) => {
-          const isSelected = cultureFilter.includes(c.value);
-          return (
-            <button
-              key={c.value}
-              onClick={() => toggleCulture(c.value)}
-              className={`px-3 py-1.5 rounded-full text-xs font-body font-medium transition-all border ${
-                isSelected
-                  ? "bg-primary text-primary-foreground border-primary shadow-sm"
-                  : "bg-secondary text-muted-foreground border-border hover:text-foreground"
-              }`}
-            >
-              {c.label}
-            </button>
-          );
-        })}
+        {showCultures && (
+          <>
+            <div className="fixed inset-0 z-40" onClick={() => setShowCultures(false)} />
+            <div className="absolute top-full mt-1 left-0 z-50 bg-card border border-border rounded-xl shadow-card-hover py-1 min-w-[200px]">
+              <button
+                onClick={() => setCultureFilter([])}
+                className={`w-full text-left px-4 py-2.5 text-sm font-body transition-colors flex items-center justify-between ${
+                  cultureFilter.length === 0 ? "bg-primary/10 text-primary font-medium" : "text-foreground hover:bg-secondary"
+                }`}
+              >
+                All Cultures
+                {cultureFilter.length === 0 && <Check className="w-4 h-4" />}
+              </button>
+              {cultures.map((c) => {
+                const selected = cultureFilter.includes(c.value);
+                return (
+                  <button
+                    key={c.value}
+                    onClick={() => toggleCulture(c.value)}
+                    className={`w-full text-left px-4 py-2.5 text-sm font-body transition-colors flex items-center justify-between ${
+                      selected ? "bg-primary/10 text-primary font-medium" : "text-foreground hover:bg-secondary"
+                    }`}
+                  >
+                    <span>{c.emoji} {c.label}</span>
+                    {selected && <Check className="w-4 h-4" />}
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        )}
       </div>
 
       {/* Gender pills */}
-      <div className="flex gap-1 bg-secondary rounded-full p-1 justify-center">
+      <div className="flex gap-1 bg-secondary rounded-full p-1">
         {genders.map((g) => (
           <button
             key={g.value}
