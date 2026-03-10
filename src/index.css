@@ -6,59 +6,61 @@
 
 @layer base {
   :root {
-    /* Warm sand background */
-    --background: 35 40% 96%;
-    --foreground: 200 25% 15%;
+    /* Soft sand background */
+    --background: 38 35% 95%;
+    --foreground: 210 25% 12%;
 
-    --card: 35 35% 98%;
-    --card-foreground: 200 25% 15%;
+    --card: 38 30% 98%;
+    --card-foreground: 210 25% 12%;
 
-    --popover: 35 35% 98%;
-    --popover-foreground: 200 25% 15%;
+    --popover: 38 30% 98%;
+    --popover-foreground: 210 25% 12%;
 
-    /* Deep ocean teal */
-    --primary: 185 65% 28%;
-    --primary-foreground: 35 40% 96%;
+    /* Deep ocean blue-teal */
+    --primary: 192 72% 22%;
+    --primary-foreground: 38 35% 97%;
 
-    /* Soft sand */
-    --secondary: 35 30% 90%;
-    --secondary-foreground: 200 25% 15%;
+    /* Soft sand secondary */
+    --secondary: 38 25% 90%;
+    --secondary-foreground: 210 25% 12%;
 
-    --muted: 35 20% 92%;
-    --muted-foreground: 200 15% 45%;
+    --muted: 38 18% 91%;
+    --muted-foreground: 210 12% 48%;
 
-    /* Coral accent */
-    --accent: 12 75% 62%;
-    --accent-foreground: 35 40% 96%;
+    /* Sky blue accent */
+    --accent: 198 65% 52%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 72% 55%;
-    --destructive-foreground: 35 40% 96%;
+    --destructive: 0 68% 52%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 35 25% 88%;
-    --input: 35 25% 88%;
-    --ring: 185 65% 28%;
+    --border: 38 20% 87%;
+    --input: 38 20% 87%;
+    --ring: 192 72% 22%;
 
     --radius: 1rem;
 
     /* Custom tokens */
-    --ocean-deep: 195 70% 20%;
-    --ocean-mid: 185 65% 28%;
-    --ocean-light: 185 50% 45%;
-    --coral: 12 75% 62%;
-    --coral-light: 12 65% 72%;
-    --sunset: 25 85% 60%;
-    --palm: 150 40% 35%;
-    --sand: 35 40% 96%;
-    --sand-dark: 35 30% 85%;
+    --ocean-deep: 200 75% 16%;
+    --ocean-mid: 192 72% 22%;
+    --ocean-light: 198 65% 52%;
+    --coral: 12 70% 58%;
+    --coral-light: 12 55% 70%;
+    --sunset: 28 80% 58%;
+    --palm: 155 38% 32%;
+    --sand: 38 35% 95%;
+    --sand-dark: 38 25% 84%;
+    --sky: 198 65% 52%;
 
-    --gradient-ocean: linear-gradient(135deg, hsl(195 70% 20%), hsl(185 65% 28%), hsl(185 50% 45%));
-    --gradient-sunset: linear-gradient(135deg, hsl(12 75% 62%), hsl(25 85% 60%));
-    --gradient-card: linear-gradient(180deg, hsl(35 35% 98%), hsl(35 30% 94%));
+    --gradient-ocean: linear-gradient(135deg, hsl(200 75% 16%), hsl(192 72% 22%), hsl(198 65% 52%));
+    --gradient-sunset: linear-gradient(135deg, hsl(12 70% 58%), hsl(28 80% 58%));
+    --gradient-card: linear-gradient(180deg, hsl(38 30% 98%), hsl(38 25% 94%));
     
-    --shadow-card: 0 8px 32px -8px hsl(200 25% 15% / 0.12);
-    --shadow-card-hover: 0 16px 48px -12px hsl(200 25% 15% / 0.18);
-    --shadow-glow-coral: 0 4px 24px -4px hsl(12 75% 62% / 0.35);
-    --shadow-glow-ocean: 0 4px 24px -4px hsl(185 65% 28% / 0.35);
+    --shadow-card: 0 4px 24px -6px hsl(210 25% 12% / 0.08);
+    --shadow-card-hover: 0 12px 40px -10px hsl(210 25% 12% / 0.14);
+    --shadow-glow-coral: 0 4px 20px -4px hsl(12 70% 58% / 0.3);
+    --shadow-glow-ocean: 0 4px 20px -4px hsl(192 72% 22% / 0.3);
+    --shadow-glow-sky: 0 4px 20px -4px hsl(198 65% 52% / 0.3);
 
     --font-display: 'DM Serif Display', serif;
     --font-body: 'DM Sans', sans-serif;
@@ -74,25 +76,25 @@
   }
 
   .dark {
-    --background: 200 25% 10%;
-    --foreground: 35 30% 92%;
-    --card: 200 22% 14%;
-    --card-foreground: 35 30% 92%;
-    --popover: 200 22% 14%;
-    --popover-foreground: 35 30% 92%;
-    --primary: 185 50% 45%;
-    --primary-foreground: 200 25% 10%;
-    --secondary: 200 20% 18%;
-    --secondary-foreground: 35 30% 92%;
-    --muted: 200 18% 20%;
-    --muted-foreground: 35 20% 60%;
-    --accent: 12 65% 55%;
-    --accent-foreground: 35 40% 96%;
+    --background: 210 28% 8%;
+    --foreground: 38 25% 92%;
+    --card: 210 24% 12%;
+    --card-foreground: 38 25% 92%;
+    --popover: 210 24% 12%;
+    --popover-foreground: 38 25% 92%;
+    --primary: 192 55% 42%;
+    --primary-foreground: 210 28% 8%;
+    --secondary: 210 20% 16%;
+    --secondary-foreground: 38 25% 92%;
+    --muted: 210 18% 18%;
+    --muted-foreground: 38 15% 58%;
+    --accent: 198 55% 48%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 200 18% 22%;
-    --input: 200 18% 22%;
-    --ring: 185 50% 45%;
+    --border: 210 18% 20%;
+    --input: 210 18% 20%;
+    --ring: 192 55% 42%;
   }
 }
 
@@ -142,5 +144,9 @@
 
   .shadow-glow-ocean {
     box-shadow: var(--shadow-glow-ocean);
+  }
+
+  .shadow-glow-sky {
+    box-shadow: var(--shadow-glow-sky);
   }
 }
