@@ -66,6 +66,7 @@ export default {
           DEFAULT: "hsl(var(--sand))",
           dark: "hsl(var(--sand-dark))",
         },
+        sky: "hsl(var(--sky))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

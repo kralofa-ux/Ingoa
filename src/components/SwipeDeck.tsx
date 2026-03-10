@@ -22,7 +22,6 @@ const SwipeDeck = () => {
       if (likedNames.find((l) => l.id === n.id)) return false;
       return true;
     });
-    // Shuffle using Fisher-Yates
     const shuffled = [...filtered];
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -46,17 +45,11 @@ const SwipeDeck = () => {
   };
 
   const handleLike = () => {
-    if (currentName) {
-      likeName(currentName);
-      advance();
-    }
+    if (currentName) { likeName(currentName); advance(); }
   };
 
   const handlePass = () => {
-    if (currentName) {
-      passName(currentName.id, currentName);
-      advance();
-    }
+    if (currentName) { passName(currentName.id, currentName); advance(); }
   };
 
   const handleUndo = () => {
@@ -68,10 +61,7 @@ const SwipeDeck = () => {
   };
 
   const handleRefresh = () => {
-    if (!showRefreshConfirm) {
-      setShowRefreshConfirm(true);
-      return;
-    }
+    if (!showRefreshConfirm) { setShowRefreshConfirm(true); return; }
     refreshDeck();
     setCurrentIndex(0);
     setShowRefreshConfirm(false);
@@ -93,11 +83,8 @@ const SwipeDeck = () => {
           You've gone through all the names. Check your liked list or adjust filters.
         </p>
         <button
-          onClick={() => {
-            refreshDeck();
-            setCurrentIndex(0);
-          }}
-          className="px-6 py-3 rounded-xl bg-primary text-primary-foreground font-body font-medium flex items-center gap-2 hover:opacity-90 transition-opacity"
+          onClick={() => { refreshDeck(); setCurrentIndex(0); }}
+          className="px-6 py-3 rounded-2xl gradient-ocean text-primary-foreground font-body font-medium flex items-center gap-2 shadow-glow-ocean hover:opacity-90 transition-opacity"
         >
           <RefreshCw className="w-4 h-4" />
           Refresh passed names
@@ -108,101 +95,76 @@ const SwipeDeck = () => {
 
   return (
     <div className="flex-1 flex flex-col items-center px-4">
-      {/* Partner indicator for couple mode */}
       {mode === "couple" && (
-        <div className="mb-3 px-4 py-1.5 rounded-full bg-primary text-primary-foreground text-sm font-body font-medium">
+        <div className="mb-3 px-4 py-1.5 rounded-full gradient-ocean text-primary-foreground text-sm font-body font-medium">
           Partner {currentPartner}'s turn
         </div>
       )}
 
-      {/* Card stack */}
-      <div className="relative w-full max-w-sm h-[420px] mx-auto">
+      {/* Card stack — near full screen */}
+      <div className="relative w-full max-w-sm h-[480px] mx-auto">
         <AnimatePresence>
           {nextName && (
-            <SwipeCard
-              key={nextName.id}
-              name={nextName}
-              onSwipeLeft={() => {}}
-              onSwipeRight={() => {}}
-              isTop={false}
-            />
+            <SwipeCard key={nextName.id} name={nextName} onSwipeLeft={() => {}} onSwipeRight={() => {}} isTop={false} />
           )}
-          <SwipeCard
-            key={currentName.id}
-            name={currentName}
-            onSwipeLeft={handlePass}
-            onSwipeRight={handleLike}
-            isTop={true}
-          />
+          <SwipeCard key={currentName.id} name={currentName} onSwipeLeft={handlePass} onSwipeRight={handleLike} isTop={true} />
         </AnimatePresence>
       </div>
 
       {/* Action buttons */}
-      <div className="flex items-center gap-4 mt-6">
-        {/* Undo */}
+      <div className="flex items-center gap-5 mt-5">
         <button
           onClick={handleUndo}
           disabled={swipeHistory.length === 0}
-          className="w-12 h-12 rounded-full bg-card border border-border text-muted-foreground flex items-center justify-center shadow-card hover:shadow-card-hover transition-all hover:scale-105 active:scale-95 disabled:opacity-30 disabled:hover:scale-100"
+          className="w-11 h-11 rounded-full bg-card border border-border text-muted-foreground flex items-center justify-center shadow-card transition-all hover:scale-105 active:scale-95 disabled:opacity-25 disabled:hover:scale-100"
           title="Undo last swipe"
         >
-          <Undo2 className="w-5 h-5" />
+          <Undo2 className="w-4 h-4" />
         </button>
 
-        {/* Pass */}
         <button
           onClick={handlePass}
-          className="w-16 h-16 rounded-full bg-card border-2 border-destructive text-destructive flex items-center justify-center shadow-card hover:shadow-card-hover transition-all hover:scale-105 active:scale-95"
+          className="w-14 h-14 rounded-full bg-card border-2 border-destructive text-destructive flex items-center justify-center shadow-card transition-all hover:scale-105 active:scale-95"
         >
-          <X className="w-7 h-7" />
+          <X className="w-6 h-6" />
         </button>
 
-        {/* Like */}
         <button
           onClick={handleLike}
-          className="w-20 h-20 rounded-full gradient-sunset text-accent-foreground flex items-center justify-center shadow-glow-coral hover:scale-105 active:scale-95 transition-all"
+          className="w-[72px] h-[72px] rounded-full gradient-ocean text-primary-foreground flex items-center justify-center shadow-glow-ocean hover:scale-105 active:scale-95 transition-all"
         >
-          <Heart className="w-9 h-9" fill="currentColor" />
+          <Heart className="w-8 h-8" fill="currentColor" />
         </button>
 
-        {/* Refresh */}
         <button
           onClick={handleRefresh}
-          className="w-12 h-12 rounded-full bg-card border border-border text-muted-foreground flex items-center justify-center shadow-card hover:shadow-card-hover transition-all hover:scale-105 active:scale-95"
+          className="w-11 h-11 rounded-full bg-card border border-border text-muted-foreground flex items-center justify-center shadow-card transition-all hover:scale-105 active:scale-95"
           title="Refresh passed names"
         >
-          <RefreshCw className="w-5 h-5" />
+          <RefreshCw className="w-4 h-4" />
         </button>
       </div>
 
-      {/* Refresh confirmation */}
       {showRefreshConfirm && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-3 px-4 py-2 rounded-xl bg-card border border-border shadow-card text-sm font-body text-center"
+          className="mt-3 px-4 py-2 rounded-2xl bg-card border border-border shadow-card text-sm font-body text-center"
         >
           <p className="text-foreground mb-2">Bring back all passed names?</p>
           <div className="flex gap-2 justify-center">
-            <button
-              onClick={handleRefresh}
-              className="px-3 py-1 rounded-lg bg-primary text-primary-foreground text-xs font-medium"
-            >
+            <button onClick={handleRefresh} className="px-3 py-1 rounded-lg gradient-ocean text-primary-foreground text-xs font-medium">
               Yes, refresh
             </button>
-            <button
-              onClick={() => setShowRefreshConfirm(false)}
-              className="px-3 py-1 rounded-lg bg-secondary text-secondary-foreground text-xs font-medium"
-            >
+            <button onClick={() => setShowRefreshConfirm(false)} className="px-3 py-1 rounded-lg bg-secondary text-secondary-foreground text-xs font-medium">
               Cancel
             </button>
           </div>
         </motion.div>
       )}
 
-      {/* Progress */}
-      <p className="mt-4 text-sm text-muted-foreground font-body">
-        {currentIndex + 1} of {filteredNames.length} names
+      <p className="mt-3 text-xs text-muted-foreground font-body">
+        {currentIndex + 1} of {filteredNames.length}
       </p>
     </div>
   );

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Heart, Mail, Lock, ArrowLeft } from "lucide-react";
+import { Mail, Lock, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -58,7 +58,7 @@ const Auth = () => {
       >
         <div className="text-center mb-8">
           <div className="w-16 h-16 rounded-2xl gradient-ocean flex items-center justify-center mx-auto mb-4 shadow-glow-ocean">
-            <Heart className="w-8 h-8 text-primary-foreground" fill="currentColor" />
+            <span className="text-3xl">🌊</span>
           </div>
           <h1 className="text-3xl font-display text-foreground">Ingoa</h1>
           <p className="text-sm text-muted-foreground font-body mt-1">

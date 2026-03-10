@@ -69,7 +69,7 @@ const Onboarding = () => {
     // Step 0: Welcome
     <motion.div key="welcome" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} className="text-center">
       <div className="w-20 h-20 rounded-2xl gradient-ocean flex items-center justify-center mx-auto mb-6 shadow-glow-ocean">
-        <Heart className="w-10 h-10 text-primary-foreground" fill="currentColor" />
+        <span className="text-4xl">🌊</span>
       </div>
       <h1 className="text-4xl font-display text-foreground mb-3">Kia Ora!</h1>
       <p className="text-muted-foreground font-body text-base mb-2">Welcome to Ingoa</p>
