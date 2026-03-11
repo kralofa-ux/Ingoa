@@ -154,6 +154,14 @@ const Settings = () => {
           </p>
         </section>
 
+        {/* Partner Connection */}
+        <section>
+          <h2 className="text-sm font-body font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+            Couple Mode
+          </h2>
+          <PartnerConnect />
+        </section>
+
         {/* Name Preview */}
         <section>
           <h2 className="text-sm font-body font-semibold text-muted-foreground uppercase tracking-wider mb-3">
