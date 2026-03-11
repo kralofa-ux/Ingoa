@@ -68,15 +68,18 @@ const Settings = () => {
 
   const handleDeleteAccount = async () => {
     if (!user) return;
-    // Delete user data
-    await Promise.all([
-      supabase.from("liked_names").delete().eq("user_id", user.id),
-      supabase.from("passed_names").delete().eq("user_id", user.id),
-      supabase.from("profiles").delete().eq("user_id", user.id),
-    ]);
-    await signOut();
-    toast({ title: "Account deleted", description: "All your data has been removed" });
-    navigate("/");
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+      const res = await supabase.functions.invoke("delete-account", {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+      if (res.error) throw res.error;
+      toast({ title: "Account deleted", description: "All your data has been removed" });
+      navigate("/");
+    } catch {
+      toast({ title: "Error", description: "Failed to delete account. Please try again.", variant: "destructive" });
+    }
   };
 
   const handleSendFeedback = () => {
