@@ -49,8 +49,7 @@ const Settings = () => {
 
   const handleGenderChange = (value: Gender | "all") => {
     setGenderFilter(value);
-    const mapped = value === "male" ? "boy" : value === "female" ? "girl" : "both";
-    updateProfile({ gender_preference: mapped });
+    updateProfile({ gender_preference: value === "all" ? "all" : value });
   };
 
   const handleNamePreviewToggle = () => {
