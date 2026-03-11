@@ -4,14 +4,12 @@ import { Heart, Home, Users, Settings } from "lucide-react";
 
 const BottomNav = () => {
   const location = useLocation();
-  const { mode, likedNames, matchedNames } = useApp();
+  const { likedNames } = useApp();
 
   const links = [
     { to: "/browse", icon: Home, label: "Swipe" },
     { to: "/liked", icon: Heart, label: "Liked", count: likedNames.length },
-    ...(mode === "couple"
-      ? [{ to: "/matches", icon: Users, label: "Matches", count: matchedNames.length }]
-      : []),
+    { to: "/matches", icon: Users, label: "Matches" },
     { to: "/settings", icon: Settings, label: "Settings" },
   ];
 

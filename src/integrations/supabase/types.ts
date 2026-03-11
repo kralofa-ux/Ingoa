@@ -77,6 +77,63 @@ export type Database = {
         }
         Relationships: []
       }
+      partner_codes: {
+        Row: {
+          code: string
+          created_at: string
+          expires_at: string
+          id: string
+          used: boolean
+          user_id: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          used?: boolean
+          user_id: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          used?: boolean
+          user_id?: string
+        }
+        Relationships: []
+      }
+      partner_connections: {
+        Row: {
+          created_at: string
+          disconnected_at: string | null
+          id: string
+          is_free_reconnect: boolean
+          status: string
+          user_a: string
+          user_b: string
+        }
+        Insert: {
+          created_at?: string
+          disconnected_at?: string | null
+          id?: string
+          is_free_reconnect?: boolean
+          status?: string
+          user_a: string
+          user_b: string
+        }
+        Update: {
+          created_at?: string
+          disconnected_at?: string | null
+          id?: string
+          is_free_reconnect?: boolean
+          status?: string
+          user_a?: string
+          user_b?: string
+        }
+        Relationships: []
+      }
       passed_names: {
         Row: {
           created_at: string
@@ -148,7 +205,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_partner_matches: {
+        Args: { requesting_user: string }
+        Returns: {
+          name_id: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

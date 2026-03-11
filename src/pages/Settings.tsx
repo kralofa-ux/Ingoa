@@ -3,6 +3,7 @@ import { useApp } from "@/context/AppContext";
 import { Culture, Gender } from "@/data/names";
 import { useState } from "react";
 import { ArrowLeft, Check, ChevronRight, LogOut, Trash2, MessageSquare } from "lucide-react";
+import PartnerConnect from "@/components/PartnerConnect";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
@@ -151,6 +152,14 @@ const Settings = () => {
           <p className="text-xs text-muted-foreground font-body mt-2">
             {cultureFilter.length === 0 ? "All cultures shown" : `${cultureFilter.length} selected`}
           </p>
+        </section>
+
+        {/* Partner Connection */}
+        <section>
+          <h2 className="text-sm font-body font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+            Couple Mode
+          </h2>
+          <PartnerConnect />
         </section>
 
         {/* Name Preview */}
