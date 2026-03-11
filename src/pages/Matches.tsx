@@ -7,6 +7,7 @@ import { useState, useEffect, useCallback } from "react";
 import NameDetail from "@/components/NameDetail";
 import { PolynesianName, Culture, Gender } from "@/data/names";
 import { supabase } from "@/lib/supabase";
+import { getCultureColor, cultureEmoji } from "@/lib/cultureColors";
 
 const Matches = () => {
   const { likedNamesA } = useApp();
@@ -27,19 +28,16 @@ const Matches = () => {
       const { data: matchIds } = await supabase.rpc("get_partner_matches", {
         requesting_user: user.id,
       });
-
       if (!matchIds || matchIds.length === 0) {
         setMatchedNames([]);
         setLoading(false);
         return;
       }
-
       const ids = matchIds.map((r: { name_id: string }) => r.name_id);
       const { data: nameRows } = await supabase
         .from("names")
         .select("id, name, culture, gender, meaning")
         .in("id", ids);
-
       if (nameRows) {
         setMatchedNames(
           nameRows.map((r) => ({
@@ -58,14 +56,10 @@ const Matches = () => {
     }
   }, [user, status.connected]);
 
-  useEffect(() => {
-    fetchMatches();
-  }, [fetchMatches, likedNamesA]);
+  useEffect(() => { fetchMatches(); }, [fetchMatches, likedNamesA]);
 
-  // Realtime: refetch when partner likes change
   useEffect(() => {
     if (!status.connected || !status.partner_id) return;
-
     const channel = supabase
       .channel("partner-likes")
       .on(
@@ -74,7 +68,6 @@ const Matches = () => {
         () => fetchMatches()
       )
       .subscribe();
-
     return () => { supabase.removeChannel(channel); };
   }, [status.connected, status.partner_id, fetchMatches]);
 
@@ -89,7 +82,7 @@ const Matches = () => {
   if (!status.connected) {
     return (
       <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto">
-        <h1 className="text-3xl font-display text-foreground mb-1">Matched Names</h1>
+        <h1 className="text-3xl font-display font-extrabold text-foreground mb-1 tracking-tight">Matched Names</h1>
         <div className="text-center py-16">
           <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center mx-auto mb-4">
             <Users className="w-8 h-8 text-muted-foreground" />
@@ -107,7 +100,7 @@ const Matches = () => {
 
   return (
     <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto">
-      <h1 className="text-3xl font-display text-foreground mb-1">Matched Names</h1>
+      <h1 className="text-3xl font-display font-extrabold text-foreground mb-1 tracking-tight">Matched Names</h1>
       <p className="text-sm text-muted-foreground font-body mb-4">
         Names you and {status.partner_name} both loved 💕
       </p>
@@ -122,24 +115,27 @@ const Matches = () => {
         </div>
       ) : (
         <div className="space-y-3 mt-4">
-          {matchedNames.map((name, i) => (
-            <motion.div
-              key={name.id}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: i * 0.08 }}
-              className="flex items-center gap-4 p-4 rounded-xl gradient-ocean text-primary-foreground shadow-glow-ocean cursor-pointer"
-              onClick={() => setSelectedName(name)}
-            >
-              <Heart className="w-5 h-5 flex-shrink-0" fill="currentColor" />
-              <div>
-                <h3 className="text-lg font-display">{name.name}</h3>
-                <p className="text-sm opacity-80 font-body">
-                  {name.meaning} · {name.culture}
-                </p>
-              </div>
-            </motion.div>
-          ))}
+          {matchedNames.map((name, i) => {
+            const color = getCultureColor(name.culture);
+            return (
+              <motion.div
+                key={name.id}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: i * 0.08 }}
+                className={`flex items-center gap-4 p-5 rounded-2xl ${color.bg} text-white shadow-card cursor-pointer hover:shadow-card-hover transition-shadow`}
+                onClick={() => setSelectedName(name)}
+              >
+                <Heart className="w-5 h-5 flex-shrink-0" fill="currentColor" />
+                <div>
+                  <h3 className="text-xl font-display font-extrabold">{name.name}</h3>
+                  <p className="text-sm opacity-70 font-body">
+                    {name.meaning} · {name.culture}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       )}
 

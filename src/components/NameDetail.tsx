@@ -1,17 +1,7 @@
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import { PolynesianName } from "@/data/names";
-
-const cultureEmoji: Record<string, string> = {
-  "NZ Māori": "🇳🇿",
-  "Cook Islands": "🇨🇰",
-  "Samoa": "🇼🇸",
-  "Tonga": "🇹🇴",
-  "Fiji": "🇫🇯",
-  "Hawaii": "🇺🇸",
-  "Niue": "🇳🇺",
-  "Tahiti": "🇵🇫",
-};
+import { getCultureColor, cultureEmoji } from "@/lib/cultureColors";
 
 const genderLabel: Record<string, string> = {
   male: "Tāne",
@@ -25,44 +15,46 @@ interface NameDetailProps {
 }
 
 const NameDetail = ({ name, onClose }: NameDetailProps) => {
+  const culture = getCultureColor(name.culture);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/40 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-background/60 backdrop-blur-md p-4"
       onClick={onClose}
     >
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
-        className="bg-card rounded-3xl border border-border shadow-card-hover max-w-sm w-full p-8 relative"
+        className={`${culture.bg} rounded-3xl shadow-card-hover max-w-sm w-full p-8 relative`}
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/15 flex items-center justify-center text-white/70 hover:text-white transition-colors backdrop-blur-sm"
         >
           <X className="w-4 h-4" />
         </button>
 
-        <div className="text-center space-y-4">
+        <div className="text-center space-y-5">
           <div className="flex items-center justify-center gap-2">
             <span className="text-2xl">{cultureEmoji[name.culture]}</span>
-            <span className="text-xs font-body font-semibold text-muted-foreground uppercase tracking-widest">
+            <span className="text-xs font-body font-bold text-white/60 uppercase tracking-[0.2em]">
               {name.culture}
             </span>
           </div>
 
-          <h2 className="text-4xl font-display text-foreground">{name.name}</h2>
+          <h2 className="text-5xl font-display font-extrabold text-white tracking-tight">{name.name}</h2>
 
-          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-body font-semibold tracking-wide bg-primary/10 text-primary">
+          <span className="inline-block px-5 py-2 rounded-full text-xs font-body font-bold tracking-widest uppercase bg-white/15 text-white backdrop-blur-sm">
             {genderLabel[name.gender] || "Unisex"}
           </span>
 
-          <p className="text-lg text-muted-foreground font-body italic leading-relaxed">
-            "{name.meaning}"
+          <p className="text-lg text-white/80 font-body leading-relaxed font-medium">
+            {name.meaning}
           </p>
         </div>
       </motion.div>

@@ -57,10 +57,10 @@ const Auth = () => {
         className="w-full max-w-sm relative z-10"
       >
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-2xl gradient-ocean flex items-center justify-center mx-auto mb-4 shadow-glow-ocean">
+          <div className="w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center mx-auto mb-4 shadow-glow-primary">
             <span className="text-3xl">🌊</span>
           </div>
-          <h1 className="text-3xl font-display text-foreground">Ingoa</h1>
+          <h1 className="text-3xl font-display font-extrabold text-foreground tracking-tight">Ingoa</h1>
           <p className="text-sm text-muted-foreground font-body mt-1">
             {view === "login" ? "Welcome back" : view === "signup" ? "Create your account" : "Reset your password"}
           </p>
@@ -98,7 +98,7 @@ const Auth = () => {
             whileTap={{ scale: 0.97 }}
             type="submit"
             disabled={submitting}
-            className="w-full py-3 rounded-xl gradient-ocean text-primary-foreground font-body font-semibold text-sm shadow-glow-ocean disabled:opacity-50"
+            className="w-full py-3.5 rounded-xl gradient-coral text-white font-body font-bold text-sm shadow-glow-accent disabled:opacity-50"
           >
             {submitting ? "..." : view === "login" ? "Sign In" : view === "signup" ? "Create Account" : "Send Reset Link"}
           </motion.button>
@@ -112,14 +112,14 @@ const Auth = () => {
               </button>
               <p className="text-xs text-muted-foreground font-body">
                 Don't have an account?{" "}
-                <button onClick={() => setView("signup")} className="text-primary font-semibold">Sign up</button>
+                <button onClick={() => setView("signup")} className="text-primary font-bold">Sign up</button>
               </p>
             </>
           )}
           {view === "signup" && (
             <p className="text-xs text-muted-foreground font-body">
               Already have an account?{" "}
-              <button onClick={() => setView("login")} className="text-primary font-semibold">Sign in</button>
+              <button onClick={() => setView("login")} className="text-primary font-bold">Sign in</button>
             </p>
           )}
           {view === "forgot" && (

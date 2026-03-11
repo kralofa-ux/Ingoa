@@ -32,7 +32,6 @@ const SwipeDeck = () => {
   }, [allNames, cultureFilter, genderFilter, passedIds, likedNames]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
-
   const currentName = filteredNames[currentIndex];
 
   const advance = () => {
@@ -84,13 +83,13 @@ const SwipeDeck = () => {
         >
           🌊
         </motion.div>
-        <h3 className="text-2xl font-display text-foreground mb-2">You've reached the end!</h3>
+        <h3 className="text-2xl font-display font-extrabold text-foreground mb-2">You've reached the end!</h3>
         <p className="text-muted-foreground font-body mb-6">
           You've gone through all available names. Refresh to bring back passed names.
         </p>
         <button
           onClick={() => { refreshDeck(); setCurrentIndex(0); }}
-          className="px-6 py-3 rounded-2xl gradient-ocean text-primary-foreground font-body font-medium flex items-center gap-2 shadow-glow-ocean hover:opacity-90 transition-opacity"
+          className="px-6 py-3 rounded-2xl gradient-primary text-primary-foreground font-body font-semibold flex items-center gap-2 shadow-glow-primary hover:opacity-90 transition-opacity"
         >
           <RefreshCw className="w-4 h-4" />
           Refresh passed names
@@ -102,16 +101,19 @@ const SwipeDeck = () => {
   return (
     <div className="flex-1 flex flex-col items-center px-4 relative">
       {mode === "couple" && (
-        <div className="mb-3 px-4 py-1.5 rounded-full gradient-ocean text-primary-foreground text-sm font-body font-medium">
+        <div className="mb-3 px-5 py-2 rounded-full gradient-primary text-primary-foreground text-sm font-body font-semibold">
           Partner {currentPartner}'s turn
         </div>
       )}
 
-      <div className="w-full max-w-sm flex justify-end mb-2">
+      <div className="w-full max-w-sm flex justify-between items-center mb-2">
+        <span className="text-xs text-muted-foreground font-body font-medium px-3 py-1 rounded-full glass border border-border">
+          {currentIndex + 1} / {filteredNames.length}
+        </span>
         <button
           onClick={handleUndo}
           disabled={swipeHistory.length === 0}
-          className="w-9 h-9 rounded-full bg-card border border-border text-muted-foreground flex items-center justify-center shadow-card transition-all hover:scale-105 active:scale-95 disabled:opacity-25 disabled:hover:scale-100"
+          className="w-10 h-10 rounded-full glass border border-border text-muted-foreground flex items-center justify-center transition-all hover:scale-105 hover:text-foreground active:scale-95 disabled:opacity-25 disabled:hover:scale-100"
           title="Undo last swipe"
         >
           <Undo2 className="w-4 h-4" />
@@ -131,10 +133,6 @@ const SwipeDeck = () => {
 
         {showTutorial && <SwipeTutorial swipeCount={swipeCount} />}
       </div>
-
-      <p className="mt-4 text-xs text-muted-foreground font-body">
-        {currentIndex + 1} of {filteredNames.length}
-      </p>
     </div>
   );
 };

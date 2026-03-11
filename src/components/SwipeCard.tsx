@@ -1,6 +1,7 @@
 import { motion, useMotionValue, useTransform, PanInfo } from "framer-motion";
 import { PolynesianName } from "@/data/names";
 import { useApp } from "@/context/AppContext";
+import { getCultureColor, cultureEmoji } from "@/lib/cultureColors";
 
 interface SwipeCardProps {
   name: PolynesianName;
@@ -9,21 +10,10 @@ interface SwipeCardProps {
   isTop: boolean;
 }
 
-const cultureEmoji: Record<string, string> = {
-  "NZ Māori": "🇳🇿",
-  "Cook Islands": "🇨🇰",
-  "Samoa": "🇼🇸",
-  "Tonga": "🇹🇴",
-  "Fiji": "🇫🇯",
-  "Hawaii": "🇺🇸",
-  "Niue": "🇳🇺",
-  "Tahiti": "🇵🇫",
-};
-
-const genderConfig: Record<string, { label: string; color: string }> = {
-  male: { label: "Tāne", color: "bg-primary/10 text-primary" },
-  female: { label: "Wahine", color: "bg-accent/10 text-accent" },
-  unisex: { label: "Unisex", color: "bg-muted text-muted-foreground" },
+const genderLabel: Record<string, string> = {
+  male: "Tāne",
+  female: "Wahine",
+  unisex: "Unisex",
 };
 
 const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop }: SwipeCardProps) => {
@@ -34,18 +24,15 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop }: SwipeCardProps) =
   const passOpacity = useTransform(x, [-100, 0], [1, 0]);
 
   const handleDragEnd = (_: any, info: PanInfo) => {
-    if (info.offset.x > 100) {
-      onSwipeRight();
-    } else if (info.offset.x < -100) {
-      onSwipeLeft();
-    }
+    if (info.offset.x > 100) onSwipeRight();
+    else if (info.offset.x < -100) onSwipeLeft();
   };
 
   const namePreview = showNamePreview
     ? [name.name, middleName, lastName].filter(Boolean).join(" ")
     : null;
 
-  const gender = genderConfig[name.gender] || genderConfig.unisex;
+  const culture = getCultureColor(name.culture);
 
   return (
     <motion.div
@@ -60,55 +47,51 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop }: SwipeCardProps) =
       exit={{ x: 300, opacity: 0, transition: { duration: 0.3 } }}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
-      <div className="h-full rounded-3xl bg-card shadow-card border border-border overflow-hidden flex flex-col">
-        {/* Top gradient bar */}
-        <div className="h-1.5 gradient-ocean w-full" />
+      <div className={`h-full rounded-3xl ${culture.bg} overflow-hidden flex flex-col relative shadow-card-hover`}>
+        {/* Like/Pass overlays */}
+        <motion.div
+          className="absolute top-6 right-6 z-20 rounded-2xl border-[3px] border-white px-5 py-2.5 font-display font-extrabold text-white rotate-12 text-2xl"
+          style={{ opacity: likeOpacity, textShadow: "0 2px 10px rgba(0,0,0,0.3)" }}
+        >
+          LIKE
+        </motion.div>
+        <motion.div
+          className="absolute top-6 left-6 z-20 rounded-2xl border-[3px] border-white/80 px-5 py-2.5 font-display font-extrabold text-white -rotate-12 text-2xl"
+          style={{ opacity: passOpacity, textShadow: "0 2px 10px rgba(0,0,0,0.3)" }}
+        >
+          PASS
+        </motion.div>
 
-        <div className="flex-1 flex flex-col items-center justify-center p-6 relative">
-          {/* Like/Pass overlays */}
-          <motion.div
-            className="absolute top-5 right-5 rounded-2xl border-[3px] border-palm px-4 py-2 font-body font-bold text-palm rotate-12 text-lg"
-            style={{ opacity: likeOpacity }}
-          >
-            LIKE
-          </motion.div>
-          <motion.div
-            className="absolute top-5 left-5 rounded-2xl border-[3px] border-destructive px-4 py-2 font-body font-bold text-destructive -rotate-12 text-lg"
-            style={{ opacity: passOpacity }}
-          >
-            PASS
-          </motion.div>
-
-          {/* Layout: Culture (top) → Name (center) → Gender (below) → Meaning (bottom) */}
-
+        {/* Content */}
+        <div className="flex-1 flex flex-col items-center justify-center p-8 relative">
           {/* Culture badge */}
-          <div className="flex items-center gap-2 mb-6">
-            <span className="text-xl">{cultureEmoji[name.culture]}</span>
-            <span className="text-xs font-body font-semibold text-muted-foreground uppercase tracking-widest">
+          <div className="flex items-center gap-2 mb-8">
+            <span className="text-2xl">{cultureEmoji[name.culture]}</span>
+            <span className="text-xs font-body font-bold text-white/70 uppercase tracking-[0.2em]">
               {name.culture}
             </span>
           </div>
 
-          {/* Name */}
-          <h2 className="text-5xl md:text-6xl font-display text-foreground mb-3 text-center leading-tight">
+          {/* Name — hero size */}
+          <h2 className="text-6xl md:text-7xl font-display font-extrabold text-white mb-3 text-center leading-none tracking-tight">
             {name.name}
           </h2>
 
-          {/* Name preview with last/middle */}
+          {/* Name preview */}
           {namePreview && (
-            <p className="text-sm text-muted-foreground font-body mb-4 text-center">
+            <p className="text-base text-white/60 font-body mb-5 text-center">
               {namePreview}
             </p>
           )}
 
-          {/* Gender tag */}
-          <span className={`inline-block px-4 py-1.5 rounded-full text-xs font-body font-semibold tracking-wide mb-5 ${gender.color}`}>
-            {gender.label}
+          {/* Gender pill */}
+          <span className="inline-block px-5 py-2 rounded-full text-xs font-body font-bold tracking-widest uppercase mb-6 bg-white/15 text-white backdrop-blur-sm">
+            {genderLabel[name.gender] || "Unisex"}
           </span>
 
           {/* Meaning */}
-          <p className="text-lg text-muted-foreground font-body italic text-center max-w-[280px] leading-relaxed">
-            "{name.meaning}"
+          <p className="text-lg text-white/80 font-body text-center max-w-[280px] leading-relaxed font-medium">
+            {name.meaning}
           </p>
         </div>
       </div>
