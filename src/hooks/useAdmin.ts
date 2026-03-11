@@ -46,7 +46,7 @@ export const useAdminStats = () => {
   const fetch = useCallback(async () => {
     setLoading(true);
     const { data } = await supabase.rpc("get_admin_stats");
-    setStats(data as AdminStats);
+    setStats(data as unknown as AdminStats);
     setLoading(false);
   }, []);
 
