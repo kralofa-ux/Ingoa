@@ -40,6 +40,8 @@ const Settings = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [showFeedback, setShowFeedback] = useState(false);
+  const { isAdmin } = useAdmin();
+  const [showFeedback, setShowFeedback] = useState(false);
 
   const toggleCulture = (culture: Culture) => {
     const updated = cultureFilter.includes(culture)
