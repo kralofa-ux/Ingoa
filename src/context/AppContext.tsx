@@ -57,7 +57,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [showNamePreview, setShowNamePreview] = useState(false);
   const [swipeHistory, setSwipeHistory] = useState<{ name: PolynesianName; action: "like" | "pass" }[]>([]);
 
-  // Sync profile preferences — handle both old (boy/girl/both) and new (male/female/all) formats
+  // Sync profile preferences
   useEffect(() => {
     if (profile) {
       setModeState(profile.mode as "solo" | "couple");
@@ -67,8 +67,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setCultureFilter(profile.selected_cultures as Culture[]);
       }
       const gp = profile.gender_preference;
-      if (gp === "male" || gp === "boy") setGenderFilter("male");
-      else if (gp === "female" || gp === "girl") setGenderFilter("female");
+      if (gp === "male") setGenderFilter("male");
+      else if (gp === "female") setGenderFilter("female");
       else setGenderFilter("all");
     }
   }, [profile]);
