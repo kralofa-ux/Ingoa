@@ -6,25 +6,25 @@
 
 @layer base {
   :root {
-    /* Bold dark-first palette */
-    --background: 220 20% 8%;
-    --foreground: 0 0% 96%;
+    /* Bright ocean palette */
+    --background: 210 40% 96%;
+    --foreground: 220 30% 15%;
 
-    --card: 220 18% 13%;
-    --card-foreground: 0 0% 96%;
+    --card: 210 30% 100%;
+    --card-foreground: 220 30% 15%;
 
-    --popover: 220 18% 13%;
-    --popover-foreground: 0 0% 96%;
+    --popover: 210 30% 100%;
+    --popover-foreground: 220 30% 15%;
 
-    /* Vibrant teal primary */
-    --primary: 174 72% 46%;
-    --primary-foreground: 220 20% 8%;
+    /* Ocean blue primary */
+    --primary: 200 80% 50%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 16% 18%;
-    --secondary-foreground: 0 0% 90%;
+    --secondary: 210 35% 92%;
+    --secondary-foreground: 220 30% 20%;
 
-    --muted: 220 14% 20%;
-    --muted-foreground: 220 10% 55%;
+    --muted: 210 25% 88%;
+    --muted-foreground: 210 15% 45%;
 
     /* Coral accent */
     --accent: 12 80% 58%;
@@ -33,9 +33,9 @@
     --destructive: 0 68% 52%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 14% 20%;
-    --input: 220 14% 22%;
-    --ring: 174 72% 46%;
+    --border: 210 25% 85%;
+    --input: 210 25% 90%;
+    --ring: 200 80% 50%;
 
     --radius: 1rem;
 
@@ -50,51 +50,50 @@
     --culture-tahiti: 330 72% 56%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(174 72% 46%), hsl(174 90% 36%));
+    --gradient-primary: linear-gradient(135deg, hsl(200 80% 50%), hsl(210 85% 42%));
     --gradient-coral: linear-gradient(135deg, hsl(12 80% 58%), hsl(24 90% 55%));
-    --gradient-card: linear-gradient(180deg, hsl(220 18% 14%), hsl(220 18% 11%));
+    --gradient-card: linear-gradient(180deg, hsl(210 30% 100%), hsl(210 35% 97%));
 
     /* Shadows */
-    --shadow-card: 0 4px 24px -6px hsl(0 0% 0% / 0.4);
-    --shadow-card-hover: 0 12px 40px -10px hsl(0 0% 0% / 0.6);
-    --shadow-glow-primary: 0 4px 30px -4px hsl(174 72% 46% / 0.35);
-    --shadow-glow-accent: 0 4px 30px -4px hsl(12 80% 58% / 0.35);
+    --shadow-card: 0 4px 24px -6px hsl(210 40% 70% / 0.25);
+    --shadow-card-hover: 0 12px 40px -10px hsl(210 40% 70% / 0.35);
+    --shadow-glow-primary: 0 4px 30px -4px hsl(200 80% 50% / 0.3);
+    --shadow-glow-accent: 0 4px 30px -4px hsl(12 80% 58% / 0.3);
 
     /* Typography */
     --font-display: 'Plus Jakarta Sans', sans-serif;
     --font-body: 'DM Sans', sans-serif;
 
-    --sidebar-background: 220 18% 10%;
-    --sidebar-foreground: 0 0% 90%;
-    --sidebar-primary: 174 72% 46%;
-    --sidebar-primary-foreground: 220 20% 8%;
-    --sidebar-accent: 220 14% 20%;
-    --sidebar-accent-foreground: 0 0% 90%;
-    --sidebar-border: 220 14% 20%;
-    --sidebar-ring: 174 72% 46%;
+    --sidebar-background: 210 35% 94%;
+    --sidebar-foreground: 220 30% 20%;
+    --sidebar-primary: 200 80% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 25% 88%;
+    --sidebar-accent-foreground: 220 30% 20%;
+    --sidebar-border: 210 25% 85%;
+    --sidebar-ring: 200 80% 50%;
   }
 
   .dark {
-    /* Already dark-first, but keep for compatibility */
-    --background: 220 22% 6%;
+    --background: 220 22% 8%;
     --foreground: 0 0% 96%;
-    --card: 220 20% 10%;
+    --card: 220 20% 12%;
     --card-foreground: 0 0% 96%;
-    --popover: 220 20% 10%;
+    --popover: 220 20% 12%;
     --popover-foreground: 0 0% 96%;
-    --primary: 174 72% 46%;
-    --primary-foreground: 220 20% 8%;
-    --secondary: 220 16% 16%;
+    --primary: 200 80% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 16% 18%;
     --secondary-foreground: 0 0% 90%;
-    --muted: 220 14% 18%;
+    --muted: 220 14% 20%;
     --muted-foreground: 220 10% 55%;
     --accent: 12 80% 58%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 96%;
-    --border: 220 14% 18%;
-    --input: 220 14% 20%;
-    --ring: 174 72% 46%;
+    --border: 220 14% 20%;
+    --input: 220 14% 22%;
+    --ring: 200 80% 50%;
   }
 }
 
