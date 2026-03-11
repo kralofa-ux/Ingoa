@@ -22,7 +22,7 @@ const Onboarding = () => {
   const [step, setStep] = useState(0);
   const [mode, setMode] = useState<"solo" | "couple">("solo");
   const [selectedCultures, setSelectedCultures] = useState<string[]>([]);
-  const [genderPref, setGenderPref] = useState<"boy" | "girl" | "both">("both");
+  const [genderPref, setGenderPref] = useState<"male" | "female" | "all">("all");
   const [lastName, setLastName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [submitting, setSubmitting] = useState(false);
