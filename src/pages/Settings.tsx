@@ -2,8 +2,9 @@ import { useAuth } from "@/context/AuthContext";
 import { useApp } from "@/context/AppContext";
 import { Culture, Gender } from "@/data/names";
 import { useState } from "react";
-import { ArrowLeft, Check, ChevronRight, LogOut, Trash2, MessageSquare } from "lucide-react";
+import { ArrowLeft, Check, ChevronRight, LogOut, Trash2, MessageSquare, Shield } from "lucide-react";
 import PartnerConnect from "@/components/PartnerConnect";
+import { useAdmin } from "@/hooks/useAdmin";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
@@ -39,6 +40,7 @@ const Settings = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [showFeedback, setShowFeedback] = useState(false);
+  const { isAdmin } = useAdmin();
 
   const toggleCulture = (culture: Culture) => {
     const updated = cultureFilter.includes(culture)
@@ -241,6 +243,17 @@ const Settings = () => {
             </div>
           )}
         </section>
+
+        {/* Admin Link */}
+        {isAdmin && (
+          <button
+            onClick={() => navigate("/admin")}
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-card rounded-2xl border border-primary/30 text-sm font-body text-primary hover:bg-primary/5 transition-colors"
+          >
+            <Shield className="w-4 h-4" />
+            Admin Dashboard
+          </button>
+        )}
 
         {/* Sign Out */}
         <button
