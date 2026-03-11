@@ -1,9 +1,10 @@
 import { useApp } from "@/context/AppContext";
 import { polynesianNames } from "@/data/names";
 import SwipeCard from "@/components/SwipeCard";
+import SwipeTutorial from "@/components/SwipeTutorial";
 import { AnimatePresence, motion } from "framer-motion";
-import { useMemo, useState } from "react";
-import { Heart, X, Undo2, RefreshCw } from "lucide-react";
+import { useMemo, useState, useEffect } from "react";
+import { Undo2, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const SwipeDeck = () => {
@@ -13,6 +14,10 @@ const SwipeDeck = () => {
     undoLastSwipe, refreshDeck, swipeHistory,
   } = useApp();
   const { toast } = useToast();
+  const [swipeCount, setSwipeCount] = useState(() => {
+    const stored = localStorage.getItem("ingoa_swipe_count");
+    return stored ? parseInt(stored, 10) : 0;
+  });
 
   const filteredNames = useMemo(() => {
     const filtered = polynesianNames.filter((n) => {
@@ -31,12 +36,15 @@ const SwipeDeck = () => {
   }, [cultureFilter, genderFilter, passedIds, likedNames]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [showRefreshConfirm, setShowRefreshConfirm] = useState(false);
 
   const currentName = filteredNames[currentIndex];
-  const nextName = filteredNames[currentIndex + 1];
 
   const advance = () => {
+    setSwipeCount((c) => {
+      const next = c + 1;
+      localStorage.setItem("ingoa_swipe_count", String(next));
+      return next;
+    });
     if (currentIndex < filteredNames.length - 1) {
       setCurrentIndex((i) => i + 1);
     } else {
@@ -60,13 +68,7 @@ const SwipeDeck = () => {
     }
   };
 
-  const handleRefresh = () => {
-    if (!showRefreshConfirm) { setShowRefreshConfirm(true); return; }
-    refreshDeck();
-    setCurrentIndex(0);
-    setShowRefreshConfirm(false);
-    toast({ title: "Deck refreshed", description: "Passed names are back in the deck" });
-  };
+  const showTutorial = swipeCount < 5;
 
   if (!currentName) {
     return (
@@ -78,9 +80,9 @@ const SwipeDeck = () => {
         >
           🌊
         </motion.div>
-        <h3 className="text-2xl font-display text-foreground mb-2">No more names!</h3>
+        <h3 className="text-2xl font-display text-foreground mb-2">You've reached the end!</h3>
         <p className="text-muted-foreground font-body mb-6">
-          You've gone through all the names. Check your liked list or adjust filters.
+          You've gone through all available names. Refresh to bring back passed names.
         </p>
         <button
           onClick={() => { refreshDeck(); setCurrentIndex(0); }}
@@ -94,76 +96,42 @@ const SwipeDeck = () => {
   }
 
   return (
-    <div className="flex-1 flex flex-col items-center px-4">
+    <div className="flex-1 flex flex-col items-center px-4 relative">
       {mode === "couple" && (
         <div className="mb-3 px-4 py-1.5 rounded-full gradient-ocean text-primary-foreground text-sm font-body font-medium">
           Partner {currentPartner}'s turn
         </div>
       )}
 
-      {/* Card stack — near full screen */}
-      <div className="relative w-full max-w-sm h-[480px] mx-auto">
-        <AnimatePresence>
-          {nextName && (
-            <SwipeCard key={nextName.id} name={nextName} onSwipeLeft={() => {}} onSwipeRight={() => {}} isTop={false} />
-          )}
-          <SwipeCard key={currentName.id} name={currentName} onSwipeLeft={handlePass} onSwipeRight={handleLike} isTop={true} />
-        </AnimatePresence>
-      </div>
-
-      {/* Action buttons */}
-      <div className="flex items-center gap-5 mt-5">
+      {/* Undo button — top right corner */}
+      <div className="w-full max-w-sm flex justify-end mb-2">
         <button
           onClick={handleUndo}
           disabled={swipeHistory.length === 0}
-          className="w-11 h-11 rounded-full bg-card border border-border text-muted-foreground flex items-center justify-center shadow-card transition-all hover:scale-105 active:scale-95 disabled:opacity-25 disabled:hover:scale-100"
+          className="w-9 h-9 rounded-full bg-card border border-border text-muted-foreground flex items-center justify-center shadow-card transition-all hover:scale-105 active:scale-95 disabled:opacity-25 disabled:hover:scale-100"
           title="Undo last swipe"
         >
           <Undo2 className="w-4 h-4" />
         </button>
-
-        <button
-          onClick={handlePass}
-          className="w-14 h-14 rounded-full bg-card border-2 border-destructive text-destructive flex items-center justify-center shadow-card transition-all hover:scale-105 active:scale-95"
-        >
-          <X className="w-6 h-6" />
-        </button>
-
-        <button
-          onClick={handleLike}
-          className="w-[72px] h-[72px] rounded-full gradient-ocean text-primary-foreground flex items-center justify-center shadow-glow-ocean hover:scale-105 active:scale-95 transition-all"
-        >
-          <Heart className="w-8 h-8" fill="currentColor" />
-        </button>
-
-        <button
-          onClick={handleRefresh}
-          className="w-11 h-11 rounded-full bg-card border border-border text-muted-foreground flex items-center justify-center shadow-card transition-all hover:scale-105 active:scale-95"
-          title="Refresh passed names"
-        >
-          <RefreshCw className="w-4 h-4" />
-        </button>
       </div>
 
-      {showRefreshConfirm && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mt-3 px-4 py-2 rounded-2xl bg-card border border-border shadow-card text-sm font-body text-center"
-        >
-          <p className="text-foreground mb-2">Bring back all passed names?</p>
-          <div className="flex gap-2 justify-center">
-            <button onClick={handleRefresh} className="px-3 py-1 rounded-lg gradient-ocean text-primary-foreground text-xs font-medium">
-              Yes, refresh
-            </button>
-            <button onClick={() => setShowRefreshConfirm(false)} className="px-3 py-1 rounded-lg bg-secondary text-secondary-foreground text-xs font-medium">
-              Cancel
-            </button>
-          </div>
-        </motion.div>
-      )}
+      {/* Single card — no stacked deck */}
+      <div className="relative w-full max-w-sm h-[520px] mx-auto">
+        <AnimatePresence mode="wait">
+          <SwipeCard
+            key={currentName.id}
+            name={currentName}
+            onSwipeLeft={handlePass}
+            onSwipeRight={handleLike}
+            isTop={true}
+          />
+        </AnimatePresence>
 
-      <p className="mt-3 text-xs text-muted-foreground font-body">
+        {/* Tutorial overlay */}
+        {showTutorial && <SwipeTutorial swipeCount={swipeCount} />}
+      </div>
+
+      <p className="mt-4 text-xs text-muted-foreground font-body">
         {currentIndex + 1} of {filteredNames.length}
       </p>
     </div>
