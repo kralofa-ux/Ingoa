@@ -3,9 +3,9 @@ import { usePartner } from "@/hooks/usePartner";
 import { useAuth } from "@/context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Loader2, Users } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import NameDetail from "@/components/NameDetail";
-import { PolynesianName } from "@/data/names";
+import { PolynesianName, Culture, Gender } from "@/data/names";
 import { supabase } from "@/lib/supabase";
 
 const Matches = () => {
@@ -16,85 +16,67 @@ const Matches = () => {
   const [matchedNames, setMatchedNames] = useState<PolynesianName[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch cross-user matches
-  useEffect(() => {
-    if (!user || !status.connected || !status.partner_id) {
+  const fetchMatches = useCallback(async () => {
+    if (!user || !status.connected) {
       setMatchedNames([]);
       setLoading(false);
       return;
     }
+    setLoading(true);
+    try {
+      const { data: matchIds } = await supabase.rpc("get_partner_matches", {
+        requesting_user: user.id,
+      });
 
-    const fetchMatches = async () => {
-      setLoading(true);
-      try {
-        // Get partner's liked names
-        const { data: partnerLikes } = await supabase
-          .from("liked_names")
-          .select("name_id")
-          .eq("user_id", status.partner_id!);
-
-        if (!partnerLikes || partnerLikes.length === 0) {
-          setMatchedNames([]);
-          setLoading(false);
-          return;
-        }
-
-        const partnerIds = new Set(partnerLikes.map((r) => r.name_id));
-        const myMatchedIds = likedNamesA
-          .filter((n) => partnerIds.has(n.id))
-          .map((n) => n.id);
-
-        if (myMatchedIds.length === 0) {
-          setMatchedNames([]);
-          setLoading(false);
-          return;
-        }
-
-        // Resolve full name objects
-        const { data: nameRows } = await supabase
-          .from("names")
-          .select("id, name, culture, gender, meaning")
-          .in("id", myMatchedIds);
-
-        if (nameRows) {
-          setMatchedNames(
-            nameRows.map((r) => ({
-              id: r.id,
-              name: r.name,
-              meaning: r.meaning ?? "",
-              culture: r.culture as any,
-              gender: r.gender as any,
-            }))
-          );
-        }
-      } catch {
+      if (!matchIds || matchIds.length === 0) {
         setMatchedNames([]);
-      } finally {
         setLoading(false);
+        return;
       }
-    };
 
+      const ids = matchIds.map((r: { name_id: string }) => r.name_id);
+      const { data: nameRows } = await supabase
+        .from("names")
+        .select("id, name, culture, gender, meaning")
+        .in("id", ids);
+
+      if (nameRows) {
+        setMatchedNames(
+          nameRows.map((r) => ({
+            id: r.id,
+            name: r.name,
+            meaning: r.meaning ?? "",
+            culture: r.culture as Culture,
+            gender: r.gender as Gender,
+          }))
+        );
+      }
+    } catch {
+      setMatchedNames([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [user, status.connected]);
+
+  useEffect(() => {
     fetchMatches();
+  }, [fetchMatches, likedNamesA]);
 
-    // Subscribe to partner's liked_names for real-time updates
+  // Realtime: refetch when partner likes change
+  useEffect(() => {
+    if (!status.connected || !status.partner_id) return;
+
     const channel = supabase
       .channel("partner-likes")
       .on(
         "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "liked_names",
-          filter: `user_id=eq.${status.partner_id}`,
-        },
+        { event: "*", schema: "public", table: "liked_names", filter: `user_id=eq.${status.partner_id}` },
         () => fetchMatches()
       )
       .subscribe();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [user, status.connected, status.partner_id, likedNamesA]);
+    return () => { supabase.removeChannel(channel); };
+  }, [status.connected, status.partner_id, fetchMatches]);
 
   if (partnerLoading || loading) {
     return (
@@ -133,9 +115,7 @@ const Matches = () => {
       {matchedNames.length === 0 ? (
         <div className="text-center py-16">
           <p className="text-5xl mb-4">🤝</p>
-          <p className="text-muted-foreground font-body">
-            No matches yet — keep swiping!
-          </p>
+          <p className="text-muted-foreground font-body">No matches yet — keep swiping!</p>
           <p className="text-xs text-muted-foreground/70 font-body mt-2">
             Matches appear when both of you like the same name
           </p>
