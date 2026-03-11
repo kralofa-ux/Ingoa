@@ -32,7 +32,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 const AppLayout = () => {
   const location = useLocation();
   const { user, loading, profile } = useAuth();
-  const hideNav = ["/", "/auth", "/onboarding", "/reset-password"].includes(location.pathname);
+  const hideNav = ["/", "/auth", "/onboarding", "/reset-password", "/admin"].includes(location.pathname);
 
   if (loading) return null;
 
