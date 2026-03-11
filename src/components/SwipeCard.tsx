@@ -20,8 +20,6 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop }: SwipeCardProps) =
   const { showNamePreview, lastName, middleName } = useApp();
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-12, 12]);
-  const likeOpacity = useTransform(x, [0, 100], [0, 1]);
-  const passOpacity = useTransform(x, [-100, 0], [1, 0]);
 
   const handleDragEnd = (_: any, info: PanInfo) => {
     if (info.offset.x > 100) onSwipeRight();
@@ -48,20 +46,6 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop }: SwipeCardProps) =
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
       <div className={`h-full rounded-3xl ${culture.bg} overflow-hidden flex flex-col relative shadow-card-hover`}>
-        {/* Like/Pass overlays */}
-        <motion.div
-          className="absolute top-6 right-6 z-20 rounded-2xl border-[3px] border-white px-5 py-2.5 font-display font-extrabold text-white rotate-12 text-2xl"
-          style={{ opacity: likeOpacity, textShadow: "0 2px 10px rgba(0,0,0,0.3)" }}
-        >
-          LIKE
-        </motion.div>
-        <motion.div
-          className="absolute top-6 left-6 z-20 rounded-2xl border-[3px] border-white/80 px-5 py-2.5 font-display font-extrabold text-white -rotate-12 text-2xl"
-          style={{ opacity: passOpacity, textShadow: "0 2px 10px rgba(0,0,0,0.3)" }}
-        >
-          PASS
-        </motion.div>
-
         {/* Content */}
         <div className="flex-1 flex flex-col items-center justify-center p-8 relative">
           {/* Culture badge */}
