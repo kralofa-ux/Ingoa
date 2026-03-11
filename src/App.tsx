@@ -12,6 +12,7 @@ import Matches from "./pages/Matches";
 import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
 import ResetPassword from "./pages/ResetPassword";
+import Settings from "./pages/Settings";
 import BottomNav from "./components/BottomNav";
 import NotFound from "./pages/NotFound";
 
