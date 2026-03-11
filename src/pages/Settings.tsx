@@ -244,6 +244,17 @@ const Settings = () => {
           )}
         </section>
 
+        {/* Admin Link */}
+        {isAdmin && (
+          <button
+            onClick={() => navigate("/admin")}
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-card rounded-2xl border border-primary/30 text-sm font-body text-primary hover:bg-primary/5 transition-colors"
+          >
+            <Shield className="w-4 h-4" />
+            Admin Dashboard
+          </button>
+        )}
+
         {/* Sign Out */}
         <button
           onClick={handleSignOut}
