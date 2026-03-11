@@ -4,7 +4,7 @@ import { Heart, Home, Users, Settings } from "lucide-react";
 
 const BottomNav = () => {
   const location = useLocation();
-  const { mode, likedNames, matchedNames } = useApp();
+  const { likedNames } = useApp();
 
   const links = [
     { to: "/browse", icon: Home, label: "Swipe" },
