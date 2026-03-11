@@ -22,7 +22,7 @@ const Onboarding = () => {
   const [step, setStep] = useState(0);
   const [mode, setMode] = useState<"solo" | "couple">("solo");
   const [selectedCultures, setSelectedCultures] = useState<string[]>([]);
-  const [genderPref, setGenderPref] = useState<"boy" | "girl" | "both">("both");
+  const [genderPref, setGenderPref] = useState<"male" | "female" | "all">("all");
   const [lastName, setLastName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -138,7 +138,7 @@ const Onboarding = () => {
       <h2 className="text-2xl font-display text-foreground mb-2">Gender preference</h2>
       <p className="text-sm text-muted-foreground font-body mb-6">Unisex names are always included</p>
       <div className="space-y-2">
-        {([["boy", "Boy names"], ["girl", "Girl names"], ["both", "All names"]] as const).map(([val, label]) => (
+        {([["male", "Male names"], ["female", "Female names"], ["all", "All names"]] as const).map(([val, label]) => (
           <button
             key={val}
             onClick={() => setGenderPref(val)}

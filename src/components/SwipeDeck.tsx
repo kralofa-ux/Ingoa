@@ -1,10 +1,10 @@
 import { useApp } from "@/context/AppContext";
-import { polynesianNames } from "@/data/names";
+import { useNames, buildWeightedDeck } from "@/hooks/useNames";
 import SwipeCard from "@/components/SwipeCard";
 import SwipeTutorial from "@/components/SwipeTutorial";
 import { AnimatePresence, motion } from "framer-motion";
-import { useMemo, useState, useEffect } from "react";
-import { Undo2, RefreshCw } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Undo2, RefreshCw, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const SwipeDeck = () => {
@@ -14,26 +14,22 @@ const SwipeDeck = () => {
     undoLastSwipe, refreshDeck, swipeHistory,
   } = useApp();
   const { toast } = useToast();
+  const { data: allNames, isLoading } = useNames();
   const [swipeCount, setSwipeCount] = useState(() => {
     const stored = localStorage.getItem("ingoa_swipe_count");
     return stored ? parseInt(stored, 10) : 0;
   });
 
   const filteredNames = useMemo(() => {
-    const filtered = polynesianNames.filter((n) => {
+    if (!allNames) return [];
+    const filtered = allNames.filter((n) => {
       if (cultureFilter.length > 0 && !cultureFilter.includes(n.culture)) return false;
       if (genderFilter !== "all" && n.gender !== genderFilter && n.gender !== "unisex") return false;
-      if (passedIds.has(n.id)) return false;
-      if (likedNames.find((l) => l.id === n.id)) return false;
       return true;
     });
-    const shuffled = [...filtered];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  }, [cultureFilter, genderFilter, passedIds, likedNames]);
+    const likedIds = new Set(likedNames.map((l) => l.id));
+    return buildWeightedDeck(filtered, passedIds, likedIds);
+  }, [allNames, cultureFilter, genderFilter, passedIds, likedNames]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -70,6 +66,14 @@ const SwipeDeck = () => {
 
   const showTutorial = swipeCount < 5;
 
+  if (isLoading) {
+    return (
+      <div className="flex-1 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
   if (!currentName) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
@@ -103,7 +107,6 @@ const SwipeDeck = () => {
         </div>
       )}
 
-      {/* Undo button — top right corner */}
       <div className="w-full max-w-sm flex justify-end mb-2">
         <button
           onClick={handleUndo}
@@ -115,7 +118,6 @@ const SwipeDeck = () => {
         </button>
       </div>
 
-      {/* Single card — no stacked deck */}
       <div className="relative w-full max-w-sm h-[520px] mx-auto">
         <AnimatePresence mode="wait">
           <SwipeCard
@@ -127,7 +129,6 @@ const SwipeDeck = () => {
           />
         </AnimatePresence>
 
-        {/* Tutorial overlay */}
         {showTutorial && <SwipeTutorial swipeCount={swipeCount} />}
       </div>
 

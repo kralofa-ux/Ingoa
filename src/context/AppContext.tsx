@@ -57,7 +57,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [showNamePreview, setShowNamePreview] = useState(false);
   const [swipeHistory, setSwipeHistory] = useState<{ name: PolynesianName; action: "like" | "pass" }[]>([]);
 
-  // Sync profile preferences
+  // Sync profile preferences — handle both old (boy/girl/both) and new (male/female/all) formats
   useEffect(() => {
     if (profile) {
       setModeState(profile.mode as "solo" | "couple");
@@ -66,8 +66,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       if (profile.selected_cultures && profile.selected_cultures.length > 0) {
         setCultureFilter(profile.selected_cultures as Culture[]);
       }
-      if (profile.gender_preference === "boy") setGenderFilter("male");
-      else if (profile.gender_preference === "girl") setGenderFilter("female");
+      const gp = profile.gender_preference;
+      if (gp === "male" || gp === "boy") setGenderFilter("male");
+      else if (gp === "female" || gp === "girl") setGenderFilter("female");
       else setGenderFilter("all");
     }
   }, [profile]);
@@ -83,13 +84,23 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       if (passedRes.data) {
         setPassedIds(new Set(passedRes.data.map((r) => r.name_id)));
       }
-      // We store liked name IDs; actual PolynesianName objects resolved from local catalog
-      if (likedRes.data) {
-        const { polynesianNames } = await import("@/data/names");
-        const likedObjs = likedRes.data
-          .map((r) => polynesianNames.find((n) => n.id === r.name_id))
-          .filter(Boolean) as PolynesianName[];
-        setLikedNamesA(likedObjs);
+      // Resolve liked name IDs from the names table
+      if (likedRes.data && likedRes.data.length > 0) {
+        const nameIds = likedRes.data.map((r) => r.name_id);
+        const { data: nameRows } = await supabase
+          .from("names")
+          .select("id, name, culture, gender, meaning")
+          .in("id", nameIds);
+        if (nameRows) {
+          const likedObjs: PolynesianName[] = nameRows.map((r) => ({
+            id: r.id,
+            name: r.name,
+            meaning: r.meaning ?? "",
+            culture: r.culture as Culture,
+            gender: r.gender as Gender,
+          }));
+          setLikedNamesA(likedObjs);
+        }
       }
     };
     loadSwipeData();
@@ -111,7 +122,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setLikedNamesB((prev) => (prev.find((n) => n.id === name.id) ? prev : [...prev, name]));
       }
       setSwipeHistory((prev) => [...prev, { name, action: "like" }]);
-      // Persist to cloud
       if (user) {
         await supabase.from("liked_names").upsert({ user_id: user.id, name_id: name.id });
       }
