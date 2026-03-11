@@ -35,6 +35,48 @@ export type Database = {
         }
         Relationships: []
       }
+      names: {
+        Row: {
+          commonality_score: number
+          created_at: string
+          culture: string
+          gender: string
+          id: string
+          meaning: string | null
+          name: string
+          source_reference: string | null
+          source_type: string | null
+          status: string
+          verified_by: string | null
+        }
+        Insert: {
+          commonality_score?: number
+          created_at?: string
+          culture: string
+          gender: string
+          id: string
+          meaning?: string | null
+          name: string
+          source_reference?: string | null
+          source_type?: string | null
+          status?: string
+          verified_by?: string | null
+        }
+        Update: {
+          commonality_score?: number
+          created_at?: string
+          culture?: string
+          gender?: string
+          id?: string
+          meaning?: string | null
+          name?: string
+          source_reference?: string | null
+          source_type?: string | null
+          status?: string
+          verified_by?: string | null
+        }
+        Relationships: []
+      }
       passed_names: {
         Row: {
           created_at: string
