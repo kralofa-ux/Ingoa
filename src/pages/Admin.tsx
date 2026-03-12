@@ -166,7 +166,7 @@ const NamesPanel = () => {
   const [showCsv, setShowCsv] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<Partial<NameRow>>({});
-  const [addForm, setAddForm] = useState({ id: "", name: "", culture: "NZ Māori", gender: "male", meaning: "", commonality_score: 2, status: "active" });
+  const [addForm, setAddForm] = useState({ id: "", name: "", culture: "Aotearoa", gender: "male", meaning: "", commonality_score: 2, status: "active" });
   const [csvText, setCsvText] = useState("");
   const [importing, setImporting] = useState(false);
 
