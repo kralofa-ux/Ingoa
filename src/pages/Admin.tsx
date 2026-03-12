@@ -186,7 +186,7 @@ const NamesPanel = () => {
   const handleAdd = async () => {
     if (!addForm.id || !addForm.name) return;
     await addName(addForm as any);
-    setAddForm({ id: "", name: "", culture: "NZ Māori", gender: "male", meaning: "", commonality_score: 2, status: "active" });
+    setAddForm({ id: "", name: "", culture: "Aotearoa", gender: "male", meaning: "", commonality_score: 2, status: "active" });
     setShowAdd(false);
   };
 
