@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import { PolynesianName } from "@/data/names";
-import { cultureEmoji } from "@/lib/cultureColors";
+import CultureIcon from "@/components/CultureIcon";
 import { getGenderColor, genderLabel } from "@/lib/genderColors";
 
 interface NameDetailProps {
