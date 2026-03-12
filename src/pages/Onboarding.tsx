@@ -4,7 +4,8 @@ import { ArrowRight, User, Users, Check } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Culture } from "@/data/names";
-import { getCultureColor, cultureEmoji } from "@/lib/cultureColors";
+import { getCultureColor } from "@/lib/cultureColors";
+import CultureIcon from "@/components/CultureIcon";
 
 const CULTURES: Culture[] = ["Cook Islands", "Samoa", "NZ Māori", "Tonga", "Fiji", "Hawaii", "Niue", "Tahiti"];
 
