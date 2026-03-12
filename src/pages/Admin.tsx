@@ -8,7 +8,7 @@ import {
   Check, X, Edit2, Loader2, BarChart3,
 } from "lucide-react";
 
-const CULTURES = ["NZ Māori", "Cook Islands", "Samoa", "Tonga", "Fiji", "Hawaii", "Niue", "Tahiti"];
+const CULTURES = ["Aotearoa", "Cook Islands", "Samoa", "Tonga", "Fiji", "Hawaii", "Niue", "Tahiti"];
 const GENDERS = ["male", "female", "unisex"];
 
 const Admin = () => {
@@ -166,7 +166,7 @@ const NamesPanel = () => {
   const [showCsv, setShowCsv] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<Partial<NameRow>>({});
-  const [addForm, setAddForm] = useState({ id: "", name: "", culture: "NZ Māori", gender: "male", meaning: "", commonality_score: 2, status: "active" });
+  const [addForm, setAddForm] = useState({ id: "", name: "", culture: "Aotearoa", gender: "male", meaning: "", commonality_score: 2, status: "active" });
   const [csvText, setCsvText] = useState("");
   const [importing, setImporting] = useState(false);
 
@@ -186,7 +186,7 @@ const NamesPanel = () => {
   const handleAdd = async () => {
     if (!addForm.id || !addForm.name) return;
     await addName(addForm as any);
-    setAddForm({ id: "", name: "", culture: "NZ Māori", gender: "male", meaning: "", commonality_score: 2, status: "active" });
+    setAddForm({ id: "", name: "", culture: "Aotearoa", gender: "male", meaning: "", commonality_score: 2, status: "active" });
     setShowAdd(false);
   };
 
@@ -283,7 +283,7 @@ const NamesPanel = () => {
           <p className="text-xs text-muted-foreground font-body">Format: id,name,culture,gender,meaning,commonality_score,status</p>
           <textarea
             rows={6}
-            placeholder="nzm-200,Aroha,NZ Māori,female,Love,3,active"
+            placeholder="nzm-200,Aroha,Aotearoa,female,Love,3,active"
             value={csvText}
             onChange={(e) => setCsvText(e.target.value)}
             className="w-full px-3 py-2 rounded-lg bg-secondary text-foreground text-xs font-mono border border-border resize-none"

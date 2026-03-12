@@ -7,7 +7,7 @@ import { Culture } from "@/data/names";
 import { getCultureColor } from "@/lib/cultureColors";
 import CultureIcon from "@/components/CultureIcon";
 
-const CULTURES: Culture[] = ["Cook Islands", "Samoa", "NZ Māori", "Tonga", "Fiji", "Hawaii", "Niue", "Tahiti"];
+const CULTURES: Culture[] = ["Cook Islands", "Samoa", "Aotearoa", "Tonga", "Fiji", "Hawaii", "Niue", "Tahiti"];
 
 const Onboarding = () => {
   const [step, setStep] = useState(0);

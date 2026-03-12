@@ -11,7 +11,7 @@ const emojiMap: Record<string, string> = {
 };
 
 const svgMap: Record<string, string> = {
-  "NZ Māori": tinoFlag,
+  "Aotearoa": tinoFlag,
   "Hawaii": hawaiiFlag,
 };
 
@@ -24,14 +24,15 @@ interface CultureIconProps {
 const CultureIcon = ({ culture, size = 20, className = "" }: CultureIconProps) => {
   const svg = svgMap[culture];
   if (svg) {
+    const renderSize = culture === "Aotearoa" ? size * 1.2 : size;
     return (
       <img
         src={svg}
         alt={`${culture} flag`}
-        width={size}
-        height={size}
-        className={`inline-block object-contain ${className}`}
-        style={{ width: size, height: size }}
+        width={renderSize}
+        height={renderSize}
+        className={`inline-block object-contain rounded-sm ${className}`}
+        style={{ width: renderSize, height: renderSize }}
       />
     );
   }

@@ -1,5 +1,5 @@
 export type CultureColorKey =
-  | "NZ Māori"
+  | "Aotearoa"
   | "Cook Islands"
   | "Samoa"
   | "Tonga"
@@ -17,7 +17,7 @@ export interface CultureColor {
 }
 
 export const cultureColors: Record<CultureColorKey, CultureColor> = {
-  "NZ Māori": {
+  "Aotearoa": {
     bg: "bg-[hsl(var(--culture-maori))]",
     text: "text-white",
     border: "border-[hsl(var(--culture-maori))]",
@@ -76,11 +76,11 @@ export const cultureColors: Record<CultureColorKey, CultureColor> = {
 };
 
 export const getCultureColor = (culture: string): CultureColor => {
-  return cultureColors[culture as CultureColorKey] || cultureColors["NZ Māori"];
+  return cultureColors[culture as CultureColorKey] || cultureColors["Aotearoa"];
 };
 
 export const cultureEmoji: Record<string, string> = {
-  "NZ Māori": "🔴⚫⚪",
+  "Aotearoa": "🔴⚫⚪",
   "Cook Islands": "🇨🇰",
   "Samoa": "🇼🇸",
   "Tonga": "🇹🇴",

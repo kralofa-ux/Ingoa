@@ -1,4 +1,4 @@
-export type Culture = "NZ Māori" | "Cook Islands" | "Samoa" | "Tonga" | "Fiji" | "Hawaii" | "Niue" | "Tahiti";
+export type Culture = "Aotearoa" | "Cook Islands" | "Samoa" | "Tonga" | "Fiji" | "Hawaii" | "Niue" | "Tahiti";
 export type Gender = "male" | "female" | "unisex";
 
 export interface PolynesianName {
