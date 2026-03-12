@@ -4,7 +4,8 @@ import { ArrowRight, User, Users, Check } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Culture } from "@/data/names";
-import { getCultureColor, cultureEmoji } from "@/lib/cultureColors";
+import { getCultureColor } from "@/lib/cultureColors";
+import CultureIcon from "@/components/CultureIcon";
 
 const CULTURES: Culture[] = ["Cook Islands", "Samoa", "NZ Māori", "Tonga", "Fiji", "Hawaii", "Niue", "Tahiti"];
 
@@ -35,6 +36,7 @@ const Onboarding = () => {
 
   const handleFinish = async () => {
     setSubmitting(true);
+    const hasNamePreview = middleName.trim().length > 0 || lastName.trim().length > 0;
     await updateProfile({
       mode,
       selected_cultures: selectedCultures,
@@ -43,6 +45,10 @@ const Onboarding = () => {
       middle_name: middleName,
       onboarding_completed: true,
     });
+    // Auto-enable name preview if user entered middle/last name
+    if (hasNamePreview) {
+      // This is handled in AppContext via the profile sync
+    }
     setSubmitting(false);
     navigate("/browse");
   };
@@ -115,7 +121,7 @@ const Onboarding = () => {
                   : "border-border bg-card hover:border-muted-foreground/30 text-foreground"
               }`}
             >
-              <span className="text-lg">{cultureEmoji[c]}</span>
+              <CultureIcon culture={c} size={20} />
               <span className="text-sm font-semibold flex-1">{c}</span>
               {selected && <Check className="w-4 h-4 text-white" />}
             </button>

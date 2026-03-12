@@ -1,7 +1,7 @@
 import { motion, useMotionValue, useTransform, PanInfo } from "framer-motion";
 import { PolynesianName } from "@/data/names";
 import { useApp } from "@/context/AppContext";
-import { cultureEmoji } from "@/lib/cultureColors";
+import CultureIcon from "@/components/CultureIcon";
 import { getGenderColor, genderLabel } from "@/lib/genderColors";
 import { Undo2 } from "lucide-react";
 
@@ -12,12 +12,15 @@ interface SwipeCardProps {
   isTop: boolean;
   onUndo?: () => void;
   canUndo?: boolean;
+  swipeCount?: number;
 }
 
-const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo }: SwipeCardProps) => {
+const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, swipeCount = 99 }: SwipeCardProps) => {
   const { showNamePreview, lastName, middleName } = useApp();
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-12, 12]);
+  const likeOpacity = useTransform(x, [0, 80], [0, 1]);
+  const passOpacity = useTransform(x, [-80, 0], [1, 0]);
 
   const handleDragEnd = (_: any, info: PanInfo) => {
     if (info.offset.x > 100) onSwipeRight();
@@ -29,6 +32,7 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo }: 
     : null;
 
   const gColor = getGenderColor(name.gender);
+  const showOverlays = swipeCount < 3;
 
   return (
     <motion.div
@@ -44,6 +48,28 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo }: 
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
       <div className={`h-full rounded-3xl ${gColor.bg} overflow-hidden flex flex-col relative shadow-card-hover`}>
+        {/* Swipe overlays for first 3 swipes */}
+        {showOverlays && (
+          <>
+            <motion.div
+              className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none rounded-3xl"
+              style={{ opacity: likeOpacity }}
+            >
+              <div className="bg-white/20 backdrop-blur-sm px-8 py-4 rounded-2xl border-2 border-white/40">
+                <span className="text-4xl font-display font-extrabold text-white tracking-widest">LIKE</span>
+              </div>
+            </motion.div>
+            <motion.div
+              className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none rounded-3xl"
+              style={{ opacity: passOpacity }}
+            >
+              <div className="bg-black/20 backdrop-blur-sm px-8 py-4 rounded-2xl border-2 border-white/20">
+                <span className="text-4xl font-display font-extrabold text-white/80 tracking-widest">PASS</span>
+              </div>
+            </motion.div>
+          </>
+        )}
+
         {/* Undo button */}
         {onUndo && (
           <button
@@ -60,7 +86,7 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo }: 
         <div className="flex-1 flex flex-col items-center justify-center p-8 relative">
           {/* Culture badge */}
           <div className="flex items-center gap-2 mb-8">
-            <span className="text-2xl">{cultureEmoji[name.culture]}</span>
+            <CultureIcon culture={name.culture} size={24} />
             <span className="text-xs font-body font-bold text-white/70 uppercase tracking-[0.2em]">
               {name.culture}
             </span>

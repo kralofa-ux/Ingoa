@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import { PolynesianName } from "@/data/names";
-import { cultureEmoji } from "@/lib/cultureColors";
+import CultureIcon from "@/components/CultureIcon";
 import { getGenderColor, genderLabel } from "@/lib/genderColors";
 
 interface NameDetailProps {
@@ -37,7 +37,7 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
         <div className="text-center space-y-5">
           {/* Culture */}
           <div className="flex items-center justify-center gap-2">
-            <span className="text-2xl">{cultureEmoji[name.culture]}</span>
+            <CultureIcon culture={name.culture} size={24} />
             <span className="text-xs font-body font-bold text-white/60 uppercase tracking-[0.2em]">
               {name.culture}
             </span>

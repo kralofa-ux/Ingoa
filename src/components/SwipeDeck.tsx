@@ -116,6 +116,7 @@ const SwipeDeck = () => {
             isTop={true}
             onUndo={handleUndo}
             canUndo={swipeHistory.length > 0}
+            swipeCount={swipeCount}
           />
         </AnimatePresence>
 

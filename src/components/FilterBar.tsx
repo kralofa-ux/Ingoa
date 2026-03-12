@@ -2,7 +2,7 @@ import { useApp } from "@/context/AppContext";
 import { Culture, Gender } from "@/data/names";
 import { useState } from "react";
 import { ChevronDown, Check } from "lucide-react";
-import { getCultureColor, cultureEmoji } from "@/lib/cultureColors";
+import CultureIcon from "@/components/CultureIcon";
 
 const FilterBar = () => {
   const { cultureFilter, setCultureFilter, genderFilter, setGenderFilter } = useApp();
@@ -46,7 +46,7 @@ const FilterBar = () => {
       <div className="relative">
         <button
           onClick={() => setShowCultures(!showCultures)}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-full glass text-sm font-body font-semibold text-foreground border border-border"
+          className="flex items-center gap-2 px-4 py-2 rounded-full glass text-sm font-body font-semibold text-foreground border border-border whitespace-nowrap"
         >
           {cultureLabel}
           <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showCultures ? "rotate-180" : ""}`} />
@@ -66,7 +66,6 @@ const FilterBar = () => {
               </button>
               {cultures.map((c) => {
                 const selected = cultureFilter.includes(c.value);
-                const color = getCultureColor(c.value);
                 return (
                   <button
                     key={c.value}
@@ -76,8 +75,8 @@ const FilterBar = () => {
                     }`}
                   >
                     <span className="flex items-center gap-2.5">
-                      <span className={`w-2.5 h-2.5 rounded-full ${color.dot}`} />
-                      {cultureEmoji[c.value]} {c.label}
+                      <CultureIcon culture={c.value} size={18} />
+                      {c.label}
                     </span>
                     {selected && <Check className="w-4 h-4" />}
                   </button>

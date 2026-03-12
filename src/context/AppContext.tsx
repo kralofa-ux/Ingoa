@@ -63,6 +63,10 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setModeState(profile.mode as "solo" | "couple");
       setLastName(profile.last_name || "");
       setMiddleName(profile.middle_name || "");
+      // Auto-enable name preview if middle or last name is set
+      if ((profile.middle_name && profile.middle_name.trim().length > 0) || (profile.last_name && profile.last_name.trim().length > 0)) {
+        setShowNamePreview(true);
+      }
       if (profile.selected_cultures && profile.selected_cultures.length > 0) {
         setCultureFilter(profile.selected_cultures as Culture[]);
       }
