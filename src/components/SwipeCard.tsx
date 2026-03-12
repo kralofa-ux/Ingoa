@@ -1,4 +1,5 @@
 import { motion, useMotionValue, useTransform, PanInfo } from "framer-motion";
+import { useRef } from "react";
 import { PolynesianName } from "@/data/names";
 import { useApp } from "@/context/AppContext";
 import CultureIcon from "@/components/CultureIcon";
