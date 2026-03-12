@@ -47,7 +47,7 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, sw
       onDragEnd={handleDragEnd}
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      exit={() => ({ x: exitDirection.current === "left" ? -300 : 300, opacity: 0, transition: { duration: 0.3 } })}
+      exit={{ x: exitDirection.current === "left" ? -300 : 300, opacity: 0, transition: { duration: 0.3 } }}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
       <div className={`h-full rounded-3xl ${gColor.bg} overflow-hidden flex flex-col relative shadow-card-hover`}>
