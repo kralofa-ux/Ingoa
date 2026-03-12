@@ -38,14 +38,6 @@ const LikedList = () => {
     });
   };
 
-  const shareName = (name: PolynesianName) => {
-    const text = `${name.name}\n${name.meaning}\n${name.culture}`;
-    if (navigator.share) {
-      navigator.share({ title: name.name, text });
-    } else {
-      navigator.clipboard.writeText(text);
-    }
-  };
 
   return (
     <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto">
