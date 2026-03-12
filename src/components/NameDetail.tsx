@@ -69,7 +69,7 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
           <div className="pt-2">
             <button
               onClick={shareName}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/15 text-white/80 hover:text-white hover:bg-white/25 transition-colors backdrop-blur-sm text-sm font-body font-semibold"
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/15 text-white hover:bg-white/25 transition-colors backdrop-blur-sm text-xs font-body font-bold tracking-widest uppercase"
             >
               <Share2 className="w-4 h-4" />
               Share
