@@ -23,9 +23,11 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, sw
   const likeOpacity = useTransform(x, [0, 80], [0, 1]);
   const passOpacity = useTransform(x, [-80, 0], [1, 0]);
 
+  const exitDirection = useRef<"left" | "right">("right");
+
   const handleDragEnd = (_: any, info: PanInfo) => {
-    if (info.offset.x > 100) onSwipeRight();
-    else if (info.offset.x < -100) onSwipeLeft();
+    if (info.offset.x > 100) { exitDirection.current = "right"; onSwipeRight(); }
+    else if (info.offset.x < -100) { exitDirection.current = "left"; onSwipeLeft(); }
   };
 
   const namePreview = showNamePreview
