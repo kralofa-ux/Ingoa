@@ -8,7 +8,7 @@ import {
   Check, X, Edit2, Loader2, BarChart3,
 } from "lucide-react";
 
-const CULTURES = ["NZ Māori", "Cook Islands", "Samoa", "Tonga", "Fiji", "Hawaii", "Niue", "Tahiti"];
+const CULTURES = ["Aotearoa", "Cook Islands", "Samoa", "Tonga", "Fiji", "Hawaii", "Niue", "Tahiti"];
 const GENDERS = ["male", "female", "unisex"];
 
 const Admin = () => {
