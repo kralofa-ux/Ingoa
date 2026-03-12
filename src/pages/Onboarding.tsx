@@ -116,7 +116,7 @@ const Onboarding = () => {
                   : "border-border bg-card hover:border-muted-foreground/30 text-foreground"
               }`}
             >
-              <span className="text-lg">{cultureEmoji[c]}</span>
+              <CultureIcon culture={c} size={20} />
               <span className="text-sm font-semibold flex-1">{c}</span>
               {selected && <Check className="w-4 h-4 text-white" />}
             </button>
