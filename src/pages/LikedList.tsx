@@ -1,6 +1,6 @@
 import { useApp } from "@/context/AppContext";
 import { motion, AnimatePresence, Reorder } from "framer-motion";
-import { Trash2, Star, Share2 } from "lucide-react";
+import { Trash2, Star } from "lucide-react";
 import { useState } from "react";
 import NameDetail from "@/components/NameDetail";
 import { PolynesianName } from "@/data/names";
@@ -38,14 +38,6 @@ const LikedList = () => {
     });
   };
 
-  const shareName = (name: PolynesianName) => {
-    const text = `${name.name}\n${name.meaning}\n${name.culture}`;
-    if (navigator.share) {
-      navigator.share({ title: name.name, text });
-    } else {
-      navigator.clipboard.writeText(text);
-    }
-  };
 
   return (
     <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto">
@@ -93,12 +85,6 @@ const LikedList = () => {
                     className={`p-2 rounded-lg transition-colors ${favourites.has(name.id) ? "text-accent" : "text-muted-foreground hover:text-accent"}`}
                   >
                     <Star className="w-4 h-4" fill={favourites.has(name.id) ? "currentColor" : "none"} />
-                  </button>
-                  <button
-                    onClick={() => shareName(name)}
-                    className="p-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <Share2 className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => removeLikedName(name.id)}

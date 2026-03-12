@@ -22,12 +22,11 @@ const BottomNav = () => {
             <Link
               key={link.to}
               to={link.to}
-              className={`flex flex-col items-center gap-1 px-5 py-1 rounded-xl transition-colors relative ${
+              className={`flex flex-col items-center px-5 py-1 rounded-xl transition-colors relative ${
                 active ? "text-primary" : "text-muted-foreground hover:text-foreground"
               }`}
             >
               <link.icon className="w-6 h-6" fill={active ? "currentColor" : "none"} />
-              <span className="text-[10px] font-body font-semibold tracking-wide uppercase">{link.label}</span>
               {active && (
                 <div className="absolute -bottom-1.5 w-1.5 h-1.5 rounded-full bg-primary" />
               )}
