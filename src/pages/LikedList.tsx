@@ -1,6 +1,6 @@
 import { useApp } from "@/context/AppContext";
 import { motion, AnimatePresence, Reorder } from "framer-motion";
-import { Trash2, Star, Share2 } from "lucide-react";
+import { Trash2, Star } from "lucide-react";
 import { useState } from "react";
 import NameDetail from "@/components/NameDetail";
 import { PolynesianName } from "@/data/names";
