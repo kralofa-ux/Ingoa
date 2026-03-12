@@ -50,29 +50,29 @@
     --culture-tahiti: 330 72% 56%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(210 60% 18%), hsl(195 85% 45%));
+    --gradient-primary: linear-gradient(135deg, hsl(238 80% 20%), hsl(195 100% 50%));
     --gradient-coral: linear-gradient(135deg, hsl(12 80% 58%), hsl(24 90% 55%));
-    --gradient-deep: linear-gradient(180deg, hsl(220 50% 5%), hsl(210 40% 14%));
-    --gradient-card: linear-gradient(180deg, hsl(220 35% 13%), hsl(220 35% 10%));
+    --gradient-deep: linear-gradient(180deg, hsl(238 90% 8%), hsl(238 70% 16%));
+    --gradient-card: linear-gradient(180deg, hsl(238 65% 18%), hsl(238 70% 14%));
 
     /* Shadows */
-    --shadow-card: 0 4px 24px -6px hsl(220 40% 4% / 0.5);
-    --shadow-card-hover: 0 12px 40px -10px hsl(195 85% 45% / 0.15);
-    --shadow-glow-primary: 0 4px 30px -4px hsl(195 85% 45% / 0.25);
+    --shadow-card: 0 4px 24px -6px hsl(238 80% 6% / 0.6);
+    --shadow-card-hover: 0 12px 40px -10px hsl(195 100% 50% / 0.2);
+    --shadow-glow-primary: 0 4px 30px -4px hsl(195 100% 50% / 0.3);
     --shadow-glow-accent: 0 4px 30px -4px hsl(12 80% 58% / 0.25);
 
     /* Typography */
     --font-display: 'Plus Jakarta Sans', sans-serif;
     --font-body: 'DM Sans', sans-serif;
 
-    --sidebar-background: 220 35% 9%;
-    --sidebar-foreground: 210 20% 92%;
-    --sidebar-primary: 195 85% 45%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 20% 16%;
-    --sidebar-accent-foreground: 210 20% 92%;
-    --sidebar-border: 220 20% 16%;
-    --sidebar-ring: 195 85% 45%;
+    --sidebar-background: 238 75% 13%;
+    --sidebar-foreground: 200 100% 95%;
+    --sidebar-primary: 195 100% 50%;
+    --sidebar-primary-foreground: 238 85% 12%;
+    --sidebar-accent: 238 45% 22%;
+    --sidebar-accent-foreground: 200 100% 95%;
+    --sidebar-border: 238 45% 22%;
+    --sidebar-ring: 195 100% 50%;
   }
 }
 
