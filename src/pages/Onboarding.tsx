@@ -60,7 +60,7 @@ const Onboarding = () => {
   const steps = [
     // Step 0: Welcome — no icon, just text
     <motion.div key="welcome" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="text-center">
-      <h1 className="text-5xl font-display font-extrabold text-foreground mb-4 tracking-tight">Kia orana,</h1>
+      <h1 className="text-5xl font-display font-extrabold text-foreground mb-4 tracking-tight">Kia Orana,</h1>
       <p className="text-muted-foreground font-body text-lg mb-2">Welcome to Ingoa</p>
       <p className="text-muted-foreground/60 font-body text-sm max-w-xs mx-auto leading-relaxed">
         A simple tool to help families choose and preserve Pacific names for the next generation
