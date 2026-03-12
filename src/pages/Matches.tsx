@@ -7,7 +7,7 @@ import { useState, useEffect, useCallback } from "react";
 import NameDetail from "@/components/NameDetail";
 import { PolynesianName, Culture, Gender } from "@/data/names";
 import { supabase } from "@/lib/supabase";
-import { getCultureColor, cultureEmoji } from "@/lib/cultureColors";
+import { getGenderColor } from "@/lib/genderColors";
 
 const Matches = () => {
   const { likedNamesA } = useApp();
@@ -116,14 +116,14 @@ const Matches = () => {
       ) : (
         <div className="space-y-3 mt-4">
           {matchedNames.map((name, i) => {
-            const color = getCultureColor(name.culture);
+            const gColor = getGenderColor(name.gender);
             return (
               <motion.div
                 key={name.id}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.08 }}
-                className={`flex items-center gap-4 p-5 rounded-2xl ${color.bg} text-white shadow-card cursor-pointer hover:shadow-card-hover transition-shadow`}
+                className={`flex items-center gap-4 p-5 rounded-2xl ${gColor.bg} text-white shadow-card cursor-pointer hover:shadow-card-hover transition-shadow`}
                 onClick={() => setSelectedName(name)}
               >
                 <Heart className="w-5 h-5 flex-shrink-0" fill="currentColor" />

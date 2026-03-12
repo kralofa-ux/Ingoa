@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Culture } from "@/data/names";
 import { getCultureColor, cultureEmoji } from "@/lib/cultureColors";
 
-const CULTURES: Culture[] = ["NZ Māori", "Cook Islands", "Samoa", "Tonga", "Fiji", "Hawaii", "Niue", "Tahiti"];
+const CULTURES: Culture[] = ["Cook Islands", "Samoa", "NZ Māori", "Tonga", "Fiji", "Hawaii", "Niue", "Tahiti"];
 
 const Onboarding = () => {
   const [step, setStep] = useState(0);
@@ -58,10 +58,10 @@ const Onboarding = () => {
       <div className="w-20 h-20 rounded-2xl gradient-primary flex items-center justify-center mx-auto mb-6 shadow-glow-primary">
         <span className="text-4xl">🌊</span>
       </div>
-      <h1 className="text-4xl font-display font-extrabold text-foreground mb-3 tracking-tight">Kia Ora!</h1>
+      <h1 className="text-4xl font-display font-extrabold text-foreground mb-3 tracking-tight">Kia orana,</h1>
       <p className="text-muted-foreground font-body text-base mb-2">Welcome to Ingoa</p>
       <p className="text-muted-foreground/70 font-body text-sm max-w-xs mx-auto">
-        A simple, modern tool to help families choose and preserve Pacific names for the next generation.
+        A simple, tool to help families choose and preserve Pacific names for the next generation
       </p>
     </motion.div>,
 
