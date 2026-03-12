@@ -11,7 +11,7 @@ const FilterBar = () => {
   const cultures: { value: Culture; label: string }[] = [
     { value: "Cook Islands", label: "Cook Islands" },
     { value: "Samoa", label: "Samoa" },
-    { value: "NZ Māori", label: "NZ Māori" },
+    { value: "Aotearoa", label: "Aotearoa" },
     { value: "Tonga", label: "Tonga" },
     { value: "Fiji", label: "Fiji" },
     { value: "Hawaii", label: "Hawai'i" },
@@ -41,12 +41,12 @@ const FilterBar = () => {
         : `${cultureFilter.length} cultures`;
 
   return (
-    <div className="flex gap-2 justify-center px-4">
+    <div className="flex gap-2 justify-center px-4 items-stretch">
       {/* Culture dropdown */}
       <div className="relative">
         <button
           onClick={() => setShowCultures(!showCultures)}
-          className="flex items-center gap-2 px-4 py-2 rounded-full glass text-sm font-body font-semibold text-foreground border border-border whitespace-nowrap"
+          className="flex items-center gap-2 h-full px-4 py-2 rounded-full glass text-sm font-body font-semibold text-foreground border border-border whitespace-nowrap"
         >
           {cultureLabel}
           <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showCultures ? "rotate-180" : ""}`} />
@@ -93,7 +93,7 @@ const FilterBar = () => {
           <button
             key={g.value}
             onClick={() => setGenderFilter(g.value)}
-            className={`px-4 py-2 rounded-full text-sm font-body font-semibold transition-all ${
+            className={`px-4 py-2 rounded-full text-sm font-body font-semibold transition-all whitespace-nowrap ${
               genderFilter === g.value
                 ? "bg-primary text-primary-foreground shadow-glow-primary"
                 : "text-muted-foreground hover:text-foreground"

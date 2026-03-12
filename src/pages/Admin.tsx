@@ -283,7 +283,7 @@ const NamesPanel = () => {
           <p className="text-xs text-muted-foreground font-body">Format: id,name,culture,gender,meaning,commonality_score,status</p>
           <textarea
             rows={6}
-            placeholder="nzm-200,Aroha,NZ Māori,female,Love,3,active"
+            placeholder="nzm-200,Aroha,Aotearoa,female,Love,3,active"
             value={csvText}
             onChange={(e) => setCsvText(e.target.value)}
             className="w-full px-3 py-2 rounded-lg bg-secondary text-foreground text-xs font-mono border border-border resize-none"

@@ -4,15 +4,15 @@ import { Culture, Gender } from "@/data/names";
 import { useState } from "react";
 import { ArrowLeft, Check, ChevronRight, LogOut, Trash2, MessageSquare } from "lucide-react";
 import PartnerConnect from "@/components/PartnerConnect";
+import CultureIcon from "@/components/CultureIcon";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
-import { getCultureColor, cultureEmoji } from "@/lib/cultureColors";
 
 const cultures: { value: Culture; label: string }[] = [
   { value: "Cook Islands", label: "Cook Islands" },
   { value: "Samoa", label: "Samoa" },
-  { value: "NZ Māori", label: "NZ Māori" },
+  { value: "Aotearoa", label: "Aotearoa" },
   { value: "Tonga", label: "Tonga" },
   { value: "Fiji", label: "Fiji" },
   { value: "Hawaii", label: "Hawai'i" },
@@ -135,7 +135,6 @@ const Settings = () => {
           <div className="bg-card rounded-2xl border border-border overflow-hidden">
             {cultures.map((c, i) => {
               const selected = cultureFilter.includes(c.value);
-              const color = getCultureColor(c.value);
               return (
                 <button
                   key={c.value}
@@ -145,8 +144,8 @@ const Settings = () => {
                   } ${selected ? "text-primary" : "text-foreground"}`}
                 >
                   <span className="flex items-center gap-2.5">
-                    <span className={`w-2.5 h-2.5 rounded-full ${color.dot}`} />
-                    {cultureEmoji[c.value]} {c.label}
+                    <CultureIcon culture={c.value} size={18} />
+                    {c.label}
                   </span>
                   {selected && <Check className="w-4 h-4 text-primary" />}
                 </button>
