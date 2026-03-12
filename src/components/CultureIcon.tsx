@@ -24,7 +24,7 @@ interface CultureIconProps {
 const CultureIcon = ({ culture, size = 20, className = "" }: CultureIconProps) => {
   const svg = svgMap[culture];
   if (svg) {
-    const renderSize = culture === "Aotearoa" ? size * 1.2 : size;
+    const renderSize = culture === "Aotearoa" ? size * 1.5 : size;
     return (
       <img
         src={svg}
