@@ -1,4 +1,5 @@
 import { motion, useMotionValue, useTransform, PanInfo } from "framer-motion";
+import { useRef } from "react";
 import { PolynesianName } from "@/data/names";
 import { useApp } from "@/context/AppContext";
 import CultureIcon from "@/components/CultureIcon";
@@ -22,9 +23,11 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, sw
   const likeOpacity = useTransform(x, [0, 80], [0, 1]);
   const passOpacity = useTransform(x, [-80, 0], [1, 0]);
 
+  const exitDirection = useRef<"left" | "right">("right");
+
   const handleDragEnd = (_: any, info: PanInfo) => {
-    if (info.offset.x > 100) onSwipeRight();
-    else if (info.offset.x < -100) onSwipeLeft();
+    if (info.offset.x > 100) { exitDirection.current = "right"; onSwipeRight(); }
+    else if (info.offset.x < -100) { exitDirection.current = "left"; onSwipeLeft(); }
   };
 
   const namePreview = showNamePreview
@@ -44,7 +47,7 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, sw
       onDragEnd={handleDragEnd}
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      exit={{ x: 300, opacity: 0, transition: { duration: 0.3 } }}
+      exit={{ x: exitDirection.current === "left" ? -300 : 300, opacity: 0, transition: { duration: 0.3 } }}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
       <div className={`h-full rounded-3xl ${gColor.bg} overflow-hidden flex flex-col relative shadow-card-hover`}>
