@@ -87,12 +87,6 @@ const LikedList = () => {
                     <Star className="w-4 h-4" fill={favourites.has(name.id) ? "currentColor" : "none"} />
                   </button>
                   <button
-                    onClick={() => shareName(name)}
-                    className="p-2 rounded-lg text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <Share2 className="w-4 h-4" />
-                  </button>
-                  <button
                     onClick={() => removeLikedName(name.id)}
                     className="p-2 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
                   >

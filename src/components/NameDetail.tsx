@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { X } from "lucide-react";
+import { X, Share2 } from "lucide-react";
 import { PolynesianName } from "@/data/names";
 import CultureIcon from "@/components/CultureIcon";
 import { getGenderColor, genderLabel } from "@/lib/genderColors";
@@ -11,6 +11,15 @@ interface NameDetailProps {
 
 const NameDetail = ({ name, onClose }: NameDetailProps) => {
   const gColor = getGenderColor(name.gender);
+
+  const shareName = () => {
+    const text = `${name.name}\n${name.meaning}\n${name.culture}`;
+    if (navigator.share) {
+      navigator.share({ title: name.name, text });
+    } else {
+      navigator.clipboard.writeText(text);
+    }
+  };
 
   return (
     <motion.div
@@ -55,6 +64,17 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
           <span className="inline-block px-5 py-2 rounded-full text-xs font-body font-bold tracking-widest uppercase bg-white/15 text-white backdrop-blur-sm">
             {genderLabel[name.gender] || "Unisex"}
           </span>
+
+          {/* Share */}
+          <div className="pt-2">
+            <button
+              onClick={shareName}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/15 text-white/80 hover:text-white hover:bg-white/25 transition-colors backdrop-blur-sm text-sm font-body font-semibold"
+            >
+              <Share2 className="w-4 h-4" />
+              Share
+            </button>
+          </div>
         </div>
       </motion.div>
     </motion.div>
