@@ -1,10 +1,10 @@
 import { useApp } from "@/context/AppContext";
 import { motion, AnimatePresence, Reorder } from "framer-motion";
-import { Trash2, Star, Share2, GripVertical } from "lucide-react";
+import { Trash2, Star, Share2 } from "lucide-react";
 import { useState } from "react";
 import NameDetail from "@/components/NameDetail";
 import { PolynesianName } from "@/data/names";
-import { getCultureColor } from "@/lib/cultureColors";
+import { getGenderColor } from "@/lib/genderColors";
 
 const LikedList = () => {
   const { likedNames, removeLikedName, mode, currentPartner } = useApp();
@@ -68,7 +68,7 @@ const LikedList = () => {
           className="space-y-2 mt-4"
         >
           {displayNames.map((name) => {
-            const color = getCultureColor(name.culture);
+            const gColor = getGenderColor(name.gender);
             return (
               <Reorder.Item
                 key={name.id}
@@ -76,11 +76,10 @@ const LikedList = () => {
                 className="flex items-center justify-between p-4 rounded-2xl bg-card shadow-card border border-border cursor-grab active:cursor-grabbing overflow-hidden relative"
                 whileDrag={{ scale: 1.03, boxShadow: "0 8px 30px rgba(0,0,0,0.3)" }}
               >
-                {/* Culture accent bar */}
-                <div className={`absolute left-0 top-0 bottom-0 w-1 ${color.dot}`} />
+                {/* Gender accent bar */}
+                <div className={`absolute left-0 top-0 bottom-0 w-1 ${gColor.dot}`} />
 
                 <div className="flex items-center gap-3 flex-1 min-w-0 pl-3" onClick={() => setSelectedName(name)}>
-                  <GripVertical className="w-4 h-4 text-muted-foreground/40 flex-shrink-0" />
                   <div className="flex-1 min-w-0">
                     <h3 className="text-lg font-display font-extrabold text-foreground">{name.name}</h3>
                     <p className="text-sm text-muted-foreground font-body truncate">

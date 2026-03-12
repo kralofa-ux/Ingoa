@@ -2,18 +2,17 @@ import { useAuth } from "@/context/AuthContext";
 import { useApp } from "@/context/AppContext";
 import { Culture, Gender } from "@/data/names";
 import { useState } from "react";
-import { ArrowLeft, Check, ChevronRight, LogOut, Trash2, MessageSquare, Shield } from "lucide-react";
+import { ArrowLeft, Check, ChevronRight, LogOut, Trash2, MessageSquare } from "lucide-react";
 import PartnerConnect from "@/components/PartnerConnect";
-import { useAdmin } from "@/hooks/useAdmin";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
 import { getCultureColor, cultureEmoji } from "@/lib/cultureColors";
 
 const cultures: { value: Culture; label: string }[] = [
-  { value: "NZ Māori", label: "NZ Māori" },
   { value: "Cook Islands", label: "Cook Islands" },
   { value: "Samoa", label: "Samoa" },
+  { value: "NZ Māori", label: "NZ Māori" },
   { value: "Tonga", label: "Tonga" },
   { value: "Fiji", label: "Fiji" },
   { value: "Hawaii", label: "Hawai'i" },
@@ -22,9 +21,9 @@ const cultures: { value: Culture; label: string }[] = [
 ];
 
 const genderOptions: { value: Gender | "all"; label: string }[] = [
-  { value: "all", label: "Both" },
   { value: "male", label: "Male" },
   { value: "female", label: "Female" },
+  { value: "all", label: "Both" },
 ];
 
 const Settings = () => {
@@ -41,7 +40,6 @@ const Settings = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [showFeedback, setShowFeedback] = useState(false);
-  const { isAdmin } = useAdmin();
 
   const toggleCulture = (culture: Culture) => {
     const updated = cultureFilter.includes(culture)
@@ -247,17 +245,6 @@ const Settings = () => {
             </div>
           )}
         </section>
-
-        {/* Admin Link */}
-        {isAdmin && (
-          <button
-            onClick={() => navigate("/admin")}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3.5 bg-card rounded-2xl border border-primary/30 text-sm font-body text-primary hover:bg-primary/5 transition-colors"
-          >
-            <Shield className="w-4 h-4" />
-            Admin Dashboard
-          </button>
-        )}
 
         {/* Sign Out */}
         <button

@@ -4,7 +4,7 @@ import SwipeCard from "@/components/SwipeCard";
 import SwipeTutorial from "@/components/SwipeTutorial";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState } from "react";
-import { Undo2, RefreshCw, Loader2 } from "lucide-react";
+import { RefreshCw, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const SwipeDeck = () => {
@@ -106,21 +106,7 @@ const SwipeDeck = () => {
         </div>
       )}
 
-      <div className="w-full max-w-sm flex justify-between items-center mb-2">
-        <span className="text-xs text-muted-foreground font-body font-medium px-3 py-1 rounded-full glass border border-border">
-          {currentIndex + 1} / {filteredNames.length}
-        </span>
-        <button
-          onClick={handleUndo}
-          disabled={swipeHistory.length === 0}
-          className="w-10 h-10 rounded-full glass border border-border text-muted-foreground flex items-center justify-center transition-all hover:scale-105 hover:text-foreground active:scale-95 disabled:opacity-25 disabled:hover:scale-100"
-          title="Undo last swipe"
-        >
-          <Undo2 className="w-4 h-4" />
-        </button>
-      </div>
-
-      <div className="relative w-full max-w-sm h-[520px] mx-auto">
+      <div className="relative w-full max-w-sm h-[560px] mx-auto">
         <AnimatePresence mode="wait">
           <SwipeCard
             key={currentName.id}
@@ -128,6 +114,8 @@ const SwipeDeck = () => {
             onSwipeLeft={handlePass}
             onSwipeRight={handleLike}
             isTop={true}
+            onUndo={handleUndo}
+            canUndo={swipeHistory.length > 0}
           />
         </AnimatePresence>
 

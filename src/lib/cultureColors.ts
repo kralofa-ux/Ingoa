@@ -80,7 +80,7 @@ export const getCultureColor = (culture: string): CultureColor => {
 };
 
 export const cultureEmoji: Record<string, string> = {
-  "NZ Māori": "🇳🇿",
+  "NZ Māori": "🔴⚫⚪",
   "Cook Islands": "🇨🇰",
   "Samoa": "🇼🇸",
   "Tonga": "🇹🇴",

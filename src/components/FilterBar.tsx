@@ -9,9 +9,9 @@ const FilterBar = () => {
   const [showCultures, setShowCultures] = useState(false);
 
   const cultures: { value: Culture; label: string }[] = [
-    { value: "NZ Māori", label: "NZ Māori" },
     { value: "Cook Islands", label: "Cook Islands" },
     { value: "Samoa", label: "Samoa" },
+    { value: "NZ Māori", label: "NZ Māori" },
     { value: "Tonga", label: "Tonga" },
     { value: "Fiji", label: "Fiji" },
     { value: "Hawaii", label: "Hawai'i" },
@@ -21,8 +21,8 @@ const FilterBar = () => {
 
   const genders: { value: Gender | "all"; label: string }[] = [
     { value: "all", label: "All" },
-    { value: "male", label: "Tāne" },
-    { value: "female", label: "Wahine" },
+    { value: "male", label: "Male" },
+    { value: "female", label: "Female" },
   ];
 
   const toggleCulture = (culture: Culture) => {
