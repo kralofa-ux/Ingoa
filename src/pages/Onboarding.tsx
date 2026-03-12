@@ -36,6 +36,7 @@ const Onboarding = () => {
 
   const handleFinish = async () => {
     setSubmitting(true);
+    const hasNamePreview = middleName.trim().length > 0 || lastName.trim().length > 0;
     await updateProfile({
       mode,
       selected_cultures: selectedCultures,
@@ -44,6 +45,10 @@ const Onboarding = () => {
       middle_name: middleName,
       onboarding_completed: true,
     });
+    // Auto-enable name preview if user entered middle/last name
+    if (hasNamePreview) {
+      // This is handled in AppContext via the profile sync
+    }
     setSubmitting(false);
     navigate("/browse");
   };
