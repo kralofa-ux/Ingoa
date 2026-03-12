@@ -6,25 +6,25 @@
 
 @layer base {
   :root {
-    /* Deep ocean palette */
-    --background: 220 40% 7%;
-    --foreground: 210 20% 92%;
+    /* Deep ocean palette — rich blue base */
+    --background: 238 85% 12%;
+    --foreground: 200 100% 95%;
 
-    --card: 220 35% 11%;
-    --card-foreground: 210 20% 92%;
+    --card: 238 70% 16%;
+    --card-foreground: 200 100% 95%;
 
-    --popover: 220 35% 11%;
-    --popover-foreground: 210 20% 92%;
+    --popover: 238 70% 16%;
+    --popover-foreground: 200 100% 95%;
 
-    /* Bright cyan-blue primary */
-    --primary: 195 85% 45%;
-    --primary-foreground: 0 0% 100%;
+    /* Neon cyan-blue primary */
+    --primary: 195 100% 50%;
+    --primary-foreground: 238 85% 12%;
 
-    --secondary: 220 20% 15%;
-    --secondary-foreground: 210 15% 80%;
+    --secondary: 238 55% 20%;
+    --secondary-foreground: 200 80% 85%;
 
-    --muted: 220 20% 18%;
-    --muted-foreground: 210 15% 55%;
+    --muted: 238 45% 22%;
+    --muted-foreground: 210 30% 58%;
 
     /* Coral accent — warm contrast */
     --accent: 12 80% 58%;
@@ -33,9 +33,9 @@
     --destructive: 0 68% 42%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 20% 16%;
-    --input: 220 20% 14%;
-    --ring: 195 85% 45%;
+    --border: 238 45% 22%;
+    --input: 238 55% 18%;
+    --ring: 195 100% 50%;
 
     --radius: 1rem;
 
