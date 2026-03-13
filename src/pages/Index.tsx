@@ -10,33 +10,33 @@ const Index = () => {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="text-center relative z-10 max-w-md"
-      >
+        className="text-center relative z-10 max-w-md">
+        
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-          className="w-20 h-20 rounded-full bg-primary flex items-center justify-center mx-auto mb-8"
-        >
-          <span className="text-4xl">🌊</span>
+          className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-8 bg-[#0015ff]">
+          
+          
         </motion.div>
 
-        <h1 className="text-5xl md:text-6xl font-display font-extrabold text-foreground mb-4 uppercase tracking-tight">
+        <h1 className="md:text-6xl font-display font-extrabold text-foreground mb-4 uppercase tracking-tight text-8xl">
           Ingoa
         </h1>
         <p className="text-lg text-foreground/70 font-body mb-2">
-          Discover meaningful Pacific names for your little one
+
         </p>
         <p className="text-sm text-foreground/40 font-body mb-10">
-          Māori · Cook Islands · Samoa · Tonga · Fiji · Hawai'i · Niue · Tahiti
+          ​
         </p>
 
         <motion.button
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
           onClick={() => navigate("/auth")}
-          className="w-full max-w-xs mx-auto py-4 px-8 rounded-full bg-primary text-primary-foreground font-body font-bold text-lg uppercase tracking-wider transition-all"
-        >
+          className="w-full max-w-xs mx-auto py-4 px-8 rounded-full bg-primary text-primary-foreground font-body font-bold text-lg uppercase tracking-wider transition-all">
+          
           Get Started
         </motion.button>
 
@@ -44,8 +44,8 @@ const Index = () => {
           Swipe right to love, left to pass — solo or with your partner
         </p>
       </motion.div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Index;
