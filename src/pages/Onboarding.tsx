@@ -86,7 +86,7 @@ const Onboarding = () => {
         onClick={() => setMode("solo")}
         className={`flex-1 py-4 rounded-full font-body font-bold text-sm transition-all ${
         mode === "solo" ?
-        "frosted-pill-selected text-foreground" :
+        "bg-[#00cfff] text-white" :
         "frosted-pill text-foreground/70 hover:text-foreground"}`
         }>
         
@@ -97,7 +97,7 @@ const Onboarding = () => {
         onClick={() => setMode("couple")}
         className={`flex-1 py-4 rounded-full font-body font-bold text-sm transition-all ${
         mode === "couple" ?
-        "frosted-pill-selected text-foreground" :
+        "bg-[#0052d6] text-white" :
         "frosted-pill text-foreground/70 hover:text-foreground"}`
         }>
         
