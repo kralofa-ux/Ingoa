@@ -70,10 +70,9 @@ const Onboarding = () => {
     
     </h1>
       <p className="text-foreground/70 font-body text-lg mt-4">
-        Welcome to Ingoa
+        Helping families choose and preserve Pacific names for the next generation
       </p>
       <p className="text-foreground/50 font-body text-sm mt-2 max-w-xs leading-relaxed">
-        A simple tool to help families choose and preserve Pacific names for the next generation
       </p>
     </motion.div>, // Step 1: Mode
   <motion.div key="mode" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}
