@@ -57,17 +57,17 @@ const Onboarding = () => {
 
 
 
+
+
       // Handled in AppContext via profile sync
     }setSubmitting(false);navigate("/browse");};const nextStep = () => {if (step === 4) handleFinish();else setStep((s) => s + 1);};const steps = [// Step 0: Welcome — no icon, just text
-  <motion.div key="welcome" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="text-center">
-      <h1 className="font-extrabold text-foreground mb-4 tracking-tight text-7xl font-sans">Kia Orana,</h1>
+  <motion.div key="welcome" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="text-center text-9xl">
+      <h1 className="font-extrabold text-foreground mb-4 tracking-tight text-7xl font-sans">Kia Orana</h1>
       <p className="text-muted-foreground font-body text-lg mb-2">Welcome to Ingoa</p>
       <p className="text-muted-foreground/60 font-body text-sm max-w-xs mx-auto leading-relaxed">
         A simple tool to help families choose and preserve Pacific names for the next generation
       </p>
-    </motion.div>,
-
-  // Step 1: Mode
+    </motion.div>, // Step 1: Mode
   <motion.div key="mode" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="text-center">
       <h2 className="text-2xl font-display font-extrabold text-foreground mb-2">How are you using Ingoa?</h2>
       <p className="text-sm text-muted-foreground font-body mb-6">You can change this later in settings</p>
