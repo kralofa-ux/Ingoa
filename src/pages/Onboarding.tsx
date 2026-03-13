@@ -228,7 +228,7 @@ const Onboarding = () => {
     <div className="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden bg-[#0015ff]">
       <div className="w-full max-w-sm relative z-10">
         {/* Progress dots */}
-        <div className="flex items-center justify-center gap-2.5 mb-10">
+        <div className="gap-2.5 mb-10 flex items-center justify-center">
           {[0, 1, 2, 3, 4].map((i) =>
           <div
             key={i}
