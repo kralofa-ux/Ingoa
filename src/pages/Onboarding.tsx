@@ -82,9 +82,12 @@ const Onboarding = () => {
         How are you using Ingoa?
       </h2>
       <div className="flex gap-3">
-        <button
+        <motion.button
+        whileTap={{ scale: 0.95 }}
+        animate={mode === "solo" ? { scale: [1, 1.05, 1] } : { scale: 1 }}
+        transition={{ duration: 0.3 }}
         onClick={() => setMode("solo")}
-        className={`flex-1 py-4 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-all ${
+        className={`flex-1 py-4 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-colors ${
         mode === "solo" ?
         "bg-[#00cfff] text-white ring-2 ring-white/30" :
         "bg-[#00cfff] text-[#173d84]"}`
@@ -92,18 +95,21 @@ const Onboarding = () => {
         
           <User className="w-5 h-5 mx-auto mb-1" />
           Solo
-        </button>
-        <button
+        </motion.button>
+        <motion.button
+        whileTap={{ scale: 0.95 }}
+        animate={mode === "couple" ? { scale: [1, 1.05, 1] } : { scale: 1 }}
+        transition={{ duration: 0.3 }}
         onClick={() => setMode("couple")}
-        className={`flex-1 py-4 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-all ${
+        className={`flex-1 py-4 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-colors ${
         mode === "couple" ?
         "bg-[#0074ff] text-white ring-2 ring-white/30" :
-        "bg-[#0074ff] text-[#00cfff]"}`
+        "bg-[#0074ff] text-[#173d84]"}`
         }>
         
           <Users className="w-5 h-5 mx-auto mb-1" />
           Couple
-        </button>
+        </motion.button>
       </div>
     </motion.div>,
 
