@@ -59,25 +59,25 @@ const Onboarding = () => {
     transition={{ duration: 0.4 }}
     className="text-left">
     
-      <h1 className="text-6xl font-display font-extrabold text-foreground leading-none tracking-tight uppercase">
-        Kia Orana
-      </h1>
+      <h1 className="text-6xl font-display font-extrabold text-foreground leading-none tracking-tight uppercase px-[22px] pr-0 pb-0 pl-0 mx-0 my-0">
+        ingoa    
+ 
+   
+ 
+  
+      
+    
+    
+    </h1>
       <p className="text-foreground/70 font-body text-lg mt-4">
         Welcome to Ingoa
       </p>
       <p className="text-foreground/50 font-body text-sm mt-2 max-w-xs leading-relaxed">
         A simple tool to help families choose and preserve Pacific names for the next generation
       </p>
-    </motion.div>,
-
-  // Step 1: Mode
-  <motion.div
-    key="mode"
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: -20 }}
-    transition={{ duration: 0.4 }}
-    className="text-left">
+    </motion.div>, // Step 1: Mode
+  <motion.div key="mode" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}
+  className="text-left">
     
       <h2 className="text-3xl font-display font-extrabold text-foreground uppercase tracking-tight leading-tight mb-6">
         How are you using Ingoa?
@@ -225,10 +225,10 @@ const Onboarding = () => {
 
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden bg-[#0015ff]">
+    <div className="min-h-screen px-6 relative overflow-hidden bg-[#0015ff] items-center justify-center flex flex-col">
       <div className="w-full max-w-sm relative z-10">
         {/* Progress dots */}
-        <div className="gap-2.5 mb-10 flex items-center justify-center">
+        <div className="gap-2.5 mb-10 items-center justify-center flex flex-row">
           {[0, 1, 2, 3, 4].map((i) =>
           <div
             key={i}
