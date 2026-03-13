@@ -249,7 +249,7 @@ const Settings = () => {
         {/* Sign Out */}
         <button
           onClick={handleSignOut}
-          className="w-full flex items-center justify-center gap-2 px-5 py-3.5 frosted-pill rounded-full text-sm font-body font-extrabold uppercase tracking-wider text-foreground hover:bg-foreground/10 transition-colors"
+          className="w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-primary text-white text-sm font-body font-extrabold uppercase tracking-wider hover:bg-primary/80 active:scale-[0.98] transition-all"
         >
           <LogOut className="w-4 h-4" />
           Sign Out
