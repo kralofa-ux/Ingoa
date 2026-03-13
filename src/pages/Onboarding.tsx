@@ -84,10 +84,10 @@ const Onboarding = () => {
       <div className="flex gap-3">
         <button
         onClick={() => setMode("solo")}
-        className={`flex-1 py-4 rounded-full font-body font-bold text-sm transition-all ${
+        className={`flex-1 py-4 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-all ${
         mode === "solo" ?
-        "bg-[#00cfff] text-white" :
-        "frosted-pill text-foreground/70 hover:text-foreground"}`
+        "bg-[#00cfff] text-white ring-2 ring-white/30" :
+        "bg-[#00cfff] text-[#173d84]"}`
         }>
         
           <User className="w-5 h-5 mx-auto mb-1" />
@@ -95,10 +95,10 @@ const Onboarding = () => {
         </button>
         <button
         onClick={() => setMode("couple")}
-        className={`flex-1 py-4 rounded-full font-body font-bold text-sm transition-all ${
+        className={`flex-1 py-4 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-all ${
         mode === "couple" ?
-        "bg-[#0052d6] text-white" :
-        "frosted-pill text-foreground/70 hover:text-foreground"}`
+        "bg-[#0074ff] text-white ring-2 ring-white/30" :
+        "bg-[#0074ff] text-[#00cfff]"}`
         }>
         
           <Users className="w-5 h-5 mx-auto mb-1" />
