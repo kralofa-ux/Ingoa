@@ -1,41 +1,78 @@
 import { useApp } from "@/context/AppContext";
-import { motion, AnimatePresence, Reorder } from "framer-motion";
-import { Trash2, Star } from "lucide-react";
+import { motion, AnimatePresence, Reorder, useDragControls, useMotionValue, useTransform } from "framer-motion";
 import { useState } from "react";
 import NameDetail from "@/components/NameDetail";
 import { PolynesianName } from "@/data/names";
 import { getGenderColor } from "@/lib/genderColors";
 
+const SwipeToDeleteItem = ({
+  name,
+  onRemove,
+  onSelect,
+}: {
+  name: PolynesianName;
+  onRemove: (id: string) => void;
+  onSelect: (name: PolynesianName) => void;
+}) => {
+  const x = useMotionValue(0);
+  const opacity = useTransform(x, [-150, -80, 0], [0.3, 0.8, 1]);
+  const bgOpacity = useTransform(x, [-150, -80, 0], [1, 0.5, 0]);
+  const gColor = getGenderColor(name.gender);
+
+  const handleDragEnd = (_: any, info: { offset: { x: number } }) => {
+    if (info.offset.x < -100) {
+      onRemove(name.id);
+    }
+  };
+
+  return (
+    <div className="relative overflow-hidden rounded-full">
+      {/* Delete background */}
+      <motion.div
+        className="absolute inset-0 bg-destructive rounded-full flex items-center justify-end pr-6"
+        style={{ opacity: bgOpacity }}
+      >
+        <span className="text-white font-body font-bold text-sm uppercase tracking-wider">Remove</span>
+      </motion.div>
+
+      <Reorder.Item
+        key={name.id}
+        value={name}
+        className={`relative rounded-full cursor-grab active:cursor-grabbing overflow-hidden ${gColor.bg} py-4 px-5`}
+        whileDrag={{ scale: 1.03, boxShadow: "0 8px 30px rgba(0,0,0,0.2)" }}
+        style={{ x, opacity }}
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.3}
+        onDragEnd={handleDragEnd}
+        dragDirectionLock
+      >
+        <div className="text-center" onClick={() => onSelect(name)}>
+          <h3 className="text-lg font-display font-extrabold text-white uppercase tracking-wider">
+            {name.name}
+          </h3>
+          <p className="text-xs text-white/70 font-body mt-0.5">
+            {name.culture}
+          </p>
+        </div>
+      </Reorder.Item>
+    </div>
+  );
+};
+
 const LikedList = () => {
   const { likedNames, removeLikedName, mode, currentPartner } = useApp();
   const [selectedName, setSelectedName] = useState<PolynesianName | null>(null);
-  const [favourites, setFavourites] = useState<Set<string>>(() => {
-    const stored = localStorage.getItem("ingoa_favourites");
-    return stored ? new Set(JSON.parse(stored)) : new Set();
-  });
   const [orderedNames, setOrderedNames] = useState<PolynesianName[]>([]);
   const [hasCustomOrder, setHasCustomOrder] = useState(false);
 
   const displayNames = hasCustomOrder
     ? orderedNames.filter((n) => likedNames.some((l) => l.id === n.id))
-    : [...likedNames].sort((a, b) => {
-        const aFav = favourites.has(a.id) ? 0 : 1;
-        const bFav = favourites.has(b.id) ? 0 : 1;
-        return aFav - bFav;
-      });
+    : [...likedNames];
 
   const handleReorder = (newOrder: PolynesianName[]) => {
     setOrderedNames(newOrder);
     setHasCustomOrder(true);
-  };
-
-  const toggleFavourite = (id: string) => {
-    setFavourites((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id); else next.add(id);
-      localStorage.setItem("ingoa_favourites", JSON.stringify([...next]));
-      return next;
-    });
   };
 
   return (
@@ -58,43 +95,14 @@ const LikedList = () => {
           onReorder={handleReorder}
           className="space-y-2 mt-4"
         >
-          {displayNames.map((name) => {
-            const gColor = getGenderColor(name.gender);
-            return (
-              <Reorder.Item
-                key={name.id}
-                value={name}
-                className="flex items-center justify-between p-4 rounded-2xl frosted-pill cursor-grab active:cursor-grabbing overflow-hidden relative"
-                whileDrag={{ scale: 1.03, boxShadow: "0 8px 30px rgba(0,0,0,0.2)" }}
-              >
-                {/* Gender accent bar */}
-                <div className={`absolute left-0 top-0 bottom-0 w-1 ${gColor.dot}`} />
-
-                <div className="flex items-center gap-3 flex-1 min-w-0 pl-3" onClick={() => setSelectedName(name)}>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-display font-extrabold text-foreground">{name.name}</h3>
-                    <p className="text-sm text-foreground/60 font-body truncate">
-                      {name.meaning} · {name.culture}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1 ml-2" onClick={(e) => e.stopPropagation()}>
-                  <button
-                    onClick={() => toggleFavourite(name.id)}
-                    className={`p-2 rounded-lg transition-colors ${favourites.has(name.id) ? "text-accent" : "text-foreground/50 hover:text-accent"}`}
-                  >
-                    <Star className="w-4 h-4" fill={favourites.has(name.id) ? "currentColor" : "none"} />
-                  </button>
-                  <button
-                    onClick={() => removeLikedName(name.id)}
-                    className="p-2 rounded-lg text-foreground/50 hover:text-destructive transition-colors"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              </Reorder.Item>
-            );
-          })}
+          {displayNames.map((name) => (
+            <SwipeToDeleteItem
+              key={name.id}
+              name={name}
+              onRemove={removeLikedName}
+              onSelect={setSelectedName}
+            />
+          ))}
         </Reorder.Group>
       )}
 

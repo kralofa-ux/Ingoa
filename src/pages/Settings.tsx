@@ -20,10 +20,15 @@ const cultures: { value: Culture; label: string }[] = [
   { value: "Tahiti", label: "Tahiti" },
 ];
 
-const genderOptions: { value: Gender | "all"; label: string }[] = [
-  { value: "male", label: "Male" },
-  { value: "female", label: "Female" },
-  { value: "all", label: "Both" },
+const cultureBgColors = [
+  "#00DBFF", "#00B1F7", "#0088F0", "#0061DD",
+  "#0049BB", "#003199", "#001A77", "#000456",
+];
+
+const genderOptions: { value: Gender | "all"; label: string; color: string }[] = [
+  { value: "male", label: "Boy", color: "bg-[hsl(200,80%,50%)]" },
+  { value: "female", label: "Girl", color: "bg-[hsl(340,70%,55%)]" },
+  { value: "all", label: "Surprise", color: "bg-[hsl(30,85%,55%)]" },
 ];
 
 const Settings = () => {
@@ -110,15 +115,15 @@ const Settings = () => {
           <h2 className="text-xs font-body font-bold text-foreground/60 uppercase tracking-widest mb-3">
             Gender Preference
           </h2>
-          <div className="flex gap-2">
+          <div className="space-y-2">
             {genderOptions.map((g) => (
               <button
                 key={g.value}
                 onClick={() => handleGenderChange(g.value)}
-                className={`flex-1 py-2.5 rounded-full text-sm font-body font-semibold transition-all ${
+                className={`w-full py-3.5 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-all text-white ${g.color} ${
                   genderFilter === g.value
-                    ? "bg-primary text-primary-foreground"
-                    : "frosted-pill text-foreground/70 hover:text-foreground"
+                    ? "ring-2 ring-white/40"
+                    : "opacity-80 hover:opacity-100"
                 }`}
               >
                 {g.label}
@@ -132,22 +137,24 @@ const Settings = () => {
           <h2 className="text-xs font-body font-bold text-foreground/60 uppercase tracking-widest mb-3">
             Selected Cultures
           </h2>
-          <div className="frosted-pill rounded-2xl overflow-hidden">
+          <div className="space-y-2">
             {cultures.map((c, i) => {
               const selected = cultureFilter.includes(c.value);
+              const bgColor = cultureBgColors[i] || cultureBgColors[0];
               return (
                 <button
                   key={c.value}
                   onClick={() => toggleCulture(c.value)}
-                  className={`w-full flex items-center justify-between px-4 py-3.5 text-sm font-body transition-colors ${
-                    i < cultures.length - 1 ? "border-b border-foreground/10" : ""
-                  } ${selected ? "text-foreground" : "text-foreground/70"}`}
+                  style={{ backgroundColor: bgColor }}
+                  className={`w-full flex items-center justify-between px-5 py-3.5 rounded-full font-body text-sm font-extrabold uppercase tracking-wider transition-all text-white ${
+                    selected ? "ring-2 ring-white/40" : "opacity-80 hover:opacity-100"
+                  }`}
                 >
                   <span className="flex items-center gap-2.5">
-                    <CultureIcon culture={c.value} size={18} />
+                    <CultureIcon culture={c.value} size={20} />
                     {c.label}
                   </span>
-                  {selected && <Check className="w-4 h-4 text-foreground" />}
+                  {selected && <Check className="w-4 h-4 text-white" />}
                 </button>
               );
             })}
@@ -193,18 +200,18 @@ const Settings = () => {
                   placeholder="Middle name (optional)"
                   value={middleName}
                   onChange={(e) => setMiddleName(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-full bg-foreground/10 text-foreground text-sm font-body border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/40"
+                  className="w-full px-5 py-3.5 rounded-full frosted-pill text-foreground text-sm font-body border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/40"
                 />
                 <input
                   type="text"
                   placeholder="Last name (optional)"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-full bg-foreground/10 text-foreground text-sm font-body border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/40"
+                  className="w-full px-5 py-3.5 rounded-full frosted-pill text-foreground text-sm font-body border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/40"
                 />
                 <button
                   onClick={handleSaveNamePreview}
-                  className="w-full py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-body font-semibold"
+                  className="w-full py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-body font-bold uppercase tracking-wider"
                 >
                   Save
                 </button>
@@ -217,7 +224,7 @@ const Settings = () => {
         <section>
           <button
             onClick={() => setShowFeedback(!showFeedback)}
-            className="w-full flex items-center justify-between px-4 py-3.5 frosted-pill rounded-full text-sm font-body text-foreground"
+            className="w-full flex items-center justify-between px-5 py-3.5 frosted-pill rounded-full text-sm font-body font-extrabold uppercase tracking-wider text-foreground"
           >
             <span className="flex items-center gap-2">
               <MessageSquare className="w-4 h-4 text-foreground/50" />
@@ -237,7 +244,7 @@ const Settings = () => {
               <button
                 onClick={handleSendFeedback}
                 disabled={!feedback.trim()}
-                className="w-full py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-body font-semibold disabled:opacity-50"
+                className="w-full py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-body font-bold uppercase tracking-wider disabled:opacity-50"
               >
                 Send
               </button>
@@ -248,7 +255,7 @@ const Settings = () => {
         {/* Sign Out */}
         <button
           onClick={handleSignOut}
-          className="w-full flex items-center justify-center gap-2 px-4 py-3.5 frosted-pill rounded-full text-sm font-body text-foreground hover:bg-foreground/10 transition-colors"
+          className="w-full flex items-center justify-center gap-2 px-5 py-3.5 frosted-pill rounded-full text-sm font-body font-extrabold uppercase tracking-wider text-foreground hover:bg-foreground/10 transition-colors"
         >
           <LogOut className="w-4 h-4" />
           Sign Out
@@ -259,7 +266,7 @@ const Settings = () => {
           {!showDeleteConfirm ? (
             <button
               onClick={() => setShowDeleteConfirm(true)}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3.5 rounded-full border border-destructive/40 text-sm font-body text-destructive hover:bg-destructive/10 transition-colors"
+              className="w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-full border border-destructive/40 text-sm font-body font-extrabold uppercase tracking-wider text-destructive hover:bg-destructive/10 transition-colors"
             >
               <Trash2 className="w-4 h-4" />
               Delete Account
@@ -272,13 +279,13 @@ const Settings = () => {
               <div className="flex gap-2">
                 <button
                   onClick={handleDeleteAccount}
-                  className="flex-1 py-2.5 rounded-full bg-destructive text-destructive-foreground text-sm font-body font-semibold"
+                  className="flex-1 py-3.5 rounded-full bg-destructive text-destructive-foreground text-sm font-body font-bold uppercase tracking-wider"
                 >
                   Delete
                 </button>
                 <button
                   onClick={() => setShowDeleteConfirm(false)}
-                  className="flex-1 py-2.5 rounded-full frosted-pill text-foreground text-sm font-body font-semibold"
+                  className="flex-1 py-3.5 rounded-full frosted-pill text-foreground text-sm font-body font-bold uppercase tracking-wider"
                 >
                   Cancel
                 </button>

@@ -2,7 +2,7 @@ import { useApp } from "@/context/AppContext";
 import { usePartner } from "@/hooks/usePartner";
 import { useAuth } from "@/context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Loader2, Users } from "lucide-react";
+import { Loader2, Users } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import NameDetail from "@/components/NameDetail";
 import { PolynesianName, Culture, Gender } from "@/data/names";
@@ -114,7 +114,7 @@ const Matches = () => {
           </p>
         </div>
       ) : (
-        <div className="space-y-3 mt-4">
+        <div className="space-y-2 mt-4">
           {matchedNames.map((name, i) => {
             const gColor = getGenderColor(name.gender);
             return (
@@ -123,16 +123,13 @@ const Matches = () => {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.08 }}
-                className={`flex items-center gap-4 p-5 rounded-2xl ${gColor.bg} text-white shadow-card cursor-pointer hover:shadow-card-hover transition-shadow`}
+                className={`rounded-full py-4 px-5 ${gColor.bg} text-white cursor-pointer text-center`}
                 onClick={() => setSelectedName(name)}
               >
-                <Heart className="w-5 h-5 flex-shrink-0" fill="currentColor" />
-                <div>
-                  <h3 className="text-xl font-display font-extrabold">{name.name}</h3>
-                  <p className="text-sm opacity-70 font-body">
-                    {name.meaning} · {name.culture}
-                  </p>
-                </div>
+                <h3 className="text-lg font-display font-extrabold uppercase tracking-wider">{name.name}</h3>
+                <p className="text-xs text-white/70 font-body mt-0.5">
+                  {name.culture}
+                </p>
               </motion.div>
             );
           })}
