@@ -7,7 +7,7 @@
 @layer base {
   :root {
     /* Vibrant royal blue palette */
-    --background: 235 65% 42%;
+    --background: 235 100% 50%;
     --foreground: 0 0% 100%;
 
     --card: 235 55% 35%;
