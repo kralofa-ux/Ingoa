@@ -28,7 +28,7 @@ const cultureBgColors = [
 const genderOptions: { value: Gender | "all"; label: string; color: string }[] = [
   { value: "male", label: "Boy", color: "bg-[hsl(200,80%,50%)]" },
   { value: "female", label: "Girl", color: "bg-[hsl(340,70%,55%)]" },
-  { value: "all", label: "Surprise", color: "bg-[hsl(30,85%,55%)]" },
+  { value: "all", label: "Both", color: "bg-[hsl(30,85%,55%)]" },
 ];
 
 const Settings = () => {
@@ -115,14 +115,14 @@ const Settings = () => {
           <h2 className="text-xs font-body font-bold text-foreground/60 uppercase tracking-widest mb-3">
             Gender Preference
           </h2>
-          <div className="space-y-2">
+          <div className="grid grid-cols-3 gap-2">
             {genderOptions.map((g) => (
               <button
                 key={g.value}
                 onClick={() => handleGenderChange(g.value)}
-                className={`w-full py-3.5 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-all text-white ${g.color} ${
+                className={`py-3.5 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-all text-white ${g.color} ${
                   genderFilter === g.value
-                    ? "ring-2 ring-white/40"
+                    ? "ring-2 ring-white/40 scale-105"
                     : "opacity-80 hover:opacity-100"
                 }`}
               >
@@ -177,74 +177,68 @@ const Settings = () => {
           <h2 className="text-xs font-body font-bold text-foreground/60 uppercase tracking-widest mb-3">
             Name Preview
           </h2>
-          <div className="frosted-pill rounded-2xl p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-body text-foreground">Show full name preview</span>
+          <button
+            onClick={handleNamePreviewToggle}
+            className={`w-full flex items-center justify-between px-5 py-3.5 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-all text-white bg-primary ${
+              showNamePreview ? "ring-2 ring-white/40" : "hover:bg-primary/80"
+            }`}
+          >
+            <span>Show Full Name Preview</span>
+            <ChevronRight className={`w-4 h-4 transition-transform ${showNamePreview ? "rotate-90" : ""}`} />
+          </button>
+          {showNamePreview && (
+            <div className="mt-2 space-y-3">
+              <input
+                type="text"
+                placeholder="Middle name (optional)"
+                value={middleName}
+                onChange={(e) => setMiddleName(e.target.value)}
+                className="w-full px-5 py-3.5 rounded-full frosted-pill text-foreground text-sm font-body border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/40"
+              />
+              <input
+                type="text"
+                placeholder="Last name (optional)"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="w-full px-5 py-3.5 rounded-full frosted-pill text-foreground text-sm font-body border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/40"
+              />
               <button
-                onClick={handleNamePreviewToggle}
-                className={`w-10 h-6 rounded-full transition-colors ${
-                  showNamePreview ? "bg-primary" : "bg-foreground/20"
-                }`}
+                onClick={handleSaveNamePreview}
+                className="w-full py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-body font-bold uppercase tracking-wider hover:bg-primary/80 active:scale-[0.98] transition-all"
               >
-                <div
-                  className={`w-4 h-4 rounded-full bg-foreground transition-transform mx-1 ${
-                    showNamePreview ? "translate-x-4" : ""
-                  }`}
-                />
+                Save
               </button>
             </div>
-            {showNamePreview && (
-              <>
-                <input
-                  type="text"
-                  placeholder="Middle name (optional)"
-                  value={middleName}
-                  onChange={(e) => setMiddleName(e.target.value)}
-                  className="w-full px-5 py-3.5 rounded-full frosted-pill text-foreground text-sm font-body border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/40"
-                />
-                <input
-                  type="text"
-                  placeholder="Last name (optional)"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  className="w-full px-5 py-3.5 rounded-full frosted-pill text-foreground text-sm font-body border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/40"
-                />
-                <button
-                  onClick={handleSaveNamePreview}
-                  className="w-full py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-body font-bold uppercase tracking-wider"
-                >
-                  Save
-                </button>
-              </>
-            )}
-          </div>
+          )}
         </section>
 
         {/* Send Feedback */}
         <section>
           <button
             onClick={() => setShowFeedback(!showFeedback)}
-            className="w-full flex items-center justify-between px-5 py-3.5 frosted-pill rounded-full text-sm font-body font-extrabold uppercase tracking-wider text-foreground"
+            className={`w-full flex items-center justify-between px-5 py-3.5 rounded-full bg-primary text-white font-body font-extrabold text-sm uppercase tracking-wider transition-all ${
+              showFeedback ? "ring-2 ring-white/40" : "hover:bg-primary/80"
+            }`}
           >
             <span className="flex items-center gap-2">
-              <MessageSquare className="w-4 h-4 text-foreground/50" />
+              <MessageSquare className="w-4 h-4" />
               Send Feedback
             </span>
-            <ChevronRight className={`w-4 h-4 text-foreground/50 transition-transform ${showFeedback ? "rotate-90" : ""}`} />
+            <ChevronRight className={`w-4 h-4 transition-transform ${showFeedback ? "rotate-90" : ""}`} />
           </button>
           {showFeedback && (
-            <div className="mt-2 frosted-pill rounded-2xl p-4 space-y-3">
+            <div className="mt-2 space-y-3">
               <textarea
                 placeholder="Tell us what you think, report issues, or suggest names..."
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
                 rows={3}
-                className="w-full px-4 py-2.5 rounded-xl bg-foreground/10 text-foreground text-sm font-body border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 resize-none placeholder:text-foreground/40"
+                className="w-full px-4 py-2.5 rounded-xl frosted-pill text-foreground text-sm font-body border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 resize-none placeholder:text-foreground/40"
               />
               <button
                 onClick={handleSendFeedback}
                 disabled={!feedback.trim()}
-                className="w-full py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-body font-bold uppercase tracking-wider disabled:opacity-50"
+                className="w-full py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-body font-bold uppercase tracking-wider hover:bg-primary/80 active:scale-[0.98] transition-all disabled:opacity-50 disabled:hover:bg-primary"
               >
                 Send
               </button>
@@ -255,7 +249,7 @@ const Settings = () => {
         {/* Sign Out */}
         <button
           onClick={handleSignOut}
-          className="w-full flex items-center justify-center gap-2 px-5 py-3.5 frosted-pill rounded-full text-sm font-body font-extrabold uppercase tracking-wider text-foreground hover:bg-foreground/10 transition-colors"
+          className="w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-primary text-white text-sm font-body font-extrabold uppercase tracking-wider hover:bg-primary/80 active:scale-[0.98] transition-all"
         >
           <LogOut className="w-4 h-4" />
           Sign Out
@@ -266,7 +260,7 @@ const Settings = () => {
           {!showDeleteConfirm ? (
             <button
               onClick={() => setShowDeleteConfirm(true)}
-              className="w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-full border border-destructive/40 text-sm font-body font-extrabold uppercase tracking-wider text-destructive hover:bg-destructive/10 transition-colors"
+              className="w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-destructive text-white text-sm font-body font-extrabold uppercase tracking-wider hover:bg-destructive/80 active:scale-[0.98] transition-all"
             >
               <Trash2 className="w-4 h-4" />
               Delete Account
