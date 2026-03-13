@@ -129,9 +129,9 @@ const Onboarding = () => {
         {CULTURES.map((c, index) => {
         const selected = selectedCultures.includes(c);
         const cultureBgColors = [
-          "#00DBFF", "#00B1F7", "#0088F0", "#0061DD",
-          "#0049BB", "#003199", "#001A77", "#000456"
-        ];
+        "#00DBFF", "#00B1F7", "#0088F0", "#0061DD",
+        "#0049BB", "#003199", "#001A77", "#000456"];
+
         const bgColor = cultureBgColors[index] || cultureBgColors[0];
         return (
           <button
@@ -194,7 +194,7 @@ const Onboarding = () => {
         "frosted-pill text-foreground/70 hover:text-foreground"}`
         }>
         
-          Surprise Me
+          Surprise 
         </button>
       </div>
     </motion.div>,
