@@ -177,47 +177,39 @@ const Settings = () => {
           <h2 className="text-xs font-body font-bold text-foreground/60 uppercase tracking-widest mb-3">
             Name Preview
           </h2>
-          <div className="frosted-pill rounded-2xl p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-body text-foreground">Show full name preview</span>
+          <button
+            onClick={handleNamePreviewToggle}
+            className={`w-full flex items-center justify-between px-5 py-3.5 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-all text-white bg-primary ${
+              showNamePreview ? "ring-2 ring-white/40" : "hover:bg-primary/80"
+            }`}
+          >
+            <span>Show Full Name Preview</span>
+            <ChevronRight className={`w-4 h-4 transition-transform ${showNamePreview ? "rotate-90" : ""}`} />
+          </button>
+          {showNamePreview && (
+            <div className="mt-2 space-y-3">
+              <input
+                type="text"
+                placeholder="Middle name (optional)"
+                value={middleName}
+                onChange={(e) => setMiddleName(e.target.value)}
+                className="w-full px-5 py-3.5 rounded-full frosted-pill text-foreground text-sm font-body border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/40"
+              />
+              <input
+                type="text"
+                placeholder="Last name (optional)"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="w-full px-5 py-3.5 rounded-full frosted-pill text-foreground text-sm font-body border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/40"
+              />
               <button
-                onClick={handleNamePreviewToggle}
-                className={`w-10 h-6 rounded-full transition-colors ${
-                  showNamePreview ? "bg-primary" : "bg-foreground/20"
-                }`}
+                onClick={handleSaveNamePreview}
+                className="w-full py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-body font-bold uppercase tracking-wider hover:bg-primary/80 active:scale-[0.98] transition-all"
               >
-                <div
-                  className={`w-4 h-4 rounded-full bg-foreground transition-transform mx-1 ${
-                    showNamePreview ? "translate-x-4" : ""
-                  }`}
-                />
+                Save
               </button>
             </div>
-            {showNamePreview && (
-              <>
-                <input
-                  type="text"
-                  placeholder="Middle name (optional)"
-                  value={middleName}
-                  onChange={(e) => setMiddleName(e.target.value)}
-                  className="w-full px-5 py-3.5 rounded-full frosted-pill text-foreground text-sm font-body border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/40"
-                />
-                <input
-                  type="text"
-                  placeholder="Last name (optional)"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  className="w-full px-5 py-3.5 rounded-full frosted-pill text-foreground text-sm font-body border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/40"
-                />
-                <button
-                  onClick={handleSaveNamePreview}
-                  className="w-full py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-body font-bold uppercase tracking-wider"
-                >
-                  Save
-                </button>
-              </>
-            )}
-          </div>
+          )}
         </section>
 
         {/* Send Feedback */}
