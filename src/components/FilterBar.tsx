@@ -46,7 +46,7 @@ const FilterBar = () => {
       <div className="relative">
         <button
           onClick={() => setShowCultures(!showCultures)}
-          className="flex items-center gap-2 h-full px-4 py-2 rounded-full glass text-sm font-body font-semibold text-foreground border border-border whitespace-nowrap"
+          className="flex items-center gap-2 h-full px-4 py-2 rounded-full frosted-pill text-sm font-body font-semibold text-foreground whitespace-nowrap"
         >
           {cultureLabel}
           <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showCultures ? "rotate-180" : ""}`} />
@@ -54,11 +54,11 @@ const FilterBar = () => {
         {showCultures && (
           <>
             <div className="fixed inset-0 z-40" onClick={() => setShowCultures(false)} />
-            <div className="absolute top-full mt-2 left-0 z-50 glass border border-border rounded-2xl shadow-card-hover py-2 min-w-[220px]">
+            <div className="absolute top-full mt-2 left-0 z-50 frosted-pill rounded-2xl shadow-card-hover py-2 min-w-[220px]">
               <button
                 onClick={() => setCultureFilter([])}
                 className={`w-full text-left px-4 py-3 text-sm font-body transition-colors flex items-center justify-between ${
-                  cultureFilter.length === 0 ? "text-primary font-bold" : "text-foreground hover:bg-secondary"
+                  cultureFilter.length === 0 ? "text-foreground font-bold" : "text-foreground/70 hover:bg-foreground/10"
                 }`}
               >
                 All Cultures
@@ -71,7 +71,7 @@ const FilterBar = () => {
                     key={c.value}
                     onClick={() => toggleCulture(c.value)}
                     className={`w-full text-left px-4 py-3 text-sm font-body transition-colors flex items-center justify-between ${
-                      selected ? "text-primary font-bold" : "text-foreground hover:bg-secondary"
+                      selected ? "text-foreground font-bold" : "text-foreground/70 hover:bg-foreground/10"
                     }`}
                   >
                     <span className="flex items-center gap-2.5">
@@ -88,15 +88,15 @@ const FilterBar = () => {
       </div>
 
       {/* Gender pills */}
-      <div className="flex gap-1 glass rounded-full p-1 border border-border">
+      <div className="flex gap-1 frosted-pill rounded-full p-1">
         {genders.map((g) => (
           <button
             key={g.value}
             onClick={() => setGenderFilter(g.value)}
             className={`px-4 py-2 rounded-full text-sm font-body font-semibold transition-all whitespace-nowrap ${
               genderFilter === g.value
-                ? "bg-primary text-primary-foreground shadow-glow-primary"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-primary text-primary-foreground"
+                : "text-foreground/60 hover:text-foreground"
             }`}
           >
             {g.label}
