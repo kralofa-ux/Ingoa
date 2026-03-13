@@ -216,27 +216,29 @@ const Settings = () => {
         <section>
           <button
             onClick={() => setShowFeedback(!showFeedback)}
-            className="w-full flex items-center justify-between px-5 py-3.5 frosted-pill rounded-full text-sm font-body font-extrabold uppercase tracking-wider text-foreground"
+            className={`w-full flex items-center justify-between px-5 py-3.5 rounded-full bg-primary text-white font-body font-extrabold text-sm uppercase tracking-wider transition-all ${
+              showFeedback ? "ring-2 ring-white/40" : "hover:bg-primary/80"
+            }`}
           >
             <span className="flex items-center gap-2">
-              <MessageSquare className="w-4 h-4 text-foreground/50" />
+              <MessageSquare className="w-4 h-4" />
               Send Feedback
             </span>
-            <ChevronRight className={`w-4 h-4 text-foreground/50 transition-transform ${showFeedback ? "rotate-90" : ""}`} />
+            <ChevronRight className={`w-4 h-4 transition-transform ${showFeedback ? "rotate-90" : ""}`} />
           </button>
           {showFeedback && (
-            <div className="mt-2 frosted-pill rounded-2xl p-4 space-y-3">
+            <div className="mt-2 space-y-3">
               <textarea
                 placeholder="Tell us what you think, report issues, or suggest names..."
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
                 rows={3}
-                className="w-full px-4 py-2.5 rounded-xl bg-foreground/10 text-foreground text-sm font-body border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 resize-none placeholder:text-foreground/40"
+                className="w-full px-4 py-2.5 rounded-xl frosted-pill text-foreground text-sm font-body border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 resize-none placeholder:text-foreground/40"
               />
               <button
                 onClick={handleSendFeedback}
                 disabled={!feedback.trim()}
-                className="w-full py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-body font-bold uppercase tracking-wider disabled:opacity-50"
+                className="w-full py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-body font-bold uppercase tracking-wider hover:bg-primary/80 active:scale-[0.98] transition-all disabled:opacity-50 disabled:hover:bg-primary"
               >
                 Send
               </button>
