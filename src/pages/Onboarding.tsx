@@ -132,14 +132,14 @@ const Onboarding = () => {
           "#00DBFF", "#00B1F7", "#0088F0", "#0061DD",
           "#0049BB", "#003199", "#001A77", "#000456"
         ];
-        const bgColor = selected ? "#FFFFFF" : cultureBgColors[index] || cultureBgColors[0];
+        const bgColor = cultureBgColors[index] || cultureBgColors[0];
         return (
           <button
             key={c}
             onClick={() => toggleCulture(c)}
             style={{ backgroundColor: bgColor }}
-            className={`w-full flex items-center justify-between px-5 py-3.5 rounded-full font-body text-sm font-extrabold uppercase tracking-wider transition-all ${
-            selected ? "text-[#000456] ring-2 ring-white/40" : "text-white opacity-80 hover:opacity-100"}`
+            className={`w-full flex items-center justify-between px-5 py-3.5 rounded-full font-body text-sm font-extrabold uppercase tracking-wider transition-all text-white ${
+            selected ? "ring-2 ring-white/40" : "opacity-80 hover:opacity-100"}`
             }>
             
               <span className="flex items-center gap-2.5">
