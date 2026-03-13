@@ -168,33 +168,30 @@ const Onboarding = () => {
       <div className="space-y-3">
         <button
         onClick={() => setGenderPref("male")}
-        className={`w-full py-4 rounded-full font-body text-sm font-bold transition-all ${
+        className={`w-full py-4 rounded-full font-body text-sm font-extrabold uppercase tracking-wider transition-all text-white ${
         genderPref === "male" ?
-        "bg-[hsl(200,80%,55%)] text-white" :
-        "frosted-pill text-foreground/70 hover:text-foreground"}`
+        "bg-[hsl(200,80%,50%)] ring-2 ring-white/40" :
+        "bg-[hsl(200,80%,50%)] opacity-80 hover:opacity-100"}`
         }>
-        
           Boy
         </button>
         <button
         onClick={() => setGenderPref("female")}
-        className={`w-full py-4 rounded-full font-body text-sm font-bold transition-all ${
+        className={`w-full py-4 rounded-full font-body text-sm font-extrabold uppercase tracking-wider transition-all text-white ${
         genderPref === "female" ?
-        "bg-[hsl(340,70%,65%)] text-white" :
-        "frosted-pill text-foreground/70 hover:text-foreground"}`
+        "bg-[hsl(340,70%,55%)] ring-2 ring-white/40" :
+        "bg-[hsl(340,70%,55%)] opacity-80 hover:opacity-100"}`
         }>
-        
           Girl
         </button>
         <button
         onClick={() => setGenderPref("all")}
-        className={`w-full py-4 rounded-full font-body text-sm font-bold transition-all ${
+        className={`w-full py-4 rounded-full font-body text-sm font-extrabold uppercase tracking-wider transition-all text-white ${
         genderPref === "all" ?
-        "bg-[hsl(35,90%,55%)] text-white" :
-        "frosted-pill text-foreground/70 hover:text-foreground"}`
+        "bg-[hsl(30,85%,55%)] ring-2 ring-white/40" :
+        "bg-[hsl(30,85%,55%)] opacity-80 hover:opacity-100"}`
         }>
-        
-          Surprise 
+          Surprise
         </button>
       </div>
     </motion.div>,
