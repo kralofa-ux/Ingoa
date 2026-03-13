@@ -115,14 +115,14 @@ const Settings = () => {
           <h2 className="text-xs font-body font-bold text-foreground/60 uppercase tracking-widest mb-3">
             Gender Preference
           </h2>
-          <div className="space-y-2">
+          <div className="grid grid-cols-3 gap-2">
             {genderOptions.map((g) => (
               <button
                 key={g.value}
                 onClick={() => handleGenderChange(g.value)}
-                className={`w-full py-3.5 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-all text-white ${g.color} ${
+                className={`py-3.5 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-all text-white ${g.color} ${
                   genderFilter === g.value
-                    ? "ring-2 ring-white/40"
+                    ? "ring-2 ring-white/40 scale-105"
                     : "opacity-80 hover:opacity-100"
                 }`}
               >
