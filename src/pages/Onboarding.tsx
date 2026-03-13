@@ -59,6 +59,8 @@ const Onboarding = () => {
 
 
 
+
+
       // Handled in AppContext via profile sync
     }setSubmitting(false);navigate("/browse");};const nextStep = () => {if (step === 4) handleFinish();else setStep((s) => s + 1);};const steps = [// Step 0: Welcome — no icon, just text
   <motion.div key="welcome" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="text-center text-9xl">
@@ -72,9 +74,7 @@ const Onboarding = () => {
       <h2 className="text-2xl font-display font-extrabold text-foreground mb-2">How are you using Ingoa?</h2>
       <p className="text-sm text-muted-foreground font-body mb-6">You can change this later in settings</p>
       <div className="grid grid-cols-2 gap-3">
-        <button
-        onClick={() => setMode("solo")}
-        className={`p-5 rounded-2xl border transition-all font-body ${
+        <button onClick={() => setMode("solo")} className={`p-5 rounded-2xl border transition-all font-body ${
         mode === "solo" ?
         "border-primary bg-primary/10 shadow-glow-primary" :
         "border-white/10 bg-white/5 hover:border-white/20"}`
@@ -173,7 +173,7 @@ const Onboarding = () => {
 
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden gradient-deep bg-primary">
+    <div className="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden gradient-deep bg-primary text-secondary-foreground">
       {/* Background orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -bottom-32 -left-32 w-[500px] h-[500px] rounded-full bg-primary/8 blur-[120px]" />
