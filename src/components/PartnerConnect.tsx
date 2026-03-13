@@ -74,8 +74,8 @@ const PartnerConnect = () => {
 
   if (loading) {
     return (
-      <div className="bg-card rounded-2xl border border-border p-6 flex items-center justify-center">
-        <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+      <div className="frosted-pill rounded-2xl p-6 flex items-center justify-center">
+        <Loader2 className="w-5 h-5 animate-spin text-foreground/50" />
       </div>
     );
   }
@@ -83,16 +83,16 @@ const PartnerConnect = () => {
   // Connected state
   if (status.connected) {
     return (
-      <div className="bg-card rounded-2xl border border-border overflow-hidden">
+      <div className="frosted-pill rounded-2xl overflow-hidden">
         <div className="p-4 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full gradient-ocean flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
             <Users className="w-5 h-5 text-primary-foreground" />
           </div>
           <div className="flex-1">
             <p className="text-sm font-body font-semibold text-foreground">
               Connected with {status.partner_name}
             </p>
-            <p className="text-xs text-muted-foreground font-body">
+            <p className="text-xs text-foreground/50 font-body">
               Couple mode active — matches appear when you both like a name
             </p>
           </div>
@@ -100,13 +100,13 @@ const PartnerConnect = () => {
         {!showDisconnect ? (
           <button
             onClick={() => setShowDisconnect(true)}
-            className="w-full px-4 py-3 border-t border-border text-sm font-body text-destructive hover:bg-destructive/5 transition-colors flex items-center justify-center gap-2"
+            className="w-full px-4 py-3 border-t border-foreground/10 text-sm font-body text-destructive hover:bg-destructive/10 transition-colors flex items-center justify-center gap-2"
           >
             <Unlink className="w-4 h-4" />
             Disconnect Partner
           </button>
         ) : (
-          <div className="p-4 border-t border-border space-y-3">
+          <div className="p-4 border-t border-foreground/10 space-y-3">
             <p className="text-sm font-body text-foreground text-center">
               Match history will be lost. Reconnecting with the same partner is free.
             </p>
@@ -114,13 +114,13 @@ const PartnerConnect = () => {
               <button
                 onClick={handleDisconnect}
                 disabled={disconnecting}
-                className="flex-1 py-2 rounded-xl bg-destructive text-destructive-foreground text-sm font-body font-medium disabled:opacity-50"
+                className="flex-1 py-2.5 rounded-full bg-destructive text-destructive-foreground text-sm font-body font-medium disabled:opacity-50"
               >
                 {disconnecting ? "..." : "Disconnect"}
               </button>
               <button
                 onClick={() => setShowDisconnect(false)}
-                className="flex-1 py-2 rounded-xl bg-secondary text-foreground text-sm font-body font-medium"
+                className="flex-1 py-2.5 rounded-full frosted-pill-selected text-foreground text-sm font-body font-medium"
               >
                 Cancel
               </button>
@@ -133,13 +133,13 @@ const PartnerConnect = () => {
 
   // Not connected
   return (
-    <div className="bg-card rounded-2xl border border-border p-4 space-y-4">
+    <div className="frosted-pill rounded-2xl p-4 space-y-4">
       <div className="text-center">
-        <div className="w-12 h-12 rounded-full gradient-ocean flex items-center justify-center mx-auto mb-3">
+        <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center mx-auto mb-3">
           <Users className="w-6 h-6 text-primary-foreground" />
         </div>
-        <h3 className="text-lg font-display text-foreground">Connect with Partner</h3>
-        <p className="text-xs text-muted-foreground font-body mt-1">
+        <h3 className="text-lg font-display font-extrabold text-foreground">Connect with Partner</h3>
+        <p className="text-xs text-foreground/50 font-body mt-1">
           Share a code to start matching names together
         </p>
       </div>
@@ -156,14 +156,14 @@ const PartnerConnect = () => {
             <button
               onClick={handleGenerate}
               disabled={generating}
-              className="w-full py-3 rounded-xl gradient-ocean text-primary-foreground text-sm font-body font-medium shadow-glow-ocean disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-full bg-primary text-primary-foreground text-sm font-body font-bold uppercase tracking-wider disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Link2 className="w-4 h-4" />}
               Generate Invite Code
             </button>
             <button
               onClick={() => setMode("enter")}
-              className="w-full py-3 rounded-xl bg-secondary text-foreground text-sm font-body font-medium"
+              className="w-full py-3 rounded-full frosted-pill-selected text-foreground text-sm font-body font-bold"
             >
               Enter Partner's Code
             </button>
@@ -178,20 +178,20 @@ const PartnerConnect = () => {
             exit={{ opacity: 0 }}
             className="text-center space-y-3"
           >
-            <p className="text-xs text-muted-foreground font-body">Share this code with your partner</p>
+            <p className="text-xs text-foreground/50 font-body">Share this code with your partner</p>
             <div className="flex items-center justify-center gap-3">
               <span className="text-3xl font-display tracking-[0.3em] text-foreground">{code}</span>
               <button
                 onClick={handleCopy}
-                className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                className="w-8 h-8 rounded-full frosted-pill-selected flex items-center justify-center text-foreground/60 hover:text-foreground transition-colors"
               >
-                {copied ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
+                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
               </button>
             </div>
-            <p className="text-xs text-muted-foreground font-body">Expires in 24 hours</p>
+            <p className="text-xs text-foreground/50 font-body">Expires in 24 hours</p>
             <button
               onClick={() => { setMode("choose"); }}
-              className="text-xs text-muted-foreground font-body underline"
+              className="text-xs text-foreground/50 font-body underline"
             >
               Back
             </button>
@@ -212,19 +212,19 @@ const PartnerConnect = () => {
               placeholder="Enter 6-digit code"
               value={inputCode}
               onChange={(e) => setInputCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-              className="w-full px-4 py-3 rounded-xl bg-secondary text-foreground text-center text-2xl font-display tracking-[0.3em] border border-border focus:outline-none focus:ring-2 focus:ring-primary/30"
+              className="w-full px-4 py-3 rounded-full frosted-pill-selected text-foreground text-center text-2xl font-display tracking-[0.3em] border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/40"
             />
             <button
               onClick={handleJoin}
               disabled={inputCode.length !== 6 || joining}
-              className="w-full py-3 rounded-xl gradient-ocean text-primary-foreground text-sm font-body font-medium shadow-glow-ocean disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-full bg-primary text-primary-foreground text-sm font-body font-bold uppercase tracking-wider disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {joining ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
               {joining ? "Connecting..." : "Connect"}
             </button>
             <button
               onClick={() => { setMode("choose"); setInputCode(""); }}
-              className="w-full text-xs text-muted-foreground font-body underline text-center"
+              className="w-full text-xs text-foreground/50 font-body underline text-center"
             >
               Back
             </button>

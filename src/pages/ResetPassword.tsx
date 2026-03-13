@@ -12,7 +12,6 @@ const ResetPassword = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check for recovery token in URL
     const hash = window.location.hash;
     if (!hash.includes("type=recovery")) {
       navigate("/auth");
@@ -33,17 +32,17 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6">
+    <div className="min-h-screen flex flex-col items-center justify-center px-6 bg-background">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-2xl gradient-ocean flex items-center justify-center mx-auto mb-4 shadow-glow-ocean">
+          <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center mx-auto mb-4">
             <Heart className="w-8 h-8 text-primary-foreground" fill="currentColor" />
           </div>
-          <h1 className="text-2xl font-display text-foreground">Set New Password</h1>
+          <h1 className="text-2xl font-display font-extrabold text-foreground uppercase">Set New Password</h1>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3">
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/40" />
             <input
               type="password"
               placeholder="New password"
@@ -51,14 +50,14 @@ const ResetPassword = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full pl-10 pr-4 py-3 rounded-xl bg-card border border-border text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+              className="w-full pl-11 pr-4 py-3.5 rounded-full frosted-pill text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-foreground/20 border-0 placeholder:text-foreground/40"
             />
           </div>
           <motion.button
             whileTap={{ scale: 0.97 }}
             type="submit"
             disabled={submitting}
-            className="w-full py-3 rounded-xl gradient-ocean text-primary-foreground font-body font-semibold text-sm shadow-glow-ocean disabled:opacity-50"
+            className="w-full py-3.5 rounded-full bg-primary text-primary-foreground font-body font-bold text-sm uppercase tracking-wider disabled:opacity-50"
           >
             {submitting ? "..." : "Update Password"}
           </motion.button>

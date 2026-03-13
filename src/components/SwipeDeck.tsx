@@ -68,7 +68,7 @@ const SwipeDeck = () => {
   if (isLoading) {
     return (
       <div className="flex-1 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <Loader2 className="w-8 h-8 animate-spin text-foreground/50" />
       </div>
     );
   }
@@ -83,16 +83,16 @@ const SwipeDeck = () => {
         >
           🌊
         </motion.div>
-        <h3 className="text-2xl font-display font-extrabold text-foreground mb-2">You've reached the end!</h3>
-        <p className="text-muted-foreground font-body mb-6">
+        <h3 className="text-2xl font-display font-extrabold text-foreground mb-2 uppercase">You've reached the end!</h3>
+        <p className="text-foreground/60 font-body mb-6">
           You've gone through all available names. Refresh to bring back passed names.
         </p>
         <button
           onClick={() => { refreshDeck(); setCurrentIndex(0); }}
-          className="px-6 py-3 rounded-2xl gradient-primary text-primary-foreground font-body font-semibold flex items-center gap-2 shadow-glow-primary hover:opacity-90 transition-opacity"
+          className="px-6 py-3 rounded-full bg-primary text-primary-foreground font-body font-bold flex items-center gap-2 uppercase tracking-wider transition-opacity hover:opacity-90"
         >
           <RefreshCw className="w-4 h-4" />
-          Refresh passed names
+          Refresh
         </button>
       </div>
     );
@@ -101,7 +101,7 @@ const SwipeDeck = () => {
   return (
     <div className="flex-1 flex flex-col items-center px-4 relative">
       {mode === "couple" && (
-        <div className="mb-3 px-5 py-2 rounded-full gradient-primary text-primary-foreground text-sm font-body font-semibold">
+        <div className="mb-3 px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-body font-semibold">
           Partner {currentPartner}'s turn
         </div>
       )}
