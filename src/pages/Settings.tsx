@@ -28,7 +28,7 @@ const cultureBgColors = [
 const genderOptions: { value: Gender | "all"; label: string; color: string }[] = [
   { value: "male", label: "Boy", color: "bg-[hsl(200,80%,50%)]" },
   { value: "female", label: "Girl", color: "bg-[hsl(340,70%,55%)]" },
-  { value: "all", label: "Surprise", color: "bg-[hsl(30,85%,55%)]" },
+  { value: "all", label: "Both", color: "bg-[hsl(30,85%,55%)]" },
 ];
 
 const Settings = () => {
