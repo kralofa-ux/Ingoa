@@ -126,23 +126,27 @@ const Onboarding = () => {
         Select Cultures
       </h2>
       <div className="space-y-2">
-        {CULTURES.map((c) => {
+        {CULTURES.map((c, index) => {
         const selected = selectedCultures.includes(c);
+        const cultureBgColors = [
+          "#000456", "#001A77", "#003199", "#0049BB",
+          "#0061DD", "#0088F0", "#00B1F7", "#00DBFF"
+        ];
+        const bgColor = cultureBgColors[index] || cultureBgColors[0];
         return (
           <button
             key={c}
             onClick={() => toggleCulture(c)}
-            className={`w-full flex items-center justify-between px-5 py-3.5 rounded-full font-body text-sm font-semibold transition-all ${
-            selected ?
-            "frosted-pill-selected text-foreground" :
-            "frosted-pill text-foreground/70 hover:text-foreground"}`
+            style={{ backgroundColor: bgColor }}
+            className={`w-full flex items-center justify-between px-5 py-3.5 rounded-full font-body text-sm font-extrabold uppercase tracking-wider transition-all text-white ${
+            selected ? "ring-2 ring-white/40" : "opacity-80 hover:opacity-100"}`
             }>
             
               <span className="flex items-center gap-2.5">
                 <CultureIcon culture={c} size={20} />
                 {c}
               </span>
-              {selected && <Check className="w-4 h-4 text-foreground" />}
+              {selected && <Check className="w-4 h-4 text-white" />}
             </button>);
 
       })}
