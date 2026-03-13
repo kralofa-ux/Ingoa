@@ -97,17 +97,17 @@ const Settings = () => {
       <div className="flex items-center gap-3 mb-6">
         <button
           onClick={() => navigate(-1)}
-          className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center text-foreground"
+          className="w-9 h-9 rounded-full frosted-pill flex items-center justify-center text-foreground"
         >
           <ArrowLeft className="w-4 h-4" />
         </button>
-        <h1 className="text-2xl font-display font-extrabold text-foreground tracking-tight">Settings</h1>
+        <h1 className="text-2xl font-display font-extrabold text-foreground tracking-tight uppercase">Settings</h1>
       </div>
 
       <div className="space-y-6">
         {/* Gender Preference */}
         <section>
-          <h2 className="text-xs font-body font-bold text-muted-foreground uppercase tracking-widest mb-3">
+          <h2 className="text-xs font-body font-bold text-foreground/60 uppercase tracking-widest mb-3">
             Gender Preference
           </h2>
           <div className="flex gap-2">
@@ -115,10 +115,10 @@ const Settings = () => {
               <button
                 key={g.value}
                 onClick={() => handleGenderChange(g.value)}
-                className={`flex-1 py-2.5 rounded-xl text-sm font-body font-semibold transition-all ${
+                className={`flex-1 py-2.5 rounded-full text-sm font-body font-semibold transition-all ${
                   genderFilter === g.value
-                    ? "bg-primary text-primary-foreground shadow-glow-primary"
-                    : "bg-secondary text-muted-foreground hover:text-foreground"
+                    ? "bg-primary text-primary-foreground"
+                    : "frosted-pill text-foreground/70 hover:text-foreground"
                 }`}
               >
                 {g.label}
@@ -129,10 +129,10 @@ const Settings = () => {
 
         {/* Cultures */}
         <section>
-          <h2 className="text-xs font-body font-bold text-muted-foreground uppercase tracking-widest mb-3">
+          <h2 className="text-xs font-body font-bold text-foreground/60 uppercase tracking-widest mb-3">
             Selected Cultures
           </h2>
-          <div className="bg-card rounded-2xl border border-border overflow-hidden">
+          <div className="frosted-pill rounded-2xl overflow-hidden">
             {cultures.map((c, i) => {
               const selected = cultureFilter.includes(c.value);
               return (
@@ -140,26 +140,26 @@ const Settings = () => {
                   key={c.value}
                   onClick={() => toggleCulture(c.value)}
                   className={`w-full flex items-center justify-between px-4 py-3.5 text-sm font-body transition-colors ${
-                    i < cultures.length - 1 ? "border-b border-border" : ""
-                  } ${selected ? "text-primary" : "text-foreground"}`}
+                    i < cultures.length - 1 ? "border-b border-foreground/10" : ""
+                  } ${selected ? "text-foreground" : "text-foreground/70"}`}
                 >
                   <span className="flex items-center gap-2.5">
                     <CultureIcon culture={c.value} size={18} />
                     {c.label}
                   </span>
-                  {selected && <Check className="w-4 h-4 text-primary" />}
+                  {selected && <Check className="w-4 h-4 text-foreground" />}
                 </button>
               );
             })}
           </div>
-          <p className="text-xs text-muted-foreground font-body mt-2">
+          <p className="text-xs text-foreground/50 font-body mt-2">
             {cultureFilter.length === 0 ? "All cultures shown" : `${cultureFilter.length} selected`}
           </p>
         </section>
 
         {/* Partner Connection */}
         <section>
-          <h2 className="text-xs font-body font-bold text-muted-foreground uppercase tracking-widest mb-3">
+          <h2 className="text-xs font-body font-bold text-foreground/60 uppercase tracking-widest mb-3">
             Couple Mode
           </h2>
           <PartnerConnect />
@@ -167,16 +167,16 @@ const Settings = () => {
 
         {/* Name Preview */}
         <section>
-          <h2 className="text-xs font-body font-bold text-muted-foreground uppercase tracking-widest mb-3">
+          <h2 className="text-xs font-body font-bold text-foreground/60 uppercase tracking-widest mb-3">
             Name Preview
           </h2>
-          <div className="bg-card rounded-2xl border border-border p-4 space-y-3">
+          <div className="frosted-pill rounded-2xl p-4 space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-sm font-body text-foreground">Show full name preview</span>
               <button
                 onClick={handleNamePreviewToggle}
                 className={`w-10 h-6 rounded-full transition-colors ${
-                  showNamePreview ? "bg-primary" : "bg-secondary"
+                  showNamePreview ? "bg-primary" : "bg-foreground/20"
                 }`}
               >
                 <div
@@ -193,18 +193,18 @@ const Settings = () => {
                   placeholder="Middle name (optional)"
                   value={middleName}
                   onChange={(e) => setMiddleName(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-secondary text-foreground text-sm font-body border border-border focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  className="w-full px-4 py-2.5 rounded-full bg-foreground/10 text-foreground text-sm font-body border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/40"
                 />
                 <input
                   type="text"
                   placeholder="Last name (optional)"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-secondary text-foreground text-sm font-body border border-border focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  className="w-full px-4 py-2.5 rounded-full bg-foreground/10 text-foreground text-sm font-body border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/40"
                 />
                 <button
                   onClick={handleSaveNamePreview}
-                  className="w-full py-2 rounded-xl bg-primary text-primary-foreground text-sm font-body font-semibold"
+                  className="w-full py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-body font-semibold"
                 >
                   Save
                 </button>
@@ -217,27 +217,27 @@ const Settings = () => {
         <section>
           <button
             onClick={() => setShowFeedback(!showFeedback)}
-            className="w-full flex items-center justify-between px-4 py-3.5 bg-card rounded-2xl border border-border text-sm font-body text-foreground"
+            className="w-full flex items-center justify-between px-4 py-3.5 frosted-pill rounded-full text-sm font-body text-foreground"
           >
             <span className="flex items-center gap-2">
-              <MessageSquare className="w-4 h-4 text-muted-foreground" />
+              <MessageSquare className="w-4 h-4 text-foreground/50" />
               Send Feedback
             </span>
-            <ChevronRight className={`w-4 h-4 text-muted-foreground transition-transform ${showFeedback ? "rotate-90" : ""}`} />
+            <ChevronRight className={`w-4 h-4 text-foreground/50 transition-transform ${showFeedback ? "rotate-90" : ""}`} />
           </button>
           {showFeedback && (
-            <div className="mt-2 bg-card rounded-2xl border border-border p-4 space-y-3">
+            <div className="mt-2 frosted-pill rounded-2xl p-4 space-y-3">
               <textarea
                 placeholder="Tell us what you think, report issues, or suggest names..."
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
                 rows={3}
-                className="w-full px-3 py-2 rounded-xl bg-secondary text-foreground text-sm font-body border border-border focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
+                className="w-full px-4 py-2.5 rounded-xl bg-foreground/10 text-foreground text-sm font-body border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 resize-none placeholder:text-foreground/40"
               />
               <button
                 onClick={handleSendFeedback}
                 disabled={!feedback.trim()}
-                className="w-full py-2 rounded-xl bg-primary text-primary-foreground text-sm font-body font-semibold disabled:opacity-50"
+                className="w-full py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-body font-semibold disabled:opacity-50"
               >
                 Send
               </button>
@@ -248,7 +248,7 @@ const Settings = () => {
         {/* Sign Out */}
         <button
           onClick={handleSignOut}
-          className="w-full flex items-center justify-center gap-2 px-4 py-3.5 bg-card rounded-2xl border border-border text-sm font-body text-foreground hover:bg-secondary transition-colors"
+          className="w-full flex items-center justify-center gap-2 px-4 py-3.5 frosted-pill rounded-full text-sm font-body text-foreground hover:bg-foreground/10 transition-colors"
         >
           <LogOut className="w-4 h-4" />
           Sign Out
@@ -259,26 +259,26 @@ const Settings = () => {
           {!showDeleteConfirm ? (
             <button
               onClick={() => setShowDeleteConfirm(true)}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3.5 rounded-2xl border border-destructive/30 text-sm font-body text-destructive hover:bg-destructive/10 transition-colors"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3.5 rounded-full border border-destructive/40 text-sm font-body text-destructive hover:bg-destructive/10 transition-colors"
             >
               <Trash2 className="w-4 h-4" />
               Delete Account
             </button>
           ) : (
-            <div className="bg-card rounded-2xl border border-destructive/30 p-4 space-y-3 text-center">
+            <div className="frosted-pill rounded-2xl p-4 space-y-3 text-center">
               <p className="text-sm font-body text-foreground">
                 Are you sure? This will permanently delete all your data.
               </p>
               <div className="flex gap-2">
                 <button
                   onClick={handleDeleteAccount}
-                  className="flex-1 py-2 rounded-xl bg-destructive text-destructive-foreground text-sm font-body font-semibold"
+                  className="flex-1 py-2.5 rounded-full bg-destructive text-destructive-foreground text-sm font-body font-semibold"
                 >
                   Delete
                 </button>
                 <button
                   onClick={() => setShowDeleteConfirm(false)}
-                  className="flex-1 py-2 rounded-xl bg-secondary text-foreground text-sm font-body font-semibold"
+                  className="flex-1 py-2.5 rounded-full frosted-pill text-foreground text-sm font-body font-semibold"
                 >
                   Cancel
                 </button>

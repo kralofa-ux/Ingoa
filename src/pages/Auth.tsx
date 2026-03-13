@@ -45,43 +45,38 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -bottom-20 -left-20 w-96 h-96 rounded-full bg-primary/5 blur-3xl" />
-        <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-accent/5 blur-3xl" />
-      </div>
-
+    <div className="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden bg-background">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-sm relative z-10"
       >
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center mx-auto mb-4 shadow-glow-primary">
+          <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center mx-auto mb-4">
             <span className="text-3xl">🌊</span>
           </div>
-          <h1 className="text-3xl font-display font-extrabold text-foreground tracking-tight">Ingoa</h1>
-          <p className="text-sm text-muted-foreground font-body mt-1">
+          <h1 className="text-3xl font-display font-extrabold text-foreground tracking-tight uppercase">Ingoa</h1>
+          <p className="text-sm text-foreground/60 font-body mt-1">
             {view === "login" ? "Welcome back" : view === "signup" ? "Create your account" : "Reset your password"}
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3">
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/40" />
             <input
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full pl-10 pr-4 py-3 rounded-xl bg-card border border-border text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+              className="w-full pl-11 pr-4 py-3.5 rounded-full frosted-pill text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-foreground/20 border-0 placeholder:text-foreground/40"
             />
           </div>
 
           {view !== "forgot" && (
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/40" />
               <input
                 type="password"
                 placeholder="Password"
@@ -89,7 +84,7 @@ const Auth = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
-                className="w-full pl-10 pr-4 py-3 rounded-xl bg-card border border-border text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                className="w-full pl-11 pr-4 py-3.5 rounded-full frosted-pill text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-foreground/20 border-0 placeholder:text-foreground/40"
               />
             </div>
           )}
@@ -98,7 +93,7 @@ const Auth = () => {
             whileTap={{ scale: 0.97 }}
             type="submit"
             disabled={submitting}
-            className="w-full py-3.5 rounded-xl gradient-coral text-white font-body font-bold text-sm shadow-glow-accent disabled:opacity-50"
+            className="w-full py-3.5 rounded-full bg-primary text-primary-foreground font-body font-bold text-sm uppercase tracking-wider disabled:opacity-50"
           >
             {submitting ? "..." : view === "login" ? "Sign In" : view === "signup" ? "Create Account" : "Send Reset Link"}
           </motion.button>
@@ -107,23 +102,23 @@ const Auth = () => {
         <div className="mt-6 text-center space-y-2">
           {view === "login" && (
             <>
-              <button onClick={() => setView("forgot")} className="text-xs text-muted-foreground font-body hover:text-primary transition-colors">
+              <button onClick={() => setView("forgot")} className="text-xs text-foreground/50 font-body hover:text-foreground transition-colors">
                 Forgot password?
               </button>
-              <p className="text-xs text-muted-foreground font-body">
+              <p className="text-xs text-foreground/50 font-body">
                 Don't have an account?{" "}
-                <button onClick={() => setView("signup")} className="text-primary font-bold">Sign up</button>
+                <button onClick={() => setView("signup")} className="text-foreground font-bold">Sign up</button>
               </p>
             </>
           )}
           {view === "signup" && (
-            <p className="text-xs text-muted-foreground font-body">
+            <p className="text-xs text-foreground/50 font-body">
               Already have an account?{" "}
-              <button onClick={() => setView("login")} className="text-primary font-bold">Sign in</button>
+              <button onClick={() => setView("login")} className="text-foreground font-bold">Sign in</button>
             </p>
           )}
           {view === "forgot" && (
-            <button onClick={() => setView("login")} className="text-xs text-primary font-body flex items-center gap-1 mx-auto">
+            <button onClick={() => setView("login")} className="text-xs text-foreground font-body flex items-center gap-1 mx-auto">
               <ArrowLeft className="w-3 h-3" /> Back to sign in
             </button>
           )}

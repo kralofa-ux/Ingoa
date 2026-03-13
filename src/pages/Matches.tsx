@@ -74,7 +74,7 @@ const Matches = () => {
   if (partnerLoading || loading) {
     return (
       <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <Loader2 className="w-8 h-8 animate-spin text-foreground/50" />
       </div>
     );
   }
@@ -82,15 +82,15 @@ const Matches = () => {
   if (!status.connected) {
     return (
       <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto">
-        <h1 className="text-3xl font-display font-extrabold text-foreground mb-1 tracking-tight">Matched Names</h1>
+        <h1 className="text-3xl font-display font-extrabold text-foreground mb-1 tracking-tight uppercase">Matched Names</h1>
         <div className="text-center py-16">
-          <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center mx-auto mb-4">
-            <Users className="w-8 h-8 text-muted-foreground" />
+          <div className="w-16 h-16 rounded-full frosted-pill flex items-center justify-center mx-auto mb-4">
+            <Users className="w-8 h-8 text-foreground/50" />
           </div>
-          <p className="text-muted-foreground font-body mb-2">
+          <p className="text-foreground/60 font-body mb-2">
             Connect with your partner to see matches
           </p>
-          <p className="text-xs text-muted-foreground/70 font-body">
+          <p className="text-xs text-foreground/40 font-body">
             Go to Settings → Couple Mode to generate or enter a code
           </p>
         </div>
@@ -100,16 +100,16 @@ const Matches = () => {
 
   return (
     <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto">
-      <h1 className="text-3xl font-display font-extrabold text-foreground mb-1 tracking-tight">Matched Names</h1>
-      <p className="text-sm text-muted-foreground font-body mb-4">
+      <h1 className="text-3xl font-display font-extrabold text-foreground mb-1 tracking-tight uppercase">Matched Names</h1>
+      <p className="text-sm text-foreground/60 font-body mb-4">
         Names you and {status.partner_name} both loved 💕
       </p>
 
       {matchedNames.length === 0 ? (
         <div className="text-center py-16">
           <p className="text-5xl mb-4">🤝</p>
-          <p className="text-muted-foreground font-body">No matches yet — keep swiping!</p>
-          <p className="text-xs text-muted-foreground/70 font-body mt-2">
+          <p className="text-foreground/60 font-body">No matches yet — keep swiping!</p>
+          <p className="text-xs text-foreground/40 font-body mt-2">
             Matches appear when both of you like the same name
           </p>
         </div>
