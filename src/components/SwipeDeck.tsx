@@ -11,7 +11,7 @@ const SwipeDeck = () => {
   const {
     likeName, passName, passedIds, likedNames,
     cultureFilter, genderFilter, mode, currentPartner,
-    undoLastSwipe, refreshDeck, swipeHistory,
+    undoLastSwipe, refreshDeck, swipeHistory
   } = useApp();
   const { toast } = useToast();
   const { data: allNames, isLoading } = useNames();
@@ -48,11 +48,11 @@ const SwipeDeck = () => {
   };
 
   const handleLike = () => {
-    if (currentName) { likeName(currentName); advance(); }
+    if (currentName) {likeName(currentName);advance();}
   };
 
   const handlePass = () => {
-    if (currentName) { passName(currentName.id, currentName); advance(); }
+    if (currentName) {passName(currentName.id, currentName);advance();}
   };
 
   const handleUndo = () => {
@@ -69,8 +69,8 @@ const SwipeDeck = () => {
     return (
       <div className="flex-1 flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-foreground/50" />
-      </div>
-    );
+      </div>);
+
   }
 
   if (!currentName) {
@@ -79,8 +79,8 @@ const SwipeDeck = () => {
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="text-6xl mb-6"
-        >
+          className="text-6xl mb-6">
+          
           🌊
         </motion.div>
         <h3 className="text-2xl font-display font-extrabold text-foreground mb-2 uppercase">You've reached the end!</h3>
@@ -88,23 +88,23 @@ const SwipeDeck = () => {
           You've gone through all available names. Refresh to bring back passed names.
         </p>
         <button
-          onClick={() => { refreshDeck(); setCurrentIndex(0); }}
-          className="px-6 py-3 rounded-full bg-primary text-primary-foreground font-body font-bold flex items-center gap-2 uppercase tracking-wider transition-opacity hover:opacity-90"
-        >
+          onClick={() => {refreshDeck();setCurrentIndex(0);}}
+          className="px-6 py-3 rounded-full bg-primary text-primary-foreground font-body font-bold flex items-center gap-2 uppercase tracking-wider transition-opacity hover:opacity-90">
+          
           <RefreshCw className="w-4 h-4" />
           Refresh
         </button>
-      </div>
-    );
+      </div>);
+
   }
 
   return (
-    <div className="flex-1 flex flex-col items-center px-4 relative">
-      {mode === "couple" && (
-        <div className="mb-3 px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-body font-semibold">
+    <div className="flex-1 flex flex-col items-center px-4 relative bg-[#0015ff]">
+      {mode === "couple" &&
+      <div className="mb-3 px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-body font-semibold">
           Partner {currentPartner}'s turn
         </div>
-      )}
+      }
 
       <div className="relative w-full max-w-sm h-[560px] mx-auto">
         <AnimatePresence mode="wait">
@@ -116,14 +116,14 @@ const SwipeDeck = () => {
             isTop={true}
             onUndo={handleUndo}
             canUndo={swipeHistory.length > 0}
-            swipeCount={swipeCount}
-          />
+            swipeCount={swipeCount} />
+          
         </AnimatePresence>
 
         {showTutorial && <SwipeTutorial swipeCount={swipeCount} />}
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 export default SwipeDeck;
