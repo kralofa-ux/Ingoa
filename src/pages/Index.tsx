@@ -25,7 +25,7 @@ const Index = () => {
           Ingoa
         </h1>
         <p className="text-lg text-foreground/70 font-body mb-2">
-
+          Preserving culture&nbsp;
         </p>
         <p className="text-sm text-foreground/40 font-body mb-10">
           ​
