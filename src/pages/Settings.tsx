@@ -260,7 +260,7 @@ const Settings = () => {
           {!showDeleteConfirm ? (
             <button
               onClick={() => setShowDeleteConfirm(true)}
-              className="w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-full border border-destructive/40 text-sm font-body font-extrabold uppercase tracking-wider text-destructive hover:bg-destructive/10 transition-colors"
+              className="w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-destructive text-white text-sm font-body font-extrabold uppercase tracking-wider hover:bg-destructive/80 active:scale-[0.98] transition-all"
             >
               <Trash2 className="w-4 h-4" />
               Delete Account
