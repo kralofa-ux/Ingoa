@@ -24,15 +24,12 @@ interface CultureIconProps {
 const CultureIcon = ({ culture, size = 20, className = "" }: CultureIconProps) => {
   const svg = svgMap[culture];
   if (svg) {
-    const isAotearoa = culture === "Aotearoa";
-    const renderWidth = isAotearoa ? size * 2 : size;
-    const renderHeight = isAotearoa ? size : size;
     return (
       <img
         src={svg}
         alt={`${culture} flag`}
         className={`inline-block object-cover rounded-sm ${className}`}
-        style={{ width: renderWidth, height: renderHeight }}
+        style={{ width: size, height: size }}
       />
     );
   }
