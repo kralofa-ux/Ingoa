@@ -1,5 +1,5 @@
 import { useApp } from "@/context/AppContext";
-import { motion, AnimatePresence, Reorder, useDragControls, useMotionValue, useTransform } from "framer-motion";
+import { motion, AnimatePresence, Reorder, useMotionValue, useTransform } from "framer-motion";
 import { useState } from "react";
 import NameDetail from "@/components/NameDetail";
 import { PolynesianName } from "@/data/names";
@@ -26,7 +26,13 @@ const SwipeToDeleteItem = ({
   };
 
   return (
-    <div className="relative overflow-hidden rounded-full">
+    <motion.div
+      layout
+      initial={{ opacity: 1, height: "auto" }}
+      exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+      transition={{ duration: 0.3 }}
+      className="relative overflow-hidden rounded-full"
+    >
       {/* Delete background */}
       <motion.div
         className="absolute inset-0 bg-destructive rounded-full flex items-center justify-end pr-6"
@@ -56,7 +62,7 @@ const SwipeToDeleteItem = ({
           </p>
         </div>
       </Reorder.Item>
-    </div>
+    </motion.div>
   );
 };
 
@@ -95,14 +101,16 @@ const LikedList = () => {
           onReorder={handleReorder}
           className="space-y-2 mt-4"
         >
-          {displayNames.map((name) => (
-            <SwipeToDeleteItem
-              key={name.id}
-              name={name}
-              onRemove={removeLikedName}
-              onSelect={setSelectedName}
-            />
-          ))}
+          <AnimatePresence>
+            {displayNames.map((name) => (
+              <SwipeToDeleteItem
+                key={name.id}
+                name={name}
+                onRemove={removeLikedName}
+                onSelect={setSelectedName}
+              />
+            ))}
+          </AnimatePresence>
         </Reorder.Group>
       )}
 

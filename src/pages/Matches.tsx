@@ -115,24 +115,28 @@ const Matches = () => {
         </div>
       ) : (
         <div className="space-y-2 mt-4">
-          {matchedNames.map((name, i) => {
-            const gColor = getGenderColor(name.gender);
-            return (
-              <motion.div
-                key={name.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.08 }}
-                className={`rounded-full py-4 px-5 ${gColor.bg} text-white cursor-pointer text-center`}
-                onClick={() => setSelectedName(name)}
-              >
-                <h3 className="text-lg font-display font-extrabold uppercase tracking-wider">{name.name}</h3>
-                <p className="text-xs text-white/70 font-body mt-0.5">
-                  {name.culture}
-                </p>
-              </motion.div>
-            );
-          })}
+          <AnimatePresence>
+            {matchedNames.map((name, i) => {
+              const gColor = getGenderColor(name.gender);
+              return (
+                <motion.div
+                  key={name.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+                  transition={{ delay: i * 0.08, duration: 0.3 }}
+                  className={`rounded-full py-4 px-5 ${gColor.bg} text-white cursor-pointer text-center`}
+                  onClick={() => setSelectedName(name)}
+                >
+                  <h3 className="text-lg font-display font-extrabold uppercase tracking-wider">{name.name}</h3>
+                  <p className="text-xs text-white/70 font-body mt-0.5">
+                    {name.culture}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
         </div>
       )}
 

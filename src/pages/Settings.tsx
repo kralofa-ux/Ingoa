@@ -2,7 +2,8 @@ import { useAuth } from "@/context/AuthContext";
 import { useApp } from "@/context/AppContext";
 import { Culture, Gender } from "@/data/names";
 import { useState } from "react";
-import { ArrowLeft, Check, ChevronRight, LogOut, Trash2, MessageSquare } from "lucide-react";
+import { Check, LogOut, Trash2, MessageSquare } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 import PartnerConnect from "@/components/PartnerConnect";
 import CultureIcon from "@/components/CultureIcon";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +23,7 @@ const cultures: { value: Culture; label: string }[] = [
 
 const cultureBgColors = [
   "#00DBFF", "#00B1F7", "#0088F0", "#0061DD",
-  "#0049BB", "#003199", "#001A77", "#000456",
+  "#0055CC", "#003199", "#001A77", "#000456",
 ];
 
 const genderOptions: { value: Gender | "all"; label: string; color: string }[] = [
@@ -59,8 +60,8 @@ const Settings = () => {
     updateProfile({ gender_preference: value === "all" ? "all" : value });
   };
 
-  const handleNamePreviewToggle = () => {
-    setShowNamePreview(!showNamePreview);
+  const handleNamePreviewToggle = (checked: boolean) => {
+    setShowNamePreview(checked);
   };
 
   const handleSaveNamePreview = () => {
@@ -98,16 +99,8 @@ const Settings = () => {
 
   return (
     <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto">
-      {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
-        <button
-          onClick={() => navigate(-1)}
-          className="w-9 h-9 rounded-full frosted-pill flex items-center justify-center text-foreground"
-        >
-          <ArrowLeft className="w-4 h-4" />
-        </button>
-        <h1 className="text-2xl font-display font-extrabold text-foreground tracking-tight uppercase">Settings</h1>
-      </div>
+      {/* Header — text only, no arrow */}
+      <h1 className="text-2xl font-display font-extrabold text-foreground tracking-tight uppercase mb-6">Settings</h1>
 
       <div className="space-y-6">
         {/* Gender Preference */}
@@ -172,20 +165,15 @@ const Settings = () => {
           <PartnerConnect />
         </section>
 
-        {/* Name Preview */}
-        <section>
+        {/* Name Preview — toggle switch */}
+        <section className="text-center">
           <h2 className="text-xs font-body font-bold text-foreground/60 uppercase tracking-widest mb-3">
             Name Preview
           </h2>
-          <button
-            onClick={handleNamePreviewToggle}
-            className={`w-full flex items-center justify-between px-5 py-3.5 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-all text-white bg-primary ${
-              showNamePreview ? "ring-2 ring-white/40" : "hover:bg-primary/80"
-            }`}
-          >
-            <span>Show Full Name Preview</span>
-            <ChevronRight className={`w-4 h-4 transition-transform ${showNamePreview ? "rotate-90" : ""}`} />
-          </button>
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <span className="text-sm font-body text-foreground/70">Show Full Name Preview</span>
+            <Switch checked={showNamePreview} onCheckedChange={handleNamePreviewToggle} />
+          </div>
           {showNamePreview && (
             <div className="mt-2 space-y-3">
               <input
@@ -212,19 +200,16 @@ const Settings = () => {
           )}
         </section>
 
-        {/* Send Feedback */}
-        <section>
+        {/* Send Feedback — centre aligned */}
+        <section className="text-center">
           <button
             onClick={() => setShowFeedback(!showFeedback)}
-            className={`w-full flex items-center justify-between px-5 py-3.5 rounded-full bg-primary text-white font-body font-extrabold text-sm uppercase tracking-wider transition-all ${
+            className={`w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-primary text-white font-body font-extrabold text-sm uppercase tracking-wider transition-all ${
               showFeedback ? "ring-2 ring-white/40" : "hover:bg-primary/80"
             }`}
           >
-            <span className="flex items-center gap-2">
-              <MessageSquare className="w-4 h-4" />
-              Send Feedback
-            </span>
-            <ChevronRight className={`w-4 h-4 transition-transform ${showFeedback ? "rotate-90" : ""}`} />
+            <MessageSquare className="w-4 h-4" />
+            Send Feedback
           </button>
           {showFeedback && (
             <div className="mt-2 space-y-3">
