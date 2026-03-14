@@ -47,6 +47,7 @@ const AppLayout = () => {
         <Route path="/liked" element={<ProtectedRoute><LikedList /></ProtectedRoute>} />
         <Route path="/matches" element={<ProtectedRoute><Matches /></ProtectedRoute>} />
         <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+        <Route path="/subscribe" element={<ProtectedRoute><Subscription /></ProtectedRoute>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       {!hideNav && user && <BottomNav />}
