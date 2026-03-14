@@ -13,6 +13,7 @@ import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
 import ResetPassword from "./pages/ResetPassword";
 import Settings from "./pages/Settings";
+import Subscription from "./pages/Subscription";
 import BottomNav from "./components/BottomNav";
 import NotFound from "./pages/NotFound";
 
@@ -31,7 +32,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 const AppLayout = () => {
   const location = useLocation();
   const { user, loading, profile } = useAuth();
-  const hideNav = ["/", "/auth", "/onboarding", "/reset-password"].includes(location.pathname);
+  const hideNav = ["/", "/auth", "/onboarding", "/reset-password", "/subscribe"].includes(location.pathname);
 
   if (loading) return null;
 
@@ -46,6 +47,7 @@ const AppLayout = () => {
         <Route path="/liked" element={<ProtectedRoute><LikedList /></ProtectedRoute>} />
         <Route path="/matches" element={<ProtectedRoute><Matches /></ProtectedRoute>} />
         <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+        <Route path="/subscribe" element={<ProtectedRoute><Subscription /></ProtectedRoute>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       {!hideNav && user && <BottomNav />}

@@ -33,7 +33,6 @@ const SwipeToDeleteItem = ({
       transition={{ duration: 0.3 }}
       className="relative overflow-hidden rounded-full"
     >
-      {/* Delete background */}
       <motion.div
         className="absolute inset-0 bg-destructive rounded-full flex items-center justify-end pr-6"
         style={{ opacity: bgOpacity }}
@@ -57,14 +56,21 @@ const SwipeToDeleteItem = ({
           <h3 className="text-lg font-display font-extrabold text-white uppercase tracking-wider">
             {name.name}
           </h3>
-          <p className="text-xs text-white/70 font-body mt-0.5">
-            {name.culture}
-          </p>
+          <p className="text-xs text-white/70 font-body mt-0.5">{name.culture}</p>
         </div>
       </Reorder.Item>
     </motion.div>
   );
 };
+
+// Pacific wave pattern for empty state
+const WavePattern = () => (
+  <svg width="200" height="60" viewBox="0 0 200 60" className="mx-auto opacity-20 mb-6">
+    <path d="M0 30 Q25 10 50 30 T100 30 T150 30 T200 30" fill="none" stroke="currentColor" strokeWidth="2" className="text-foreground" />
+    <path d="M0 40 Q25 20 50 40 T100 40 T150 40 T200 40" fill="none" stroke="currentColor" strokeWidth="2" className="text-foreground" />
+    <path d="M0 50 Q25 30 50 50 T100 50 T150 50 T200 50" fill="none" stroke="currentColor" strokeWidth="2" className="text-foreground" />
+  </svg>
+);
 
 const LikedList = () => {
   const { likedNames, removeLikedName, mode, currentPartner } = useApp();
@@ -91,8 +97,13 @@ const LikedList = () => {
       )}
       {displayNames.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-5xl mb-4">💛</p>
-          <p className="text-foreground/60 font-body">Start swiping to discover names.</p>
+          <WavePattern />
+          <h2 className="text-2xl font-display font-extrabold text-foreground uppercase tracking-tight mb-3">
+            No Names Yet
+          </h2>
+          <p className="text-foreground/60 font-body text-sm max-w-xs mx-auto">
+            Start swiping to discover beautiful Pacific names for your little one.
+          </p>
         </div>
       ) : (
         <Reorder.Group
