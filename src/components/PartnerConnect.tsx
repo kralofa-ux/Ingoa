@@ -120,7 +120,7 @@ const PartnerConnect = () => {
               </button>
               <button
                 onClick={() => setShowDisconnect(false)}
-                className="flex-1 py-2.5 rounded-full frosted-pill-selected text-foreground text-sm font-body font-medium"
+                className="flex-1 py-2.5 rounded-full frosted-pill text-foreground text-sm font-body font-medium"
               >
                 Cancel
               </button>
@@ -138,7 +138,7 @@ const PartnerConnect = () => {
         <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center mx-auto mb-3">
           <Users className="w-6 h-6 text-primary-foreground" />
         </div>
-        <h3 className="text-lg font-display font-extrabold text-foreground">Connect with Partner</h3>
+        <h3 className="text-xl font-display font-extrabold text-foreground">Connect with Partner</h3>
         <p className="text-xs text-foreground/50 font-body mt-1">
           Share a code to start matching names together
         </p>
@@ -163,7 +163,7 @@ const PartnerConnect = () => {
             </button>
             <button
               onClick={() => setMode("enter")}
-              className="w-full py-3 rounded-full frosted-pill-selected text-foreground text-sm font-body font-bold"
+              className="w-full py-3 rounded-full bg-primary/60 text-white text-sm font-body font-bold uppercase tracking-wider"
             >
               Enter Partner's Code
             </button>
@@ -183,7 +183,7 @@ const PartnerConnect = () => {
               <span className="text-3xl font-display tracking-[0.3em] text-foreground">{code}</span>
               <button
                 onClick={handleCopy}
-                className="w-8 h-8 rounded-full frosted-pill-selected flex items-center justify-center text-foreground/60 hover:text-foreground transition-colors"
+                className="w-8 h-8 rounded-full frosted-pill flex items-center justify-center text-foreground/60 hover:text-foreground transition-colors"
               >
                 {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
               </button>
@@ -212,7 +212,7 @@ const PartnerConnect = () => {
               placeholder="Enter 6-digit code"
               value={inputCode}
               onChange={(e) => setInputCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-              className="w-full px-4 py-3 rounded-full frosted-pill-selected text-foreground text-center text-2xl font-display tracking-[0.3em] border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/40"
+              className="w-full px-4 py-3 rounded-full bg-white/15 text-foreground text-center text-2xl font-display tracking-[0.3em] border border-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 placeholder:text-foreground/40"
             />
             <button
               onClick={handleJoin}
