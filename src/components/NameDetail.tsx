@@ -3,6 +3,7 @@ import { X, Share2 } from "lucide-react";
 import { PolynesianName } from "@/data/names";
 import CultureIcon from "@/components/CultureIcon";
 import { getGenderColor, genderLabel } from "@/lib/genderColors";
+import { useApp } from "@/context/AppContext";
 
 interface NameDetailProps {
   name: PolynesianName;
@@ -11,6 +12,7 @@ interface NameDetailProps {
 
 const NameDetail = ({ name, onClose }: NameDetailProps) => {
   const gColor = getGenderColor(name.gender);
+  const { showNamePreview, middleName, lastName } = useApp();
 
   const shareName = () => {
     const text = `${name.name}\n${name.meaning}\n${name.culture}`;
@@ -20,6 +22,19 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
       navigator.clipboard.writeText(text);
     }
   };
+
+  const previewLines = [];
+  if (showNamePreview) {
+    previewLines.push(name.name);
+    if (middleName.trim()) {
+      previewLines.push(`${name.name} ${middleName.trim()}`);
+    }
+    if (middleName.trim() && lastName.trim()) {
+      previewLines.push(`${name.name} ${middleName.trim()} ${lastName.trim()}`);
+    } else if (lastName.trim()) {
+      previewLines.push(`${name.name} ${lastName.trim()}`);
+    }
+  }
 
   return (
     <motion.div
@@ -64,6 +79,25 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
           <span className="inline-block px-5 py-2 rounded-full text-xs font-body font-bold tracking-widest uppercase bg-white/15 text-white backdrop-blur-sm">
             {genderLabel[name.gender] || "Unisex"}
           </span>
+
+          {/* Name Preview */}
+          {showNamePreview && previewLines.length > 1 && (
+            <div className="pt-2 space-y-1.5">
+              <p className="text-[10px] font-body font-bold text-white/40 uppercase tracking-[0.2em]">
+                Name Preview
+              </p>
+              {previewLines.map((line, i) => (
+                <p
+                  key={i}
+                  className={`font-display font-extrabold text-white/90 ${
+                    i === previewLines.length - 1 ? "text-xl" : "text-sm text-white/60"
+                  }`}
+                >
+                  {line}
+                </p>
+              ))}
+            </div>
+          )}
 
           {/* Share */}
           <div className="pt-2">

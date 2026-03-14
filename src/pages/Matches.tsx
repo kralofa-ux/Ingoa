@@ -9,6 +9,21 @@ import { PolynesianName, Culture, Gender } from "@/data/names";
 import { supabase } from "@/lib/supabase";
 import { getGenderColor } from "@/lib/genderColors";
 
+// Pacific triangle pattern for empty state
+const TrianglePattern = () => (
+  <svg width="180" height="80" viewBox="0 0 180 80" className="mx-auto opacity-15 mb-6">
+    <polygon points="30,0 60,50 0,50" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
+    <polygon points="60,0 90,50 30,50" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
+    <polygon points="90,0 120,50 60,50" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
+    <polygon points="120,0 150,50 90,50" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
+    <polygon points="150,0 180,50 120,50" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
+    <polygon points="45,30 75,80 15,80" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
+    <polygon points="75,30 105,80 45,80" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
+    <polygon points="105,30 135,80 75,80" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
+    <polygon points="135,30 165,80 105,80" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
+  </svg>
+);
+
 const Matches = () => {
   const { likedNamesA } = useApp();
   const { user } = useAuth();
@@ -84,11 +99,12 @@ const Matches = () => {
       <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto">
         <h1 className="text-3xl font-display font-extrabold text-foreground mb-1 tracking-tight uppercase">Matched Names</h1>
         <div className="text-center py-16">
-          <div className="w-16 h-16 rounded-full frosted-pill flex items-center justify-center mx-auto mb-4">
-            <Users className="w-8 h-8 text-foreground/50" />
-          </div>
-          <p className="text-foreground/60 font-body mb-2">
-            Connect with your partner to see matches
+          <TrianglePattern />
+          <h2 className="text-2xl font-display font-extrabold text-foreground uppercase tracking-tight mb-3">
+            Connect First
+          </h2>
+          <p className="text-foreground/60 font-body text-sm max-w-xs mx-auto mb-2">
+            Link with your partner to discover names you both love.
           </p>
           <p className="text-xs text-foreground/40 font-body">
             Go to Settings → Couple Mode to generate or enter a code
@@ -107,10 +123,12 @@ const Matches = () => {
 
       {matchedNames.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-5xl mb-4">🤝</p>
-          <p className="text-foreground/60 font-body">No matches yet — keep swiping!</p>
-          <p className="text-xs text-foreground/40 font-body mt-2">
-            Matches appear when both of you like the same name
+          <TrianglePattern />
+          <h2 className="text-2xl font-display font-extrabold text-foreground uppercase tracking-tight mb-3">
+            No Matches Yet
+          </h2>
+          <p className="text-foreground/60 font-body text-sm max-w-xs mx-auto">
+            Keep swiping — matches appear when both of you like the same name.
           </p>
         </div>
       ) : (
@@ -130,9 +148,7 @@ const Matches = () => {
                   onClick={() => setSelectedName(name)}
                 >
                   <h3 className="text-lg font-display font-extrabold uppercase tracking-wider">{name.name}</h3>
-                  <p className="text-xs text-white/70 font-body mt-0.5">
-                    {name.culture}
-                  </p>
+                  <p className="text-xs text-white/70 font-body mt-0.5">{name.culture}</p>
                 </motion.div>
               );
             })}
