@@ -179,12 +179,13 @@
     position: absolute;
     inset: 0;
     background-image: url('/images/flowers-pattern.jpg');
-    background-size: 300px;
+    background-size: 280px;
     background-repeat: repeat;
-    opacity: 0.06;
+    opacity: 0.08;
     pointer-events: none;
     z-index: 0;
-    mix-blend-mode: screen;
+    filter: invert(1);
+    mix-blend-mode: multiply;
   }
 
   .flower-bg > * {
