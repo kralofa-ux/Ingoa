@@ -182,10 +182,10 @@
     background-size: cover;
     background-position: center;
     background-repeat: repeat-y;
-    opacity: 0.15;
+    opacity: 0.08;
     pointer-events: none;
     z-index: 0;
-    filter: invert(1) brightness(0.1);
+    filter: invert(1) brightness(0.05);
     mix-blend-mode: multiply;
   }
 
