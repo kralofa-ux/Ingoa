@@ -98,7 +98,7 @@ const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto">
+    <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg">
       {/* Header — text only, no arrow */}
       <h1 className="text-2xl font-display font-extrabold text-foreground tracking-tight uppercase mb-6">Settings</h1>
 

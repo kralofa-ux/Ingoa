@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, ArrowLeft as ArrowLeftIcon, User, Users, Check, RotateCcw, Crown, Sparkles } from "lucide-react";
+import { ArrowRight, ArrowLeft as ArrowLeftIcon, User, Users, Check, Crown, Sparkles } from "lucide-react";
 import swipeRightIcon from "@/assets/nav-swipe-right.svg";
 import passIcon from "@/assets/nav-pass.svg";
+import undoIcon from "@/assets/undo-swipe.svg";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Culture } from "@/data/names";
@@ -194,7 +195,7 @@ const Onboarding = () => {
           </div>
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-full bg-[#003199] flex items-center justify-center shrink-0">
-              <RotateCcw className="w-7 h-7 text-white" />
+              <img src={undoIcon} alt="Undo" className="w-8 h-8" />
             </div>
             <div>
               <p className="font-body font-extrabold text-white text-sm uppercase tracking-wider">Tap Corner</p>
@@ -261,7 +262,7 @@ const Onboarding = () => {
   };
 
   return (
-    <div className="min-h-screen px-6 relative overflow-hidden bg-[#0015ff] items-center justify-center flex flex-col">
+    <div className="min-h-screen px-6 relative overflow-hidden bg-[#0012ee] flower-bg items-center justify-center flex flex-col">
       <div className="w-full max-w-sm relative z-10 flex flex-col flex-1 justify-center pb-20">
         <AnimatePresence mode="wait">{stepContent[currentKey]}</AnimatePresence>
 

@@ -45,7 +45,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden bg-background">
+    <div className="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden bg-[#0012ee] flower-bg">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

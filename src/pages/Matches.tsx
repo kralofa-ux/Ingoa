@@ -88,7 +88,7 @@ const Matches = () => {
 
   if (partnerLoading || loading) {
     return (
-      <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto flex items-center justify-center">
+      <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto flex items-center justify-center bg-[#0012ee] flower-bg">
         <Loader2 className="w-8 h-8 animate-spin text-foreground/50" />
       </div>
     );
@@ -96,7 +96,7 @@ const Matches = () => {
 
   if (!status.connected) {
     return (
-      <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto">
+      <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg">
         <h1 className="text-3xl font-display font-extrabold text-foreground mb-1 tracking-tight uppercase">Matched Names</h1>
         <div className="text-center py-16">
           <TrianglePattern />
@@ -115,7 +115,7 @@ const Matches = () => {
   }
 
   return (
-    <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto">
+    <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg">
       <h1 className="text-3xl font-display font-extrabold text-foreground mb-1 tracking-tight uppercase">Matched Names</h1>
       <p className="text-sm text-foreground/60 font-body mb-4">
         Names you and {status.partner_name} both loved 💕
