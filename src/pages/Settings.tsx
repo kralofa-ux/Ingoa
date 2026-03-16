@@ -1,3 +1,4 @@
+import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
 import { useApp } from "@/context/AppContext";
 import { Culture, Gender } from "@/data/names";
