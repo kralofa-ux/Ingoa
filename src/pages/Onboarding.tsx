@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, ArrowLeft as ArrowLeftIcon, User, Users, Check, ChevronRight, ChevronLeft, RotateCcw, Crown, Sparkles } from "lucide-react";
+import { ArrowRight, ArrowLeft as ArrowLeftIcon, User, Users, Check, RotateCcw, Crown, Sparkles } from "lucide-react";
+import swipeRightIcon from "@/assets/nav-swipe-right.svg";
+import passIcon from "@/assets/nav-pass.svg";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Culture } from "@/data/names";
