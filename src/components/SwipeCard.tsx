@@ -4,7 +4,7 @@ import { PolynesianName } from "@/data/names";
 import { useApp } from "@/context/AppContext";
 import CultureIcon from "@/components/CultureIcon";
 import { getGenderColor, genderLabel } from "@/lib/genderColors";
-import { Undo2 } from "lucide-react";
+import undoIcon from "@/assets/undo-swipe.svg";
 
 interface SwipeCardProps {
   name: PolynesianName;
