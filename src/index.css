@@ -169,4 +169,26 @@
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
+
+  .flower-bg {
+    position: relative;
+  }
+
+  .flower-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('/images/flowers-pattern.jpg');
+    background-size: 300px;
+    background-repeat: repeat;
+    opacity: 0.06;
+    pointer-events: none;
+    z-index: 0;
+    mix-blend-mode: screen;
+  }
+
+  .flower-bg > * {
+    position: relative;
+    z-index: 1;
+  }
 }

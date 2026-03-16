@@ -6,7 +6,7 @@ const Subscription = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto">
+    <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg">
       <button
         onClick={() => navigate(-1)}
         className="w-9 h-9 rounded-full frosted-pill flex items-center justify-center text-foreground mb-4"

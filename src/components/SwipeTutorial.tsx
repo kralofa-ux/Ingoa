@@ -29,7 +29,7 @@ const SwipeTutorial = ({ swipeCount }: SwipeTutorialProps) => {
           </div>
           <div className="w-px h-5 bg-primary-foreground/30" />
           <div className="flex items-center gap-1.5 text-primary-foreground">
-            <Undo2 className="w-3.5 h-3.5" />
+            <img src={undoIcon} alt="Undo" className="w-4 h-4" />
             <span className="text-xs font-body font-medium">Undo</span>
           </div>
         </div>

@@ -81,7 +81,7 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, sw
             className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center text-white/70 hover:text-white transition-all active:scale-95 disabled:opacity-25"
             title="Undo last swipe"
           >
-            <Undo2 className="w-4 h-4" />
+            <img src={undoIcon} alt="Undo" className="w-6 h-6" />
           </button>
         )}
 
