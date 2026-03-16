@@ -88,7 +88,7 @@ const Matches = () => {
 
   if (partnerLoading || loading) {
     return (
-      <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto flex items-center justify-center">
+      <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto flex items-center justify-center bg-[#0012ee] flower-bg">
         <Loader2 className="w-8 h-8 animate-spin text-foreground/50" />
       </div>
     );
