@@ -122,8 +122,8 @@ const Onboarding = () => {
     ),
 
     cultures: (
-      <motion.div key="cultures" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="text-left">
-        <h2 className="text-3xl font-display font-extrabold text-foreground uppercase tracking-tight leading-tight mb-6">
+      <motion.div key="cultures" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="text-left my-auto">
+        <h2 className="text-3xl font-display font-extrabold text-foreground uppercase tracking-tight leading-tight mb-4">
           Select Cultures
         </h2>
         <div className="space-y-2">
