@@ -176,7 +176,7 @@ const Onboarding = () => {
         <div className="space-y-5">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-full bg-[#00DBFF] flex items-center justify-center shrink-0">
-              <ChevronRight className="w-7 h-7 text-white" />
+              <img src={swipeRightIcon} alt="Swipe right" className="w-7 h-7 invert" />
             </div>
             <div>
               <p className="font-body font-extrabold text-white text-sm uppercase tracking-wider">Swipe Right</p>
@@ -185,7 +185,7 @@ const Onboarding = () => {
           </div>
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-full bg-[#0074ff] flex items-center justify-center shrink-0">
-              <ChevronLeft className="w-7 h-7 text-white" />
+              <img src={passIcon} alt="Pass" className="w-7 h-7 invert" />
             </div>
             <div>
               <p className="font-body font-extrabold text-white text-sm uppercase tracking-wider">Swipe Left</p>
