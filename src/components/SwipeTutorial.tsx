@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowRight, Undo2 } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import undoIcon from "@/assets/undo-swipe.svg";
 
 interface SwipeTutorialProps {
   swipeCount: number;
