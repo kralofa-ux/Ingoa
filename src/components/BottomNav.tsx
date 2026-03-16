@@ -32,7 +32,7 @@ const BottomNav = () => {
               <img
                 src={link.icon}
                 alt={link.label}
-                className="w-6 h-6 invert brightness-200"
+                className={`invert brightness-200 ${link.to === "/browse" ? "w-8 h-8" : "w-6 h-6"}`}
               />
               {active && <div className="absolute -bottom-1.5 w-1.5 h-1.5 rounded-full bg-foreground" />}
               {link.count !== undefined && link.count > 0 && (
