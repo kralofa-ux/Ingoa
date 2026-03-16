@@ -208,10 +208,10 @@ const Onboarding = () => {
 
     names: (
       <motion.div key="names" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="text-left">
-        <h2 className="text-3xl font-display font-extrabold text-foreground uppercase tracking-tight leading-tight mb-2">
+        <h2 className="text-3xl font-display font-extrabold text-foreground uppercase tracking-tight leading-tight mb-6">
           See How It Looks
         </h2>
-        <p className="text-sm text-foreground/50 font-body mb-6">
+        <p className="text-sm text-foreground/50 font-body mb-8">
           Optional — see how names look with a middle or last name
         </p>
         <div className="space-y-3">
