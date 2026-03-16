@@ -262,7 +262,7 @@ const Onboarding = () => {
   };
 
   return (
-    <div className="min-h-screen px-6 relative overflow-hidden bg-[#0015ff] items-center justify-center flex flex-col">
+    <div className="min-h-screen px-6 relative overflow-hidden bg-[#0012ee] flower-bg items-center justify-center flex flex-col">
       <div className="w-full max-w-sm relative z-10 flex flex-col flex-1 justify-center pb-20">
         <AnimatePresence mode="wait">{stepContent[currentKey]}</AnimatePresence>
 
