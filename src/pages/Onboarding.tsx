@@ -215,10 +215,13 @@ const Onboarding = () => {
           Optional — see how names look with a middle or last name
         </p>
         <div className="space-y-3">
+          <div className="w-full px-5 py-3.5 rounded-full bg-[hsl(210,70%,78%)] text-sm font-body text-foreground font-semibold tracking-wide uppercase">
+            First Name
+          </div>
           <input type="text" placeholder="Middle name" value={middleName} onChange={(e) => setMiddleName(e.target.value)}
-            className="w-full px-5 py-3.5 rounded-full frosted-pill text-foreground text-sm font-body placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-foreground/20 border-0" />
+            className="w-full px-5 py-3.5 rounded-full bg-[hsl(210,65%,72%)] text-foreground text-sm font-body font-semibold placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-white/30 border-0" />
           <input type="text" placeholder="Last name" value={lastName} onChange={(e) => setLastName(e.target.value)}
-            className="w-full px-5 py-3.5 rounded-full frosted-pill text-foreground text-sm font-body placeholder:text-foreground/40 focus:outline-none focus:ring-2 focus:ring-foreground/20 border-0" />
+            className="w-full px-5 py-3.5 rounded-full bg-[hsl(210,60%,66%)] text-foreground text-sm font-body font-semibold placeholder:text-foreground/50 focus:outline-none focus:ring-2 focus:ring-white/30 border-0" />
         </div>
       </motion.div>
     ),

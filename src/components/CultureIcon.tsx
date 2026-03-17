@@ -4,7 +4,6 @@ import hawaiiFlag from "@/assets/hawaii_flag.svg";
 const emojiMap: Record<string, string> = {
   "Cook Islands": "🇨🇰",
   "Samoa": "🇼🇸",
-  "Aotearoa": "🇳🇿",
   "Tonga": "🇹🇴",
   "Fiji": "🇫🇯",
   "Niue": "🇳🇺",
@@ -13,6 +12,7 @@ const emojiMap: Record<string, string> = {
 
 const svgMap: Record<string, string> = {
   "Hawaii": hawaiiFlag,
+  "Aotearoa": tinoFlag,
 };
 
 interface CultureIconProps {
