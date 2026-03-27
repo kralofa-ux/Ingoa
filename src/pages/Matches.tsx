@@ -11,19 +11,9 @@ import { getGenderColor } from "@/lib/genderColors";
 import PageTitle from "@/components/PageTitle";
 import navMatches from "@/assets/nav-matches.svg";
 
-// Pacific triangle pattern for empty state
-const TrianglePattern = () => (
-  <svg width="180" height="80" viewBox="0 0 180 80" className="mx-auto opacity-15 mb-6">
-    <polygon points="30,0 60,50 0,50" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
-    <polygon points="60,0 90,50 30,50" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
-    <polygon points="90,0 120,50 60,50" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
-    <polygon points="120,0 150,50 90,50" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
-    <polygon points="150,0 180,50 120,50" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
-    <polygon points="45,30 75,80 15,80" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
-    <polygon points="75,30 105,80 45,80" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
-    <polygon points="105,30 135,80 75,80" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
-    <polygon points="135,30 165,80 105,80" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
-  </svg>
+// Empty state icon using nav matches icon
+const EmptyIcon = () => (
+  <img src={navMatches} alt="" className="w-16 h-16 mx-auto mb-6 opacity-15 invert brightness-200" />
 );
 
 const Matches = () => {

@@ -95,7 +95,7 @@ const LikedList = () => {
       )}
       {displayNames.length === 0 ? (
         <div className="text-center py-16">
-          <WavePattern />
+          <EmptyIcon />
           <h2 className="text-2xl font-display font-extrabold text-foreground uppercase tracking-tight mb-3">
             No Names Yet
           </h2>
