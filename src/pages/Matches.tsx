@@ -2,13 +2,14 @@ import { useApp } from "@/context/AppContext";
 import { usePartner } from "@/hooks/usePartner";
 import { useAuth } from "@/context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, Users } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import NameDetail from "@/components/NameDetail";
 import { PolynesianName, Culture, Gender } from "@/data/names";
 import { supabase } from "@/lib/supabase";
 import { getGenderColor } from "@/lib/genderColors";
 import PageTitle from "@/components/PageTitle";
+import navMatches from "@/assets/nav-matches.svg";
 
 // Pacific triangle pattern for empty state
 const TrianglePattern = () => (
