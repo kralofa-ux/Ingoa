@@ -115,7 +115,7 @@ const Matches = () => {
 
       {matchedNames.length === 0 ? (
         <div className="text-center py-16">
-          <TrianglePattern />
+          <EmptyIcon />
           <h2 className="text-2xl font-display font-extrabold text-foreground uppercase tracking-tight mb-3">
             No Matches Yet
           </h2>
