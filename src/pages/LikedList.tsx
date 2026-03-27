@@ -4,6 +4,7 @@ import { useState } from "react";
 import NameDetail from "@/components/NameDetail";
 import { PolynesianName } from "@/data/names";
 import { getGenderColor } from "@/lib/genderColors";
+import PageTitle from "@/components/PageTitle";
 
 const SwipeToDeleteItem = ({
   name,

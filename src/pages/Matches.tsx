@@ -8,6 +8,7 @@ import NameDetail from "@/components/NameDetail";
 import { PolynesianName, Culture, Gender } from "@/data/names";
 import { supabase } from "@/lib/supabase";
 import { getGenderColor } from "@/lib/genderColors";
+import PageTitle from "@/components/PageTitle";
 
 // Pacific triangle pattern for empty state
 const TrianglePattern = () => (
