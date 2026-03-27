@@ -8,6 +8,7 @@ import NameDetail from "@/components/NameDetail";
 import { PolynesianName, Culture, Gender } from "@/data/names";
 import { supabase } from "@/lib/supabase";
 import { getGenderColor } from "@/lib/genderColors";
+import PageTitle from "@/components/PageTitle";
 
 // Pacific triangle pattern for empty state
 const TrianglePattern = () => (
@@ -97,7 +98,7 @@ const Matches = () => {
   if (!status.connected) {
     return (
       <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg">
-        <h1 className="text-3xl font-display font-extrabold text-foreground mb-1 tracking-tight uppercase">Matched Names</h1>
+        <PageTitle className="mb-1">Matched Names</PageTitle>
         <div className="text-center py-16">
           <TrianglePattern />
           <h2 className="text-2xl font-display font-extrabold text-foreground uppercase tracking-tight mb-3">
@@ -116,7 +117,7 @@ const Matches = () => {
 
   return (
     <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg">
-      <h1 className="text-3xl font-display font-extrabold text-foreground mb-1 tracking-tight uppercase">Matched Names</h1>
+      <PageTitle className="mb-1">Matched Names</PageTitle>
       <p className="text-sm text-foreground/60 font-body mb-4">
         Names you and {status.partner_name} both loved 💕
       </p>

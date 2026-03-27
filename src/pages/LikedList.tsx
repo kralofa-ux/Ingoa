@@ -4,6 +4,7 @@ import { useState } from "react";
 import NameDetail from "@/components/NameDetail";
 import { PolynesianName } from "@/data/names";
 import { getGenderColor } from "@/lib/genderColors";
+import PageTitle from "@/components/PageTitle";
 
 const SwipeToDeleteItem = ({
   name,
@@ -89,7 +90,7 @@ const LikedList = () => {
 
   return (
     <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg">
-      <h1 className="text-3xl font-display font-extrabold text-foreground mb-1 tracking-tight uppercase">Liked Names</h1>
+      <PageTitle className="mb-1">Liked Names</PageTitle>
       {mode === "couple" && (
         <p className="text-sm text-foreground/60 font-body mb-4">
           Partner {currentPartner}'s list

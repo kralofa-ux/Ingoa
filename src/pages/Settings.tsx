@@ -10,6 +10,7 @@ import CultureIcon from "@/components/CultureIcon";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
+import PageTitle from "@/components/PageTitle";
 
 const cultures: { value: Culture; label: string }[] = [
   { value: "Cook Islands", label: "Cook Islands" },
@@ -101,7 +102,7 @@ const Settings = () => {
   return (
     <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg">
       {/* Header — text only, no arrow */}
-      <h1 className="text-2xl font-display font-extrabold text-foreground tracking-tight uppercase mb-6">Settings</h1>
+      <PageTitle className="mb-6">Settings</PageTitle>
 
       <div className="space-y-6">
         {/* Gender Preference */}

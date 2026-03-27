@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Lock, Heart } from "lucide-react";
+import { Lock } from "lucide-react";
+import logo from "@/assets/logo.png";
 import { supabase } from "@/lib/supabase";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -32,11 +33,11 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6 bg-background">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-sm">
+    <div className="min-h-screen flex flex-col items-center justify-center px-6 bg-[#0012ee] flower-bg">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-sm relative z-10">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center mx-auto mb-4">
-            <Heart className="w-8 h-8 text-primary-foreground" fill="currentColor" />
+          <div className="w-16 h-16 flex items-center justify-center mx-auto mb-4">
+            <img src={logo} alt="Ingoa" className="w-full h-full object-contain" />
           </div>
           <h1 className="text-2xl font-display font-extrabold text-foreground uppercase">Set New Password</h1>
         </div>
