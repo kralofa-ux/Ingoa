@@ -2,27 +2,18 @@ import { useApp } from "@/context/AppContext";
 import { usePartner } from "@/hooks/usePartner";
 import { useAuth } from "@/context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, Users } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import NameDetail from "@/components/NameDetail";
 import { PolynesianName, Culture, Gender } from "@/data/names";
 import { supabase } from "@/lib/supabase";
 import { getGenderColor } from "@/lib/genderColors";
 import PageTitle from "@/components/PageTitle";
+import navMatches from "@/assets/nav-matches.svg";
 
-// Pacific triangle pattern for empty state
-const TrianglePattern = () => (
-  <svg width="180" height="80" viewBox="0 0 180 80" className="mx-auto opacity-15 mb-6">
-    <polygon points="30,0 60,50 0,50" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
-    <polygon points="60,0 90,50 30,50" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
-    <polygon points="90,0 120,50 60,50" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
-    <polygon points="120,0 150,50 90,50" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
-    <polygon points="150,0 180,50 120,50" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
-    <polygon points="45,30 75,80 15,80" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
-    <polygon points="75,30 105,80 45,80" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
-    <polygon points="105,30 135,80 75,80" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
-    <polygon points="135,30 165,80 105,80" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" />
-  </svg>
+// Empty state icon using nav matches icon
+const EmptyIcon = () => (
+  <img src={navMatches} alt="" className="w-16 h-16 mx-auto mb-6 opacity-15 invert brightness-200" />
 );
 
 const Matches = () => {
@@ -100,7 +91,7 @@ const Matches = () => {
       <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg">
         <PageTitle className="mb-1">Matched Names</PageTitle>
         <div className="text-center py-16">
-          <TrianglePattern />
+          <EmptyIcon />
           <h2 className="text-2xl font-display font-extrabold text-foreground uppercase tracking-tight mb-3">
             Connect First
           </h2>
@@ -124,7 +115,7 @@ const Matches = () => {
 
       {matchedNames.length === 0 ? (
         <div className="text-center py-16">
-          <TrianglePattern />
+          <EmptyIcon />
           <h2 className="text-2xl font-display font-extrabold text-foreground uppercase tracking-tight mb-3">
             No Matches Yet
           </h2>

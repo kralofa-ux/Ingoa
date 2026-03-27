@@ -5,6 +5,7 @@ import NameDetail from "@/components/NameDetail";
 import { PolynesianName } from "@/data/names";
 import { getGenderColor } from "@/lib/genderColors";
 import PageTitle from "@/components/PageTitle";
+import navLiked from "@/assets/nav-liked.svg";
 
 const SwipeToDeleteItem = ({
   name,
@@ -64,13 +65,9 @@ const SwipeToDeleteItem = ({
   );
 };
 
-// Pacific wave pattern for empty state
-const WavePattern = () => (
-  <svg width="200" height="60" viewBox="0 0 200 60" className="mx-auto opacity-20 mb-6">
-    <path d="M0 30 Q25 10 50 30 T100 30 T150 30 T200 30" fill="none" stroke="currentColor" strokeWidth="2" className="text-foreground" />
-    <path d="M0 40 Q25 20 50 40 T100 40 T150 40 T200 40" fill="none" stroke="currentColor" strokeWidth="2" className="text-foreground" />
-    <path d="M0 50 Q25 30 50 50 T100 50 T150 50 T200 50" fill="none" stroke="currentColor" strokeWidth="2" className="text-foreground" />
-  </svg>
+// Empty state icon using nav liked icon
+const EmptyIcon = () => (
+  <img src={navLiked} alt="" className="w-16 h-16 mx-auto mb-6 opacity-20 invert brightness-200" />
 );
 
 const LikedList = () => {
@@ -98,7 +95,7 @@ const LikedList = () => {
       )}
       {displayNames.length === 0 ? (
         <div className="text-center py-16">
-          <WavePattern />
+          <EmptyIcon />
           <h2 className="text-2xl font-display font-extrabold text-foreground uppercase tracking-tight mb-3">
             No Names Yet
           </h2>
