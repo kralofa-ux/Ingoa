@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import logo from "@/assets/logo.png";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -16,9 +17,8 @@ const Index = () => {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-          className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-8 bg-[#0015ff]">
-          
-          
+          className="w-24 h-24 flex items-center justify-center mx-auto mb-8">
+          <img src={logo} alt="Ingoa" className="w-full h-full object-contain" />
         </motion.div>
 
         <h1 className="md:text-6xl font-display font-extrabold text-foreground mb-4 uppercase tracking-tight text-8xl">

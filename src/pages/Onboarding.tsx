@@ -77,6 +77,13 @@ const Onboarding = () => {
   const stepContent: Record<string, React.ReactNode> = {
     welcome: (
       <motion.div key="welcome" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="text-left">
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
+          className="w-20 h-20 mb-6">
+          <img src={logo} alt="Ingoa" className="w-full h-full object-contain" />
+        </motion.div>
         <h1 className="text-6xl font-display font-extrabold text-foreground leading-none tracking-tight uppercase">
           ingoa
         </h1>
