@@ -91,7 +91,7 @@ const Matches = () => {
       <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg">
         <PageTitle className="mb-1">Matched Names</PageTitle>
         <div className="text-center py-16">
-          <TrianglePattern />
+          <EmptyIcon />
           <h2 className="text-2xl font-display font-extrabold text-foreground uppercase tracking-tight mb-3">
             Connect First
           </h2>
