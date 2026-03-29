@@ -9,7 +9,7 @@ import { PolynesianName, Culture, Gender } from "@/data/names";
 import { supabase } from "@/lib/supabase";
 import { getGenderColor } from "@/lib/genderColors";
 import PageTitle from "@/components/PageTitle";
-import navMatches from "@/assets/nav-matches.svg";
+import NavMatchesIcon from "@/components/icons/NavMatchesIcon";
 
 // Empty state icon using nav matches icon
 const EmptyIcon = () => (
