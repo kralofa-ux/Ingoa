@@ -185,7 +185,7 @@ const Onboarding = () => {
         <div className="space-y-5">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-full bg-[#00DBFF] flex items-center justify-center shrink-0">
-              <img src={swipeRightIcon} alt="Swipe right" className="w-7 h-7 invert" />
+              <NavSwipeRightIcon className="w-7 h-7 text-white" />
             </div>
             <div>
               <p className="font-body font-extrabold text-white text-sm uppercase tracking-wider">Swipe Right</p>
