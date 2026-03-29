@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ArrowLeft as ArrowLeftIcon, User, Users, Check, Crown, Sparkles } from "lucide-react";
-import swipeRightIcon from "@/assets/nav-swipe-right.svg";
-import passIcon from "@/assets/nav-pass.svg";
-import undoIcon from "@/assets/undo-swipe.svg";
+import NavSwipeRightIcon from "@/components/icons/NavSwipeRightIcon";
+import NavPassIcon from "@/components/icons/NavPassIcon";
+import UndoSwipeIcon from "@/components/icons/UndoSwipeIcon";
 import logo from "@/assets/logo.png";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
