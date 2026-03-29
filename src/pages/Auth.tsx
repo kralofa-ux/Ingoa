@@ -54,7 +54,7 @@ const Auth = () => {
       >
         <div className="text-center mb-8">
           <div className="w-16 h-16 flex items-center justify-center mx-auto mb-4">
-            <img src={logo} alt="Ingoa" className="w-full h-full object-contain" />
+            <img src={logo} alt="Ingoa" className="w-full h-full object-contain" loading="eager" fetchPriority="high" />
           </div>
           <h1 className="text-3xl font-display font-extrabold text-foreground tracking-tight uppercase">Ingoa</h1>
           <p className="text-sm text-foreground/60 font-body mt-1">

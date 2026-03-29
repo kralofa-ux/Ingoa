@@ -82,7 +82,7 @@ const Onboarding = () => {
           animate={{ scale: 1 }}
           transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
           className="w-20 h-20 mb-6">
-          <img src={logo} alt="Ingoa" className="w-full h-full object-contain" />
+          <img src={logo} alt="Ingoa" className="w-full h-full object-contain" loading="eager" fetchPriority="high" />
         </motion.div>
         <h1 className="text-6xl font-display font-extrabold text-foreground leading-none tracking-tight uppercase">
           ingoa

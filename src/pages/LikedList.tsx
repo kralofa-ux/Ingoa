@@ -67,7 +67,7 @@ const SwipeToDeleteItem = ({
 
 // Empty state icon using nav liked icon
 const EmptyIcon = () => (
-  <img src={navLiked} alt="" className="w-16 h-16 mx-auto mb-6 opacity-20 invert brightness-200" />
+  <NavLikedIcon className="w-16 h-16 mx-auto mb-6 text-white opacity-20" />
 );
 
 const LikedList = () => {

@@ -4,7 +4,7 @@ import { PolynesianName } from "@/data/names";
 import { useApp } from "@/context/AppContext";
 import CultureIcon from "@/components/CultureIcon";
 import { getGenderColor, genderLabel } from "@/lib/genderColors";
-import undoIcon from "@/assets/undo-swipe.svg";
+import UndoSwipeIcon from "@/components/icons/UndoSwipeIcon";
 
 interface SwipeCardProps {
   name: PolynesianName;
@@ -51,7 +51,6 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, sw
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
       <div className={`h-full rounded-3xl ${gColor.bg} overflow-hidden flex flex-col relative shadow-card-hover`}>
-        {/* Swipe overlays for first 3 swipes */}
         {showOverlays && (
           <>
             <motion.div
@@ -73,7 +72,6 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, sw
           </>
         )}
 
-        {/* Undo button */}
         {onUndo && (
           <button
             onClick={(e) => { e.stopPropagation(); onUndo(); }}
@@ -81,13 +79,11 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, sw
             className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center text-white/70 hover:text-white transition-all active:scale-95 disabled:opacity-25"
             title="Undo last swipe"
           >
-            <img src={undoIcon} alt="Undo" className="w-6 h-6" />
+            <UndoSwipeIcon className="w-6 h-6" />
           </button>
         )}
 
-        {/* Content */}
         <div className="flex-1 flex flex-col items-center justify-center p-8 relative">
-          {/* Culture badge */}
           <div className="flex items-center gap-2 mb-8">
             <CultureIcon culture={name.culture} size={24} />
             <span className="text-xs font-body font-bold text-white/70 uppercase tracking-[0.2em]">
@@ -95,24 +91,20 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, sw
             </span>
           </div>
 
-          {/* Name */}
           <h2 className="text-6xl md:text-7xl font-display font-extrabold text-white mb-3 text-center leading-none tracking-tight">
             {name.name}
           </h2>
 
-          {/* Name preview */}
           {namePreview && (
             <p className="text-base text-white/60 font-body mb-5 text-center">
               {namePreview}
             </p>
           )}
 
-          {/* Meaning */}
           <p className="text-lg text-white/80 font-body text-center max-w-[280px] leading-relaxed font-medium mb-6">
             {name.meaning}
           </p>
 
-          {/* Gender pill */}
           <span className="inline-block px-5 py-2 rounded-full text-xs font-body font-bold tracking-widest uppercase bg-white/15 text-white backdrop-blur-sm">
             {genderLabel[name.gender] || "Unisex"}
           </span>
