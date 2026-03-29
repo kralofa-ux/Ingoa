@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ArrowLeft as ArrowLeftIcon, User, Users, Check, Crown, Sparkles } from "lucide-react";
-import swipeRightIcon from "@/assets/nav-swipe-right.svg";
-import passIcon from "@/assets/nav-pass.svg";
-import undoIcon from "@/assets/undo-swipe.svg";
+import NavSwipeRightIcon from "@/components/icons/NavSwipeRightIcon";
+import NavPassIcon from "@/components/icons/NavPassIcon";
+import UndoSwipeIcon from "@/components/icons/UndoSwipeIcon";
 import logo from "@/assets/logo.png";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -82,7 +82,7 @@ const Onboarding = () => {
           animate={{ scale: 1 }}
           transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
           className="w-20 h-20 mb-6">
-          <img src={logo} alt="Ingoa" className="w-full h-full object-contain" />
+          <img src={logo} alt="Ingoa" className="w-full h-full object-contain" loading="eager" fetchPriority="high" />
         </motion.div>
         <h1 className="text-6xl font-display font-extrabold text-foreground leading-none tracking-tight uppercase">
           ingoa
@@ -185,7 +185,7 @@ const Onboarding = () => {
         <div className="space-y-5">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-full bg-[#00DBFF] flex items-center justify-center shrink-0">
-              <img src={swipeRightIcon} alt="Swipe right" className="w-7 h-7 invert" />
+              <NavSwipeRightIcon className="w-7 h-7 text-white" />
             </div>
             <div>
               <p className="font-body font-extrabold text-white text-sm uppercase tracking-wider">Swipe Right</p>
@@ -194,7 +194,7 @@ const Onboarding = () => {
           </div>
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-full bg-[#0074ff] flex items-center justify-center shrink-0">
-              <img src={passIcon} alt="Pass" className="w-7 h-7 invert" />
+              <NavPassIcon className="w-7 h-7 text-white" />
             </div>
             <div>
               <p className="font-body font-extrabold text-white text-sm uppercase tracking-wider">Swipe Left</p>
@@ -203,7 +203,7 @@ const Onboarding = () => {
           </div>
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-full bg-[#003199] flex items-center justify-center shrink-0">
-              <img src={undoIcon} alt="Undo" className="w-8 h-8" />
+              <UndoSwipeIcon className="w-8 h-8 text-white" />
             </div>
             <div>
               <p className="font-body font-extrabold text-white text-sm uppercase tracking-wider">Tap Corner</p>

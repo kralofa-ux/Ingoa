@@ -37,7 +37,7 @@ const ResetPassword = () => {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-sm relative z-10">
         <div className="text-center mb-8">
           <div className="w-16 h-16 flex items-center justify-center mx-auto mb-4">
-            <img src={logo} alt="Ingoa" className="w-full h-full object-contain" />
+            <img src={logo} alt="Ingoa" className="w-full h-full object-contain" loading="eager" fetchPriority="high" />
           </div>
           <h1 className="text-2xl font-display font-extrabold text-foreground uppercase">Set New Password</h1>
         </div>

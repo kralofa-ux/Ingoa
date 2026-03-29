@@ -9,11 +9,11 @@ import { PolynesianName, Culture, Gender } from "@/data/names";
 import { supabase } from "@/lib/supabase";
 import { getGenderColor } from "@/lib/genderColors";
 import PageTitle from "@/components/PageTitle";
-import navMatches from "@/assets/nav-matches.svg";
+import NavMatchesIcon from "@/components/icons/NavMatchesIcon";
 
 // Empty state icon using nav matches icon
 const EmptyIcon = () => (
-  <img src={navMatches} alt="" className="w-16 h-16 mx-auto mb-6 opacity-15 invert brightness-200" />
+  <NavMatchesIcon className="w-16 h-16 mx-auto mb-6 text-white opacity-15" />
 );
 
 const Matches = () => {

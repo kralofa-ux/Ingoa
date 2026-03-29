@@ -1,19 +1,19 @@
 import { Link, useLocation } from "react-router-dom";
 import { useApp } from "@/context/AppContext";
-import navHome from "@/assets/nav-home.svg";
-import navLiked from "@/assets/nav-liked.svg";
-import navMatches from "@/assets/nav-matches.svg";
-import navSettings from "@/assets/nav-settings.svg";
+import NavHomeIcon from "@/components/icons/NavHomeIcon";
+import NavLikedIcon from "@/components/icons/NavLikedIcon";
+import NavMatchesIcon from "@/components/icons/NavMatchesIcon";
+import NavSettingsIcon from "@/components/icons/NavSettingsIcon";
 
 const BottomNav = () => {
   const location = useLocation();
   const { likedNames } = useApp();
 
   const links = [
-    { to: "/browse", icon: navHome, label: "Swipe" },
-    { to: "/liked", icon: navLiked, label: "Liked", count: likedNames.length },
-    { to: "/matches", icon: navMatches, label: "Matches" },
-    { to: "/settings", icon: navSettings, label: "Settings" },
+    { to: "/browse", Icon: NavHomeIcon, label: "Swipe", large: true },
+    { to: "/liked", Icon: NavLikedIcon, label: "Liked", count: likedNames.length },
+    { to: "/matches", Icon: NavMatchesIcon, label: "Matches" },
+    { to: "/settings", Icon: NavSettingsIcon, label: "Settings" },
   ];
 
   return (
@@ -29,11 +29,7 @@ const BottomNav = () => {
                 active ? "opacity-100" : "opacity-50 hover:opacity-70"
               }`}
             >
-              <img
-                src={link.icon}
-                alt={link.label}
-                className={`invert brightness-200 ${link.to === "/browse" ? "w-8 h-8" : "w-6 h-6"}`}
-              />
+              <link.Icon className={`text-white ${link.large ? "w-8 h-8" : "w-6 h-6"}`} />
               {active && <div className="absolute -bottom-1.5 w-1.5 h-1.5 rounded-full bg-foreground" />}
               {link.count !== undefined && link.count > 0 && (
                 <span className="absolute -top-0.5 right-1 w-5 h-5 rounded-full bg-accent text-accent-foreground text-[10px] font-bold flex items-center justify-center">
