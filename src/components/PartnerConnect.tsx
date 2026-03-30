@@ -16,6 +16,7 @@ const PartnerConnect = () => {
   const [showDisconnect, setShowDisconnect] = useState(false);
   const [disconnecting, setDisconnecting] = useState(false);
   const [mode, setMode] = useState<"choose" | "generate" | "enter">("choose");
+  const [joinError, setJoinError] = useState("");
 
   const handleGenerate = async () => {
     setGenerating(true);
@@ -47,11 +48,7 @@ const PartnerConnect = () => {
         description: `You're now matched with ${data.partner_name}`,
       });
     } catch (err: any) {
-      toast({
-        title: "Error",
-        description: err.message || "Failed to join",
-        variant: "destructive",
-      });
+      setJoinError(err.message || "Invalid code. Please try again.");
     } finally {
       setJoining(false);
     }
@@ -201,29 +198,52 @@ const PartnerConnect = () => {
         {mode === "enter" && (
           <motion.div
             key="enter"
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            className="space-y-3"
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="space-y-4"
           >
-            <input
-              type="text"
-              maxLength={6}
-              placeholder="Enter 6-digit code"
-              value={inputCode}
-              onChange={(e) => setInputCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-              className="w-full px-4 py-3 rounded-full bg-white/15 text-foreground text-center text-2xl font-display tracking-[0.3em] border border-white/20 focus:outline-none focus:ring-2 focus:ring-primary/40 placeholder:text-foreground/40"
-            />
+            <div className="space-y-2">
+              <label className="text-xs font-body font-bold text-foreground/60 uppercase tracking-widest pl-1">
+                Partner Code
+              </label>
+              <input
+                type="text"
+                maxLength={6}
+                placeholder="Enter 6-digit code"
+                value={inputCode}
+                onChange={(e) => {
+                  setInputCode(e.target.value.replace(/\D/g, "").slice(0, 6));
+                  setJoinError("");
+                }}
+                className={`w-full px-5 py-3.5 rounded-full bg-[hsl(220,60%,88%)]/20 text-foreground text-center text-2xl font-display tracking-[0.3em] border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/30 transition-all ${
+                  joinError ? "ring-2 ring-destructive/60" : ""
+                }`}
+              />
+              <AnimatePresence>
+                {joinError && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    className="text-xs font-body text-destructive pl-1"
+                  >
+                    {joinError}
+                  </motion.p>
+                )}
+              </AnimatePresence>
+            </div>
             <button
               onClick={handleJoin}
               disabled={inputCode.length !== 6 || joining}
-              className="w-full py-3 rounded-full bg-primary text-primary-foreground text-sm font-body font-bold uppercase tracking-wider disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-body font-bold uppercase tracking-wider disabled:opacity-50 flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
             >
               {joining ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
               {joining ? "Connecting..." : "Connect"}
             </button>
             <button
-              onClick={() => { setMode("choose"); setInputCode(""); }}
+              onClick={() => { setMode("choose"); setInputCode(""); setJoinError(""); }}
               className="w-full text-xs text-foreground/50 font-body underline text-center"
             >
               Back
