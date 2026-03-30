@@ -20,7 +20,6 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Verify the user via their token
     const supabaseUser = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_ANON_KEY")!,
@@ -38,16 +37,34 @@ Deno.serve(async (req) => {
 
     const userId = claims.claims.sub as string;
 
-    // Use service role client to delete user data and auth account
     const supabaseAdmin = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    // Delete user data
+    // Find active partner connections and reset partner's mode to solo
+    const { data: connections } = await supabaseAdmin
+      .from("partner_connections")
+      .select("user_a, user_b")
+      .or(`user_a.eq.${userId},user_b.eq.${userId}`)
+      .eq("status", "active");
+
+    if (connections && connections.length > 0) {
+      for (const conn of connections) {
+        const partnerId = conn.user_a === userId ? conn.user_b : conn.user_a;
+        await supabaseAdmin
+          .from("profiles")
+          .update({ mode: "solo" })
+          .eq("user_id", partnerId);
+      }
+    }
+
+    // Delete all user data including partner connections and codes
     await Promise.all([
       supabaseAdmin.from("liked_names").delete().eq("user_id", userId),
       supabaseAdmin.from("passed_names").delete().eq("user_id", userId),
+      supabaseAdmin.from("partner_codes").delete().eq("user_id", userId),
+      supabaseAdmin.from("partner_connections").delete().or(`user_a.eq.${userId},user_b.eq.${userId}`),
       supabaseAdmin.from("profiles").delete().eq("user_id", userId),
     ]);
 
