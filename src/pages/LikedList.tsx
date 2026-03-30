@@ -5,7 +5,9 @@ import NameDetail from "@/components/NameDetail";
 import { PolynesianName } from "@/data/names";
 import { getGenderColor } from "@/lib/genderColors";
 import PageTitle from "@/components/PageTitle";
+import PageTransition from "@/components/PageTransition";
 import NavLikedIcon from "@/components/icons/NavLikedIcon";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const SwipeToDeleteItem = ({
   name,
