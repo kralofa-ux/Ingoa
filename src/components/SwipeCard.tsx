@@ -37,6 +37,15 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, sw
   const gColor = getGenderColor(name.gender);
   const showOverlays = swipeCount < 3;
 
+  const nameFontSize = useMemo(() => {
+    const len = name.name.length;
+    if (len <= 6) return 3.75;   // ~text-6xl
+    if (len <= 9) return 3;      // ~text-5xl
+    if (len <= 12) return 2.5;   // ~text-4xl
+    if (len <= 16) return 2;     // ~text-3xl
+    return 1.65;                 // ~text-2xl+
+  }, [name.name]);
+
   return (
     <motion.div
       className="absolute inset-0 z-10 cursor-grab active:cursor-grabbing"
