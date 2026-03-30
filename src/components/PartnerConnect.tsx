@@ -134,7 +134,7 @@ const PartnerConnect = () => {
     <div className="frosted-pill rounded-2xl p-4 space-y-4">
       <div className="text-center">
         <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center mx-auto mb-3">
-          <Users className="w-6 h-6 text-primary-foreground" />
+          <NavMatchesIcon className="w-6 h-6 text-primary-foreground" />
         </div>
         <h3 className="text-xl font-display font-extrabold text-foreground">Connect with Partner</h3>
         <p className="text-xs text-foreground/50 font-body mt-1">
