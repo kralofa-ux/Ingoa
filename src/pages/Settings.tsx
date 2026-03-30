@@ -92,8 +92,16 @@ const Settings = () => {
     }
   };
 
-  const handleSendFeedback = () => {
-    if (!feedback.trim()) return;
+  const handleSendFeedback = async () => {
+    if (!feedback.trim() || !user) return;
+    const { error } = await supabase.from("feedback").insert({
+      user_id: user.id,
+      message: feedback.trim(),
+    });
+    if (error) {
+      toast({ title: "Error", description: "Failed to send feedback", variant: "destructive" });
+      return;
+    }
     toast({ title: "Thank you!", description: "Your feedback has been sent" });
     setFeedback("");
     setShowFeedback(false);
@@ -291,6 +299,12 @@ const Settings = () => {
               </div>
             </div>
           )}
+        </div>
+
+        {/* Legal Links */}
+        <div className="flex justify-center gap-6 pt-2">
+          <button onClick={() => navigate("/privacy")} className="text-xs text-foreground/50 font-body underline">Privacy Policy</button>
+          <button onClick={() => navigate("/terms")} className="text-xs text-foreground/50 font-body underline">Terms of Service</button>
         </div>
       </div>
     </div>

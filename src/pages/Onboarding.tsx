@@ -172,7 +172,7 @@ const Onboarding = () => {
           <button onClick={() => setGenderPref("all")}
             className={`w-full py-4 rounded-full font-body text-sm font-extrabold uppercase tracking-wider transition-all text-white bg-[hsl(30,85%,55%)] ${
               genderPref === "all" ? "ring-4 ring-white/60 shadow-lg scale-105" : ""
-            }`}>Surprise</button>
+            }`}>Both</button>
         </div>
       </motion.div>
     ),

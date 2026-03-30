@@ -6,6 +6,26 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { RefreshCw, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
+
+const DAILY_SWIPE_LIMIT = 20;
+
+const getDailySwipeData = () => {
+  const stored = localStorage.getItem("ingoa_daily_swipes");
+  if (stored) {
+    const parsed = JSON.parse(stored);
+    const today = new Date().toDateString();
+    if (parsed.date === today) return parsed.count;
+  }
+  return 0;
+};
+
+const setDailySwipeData = (count: number) => {
+  localStorage.setItem("ingoa_daily_swipes", JSON.stringify({
+    date: new Date().toDateString(),
+    count,
+  }));
+};
 
 const SwipeDeck = () => {
   const {
@@ -14,7 +34,9 @@ const SwipeDeck = () => {
     undoLastSwipe, refreshDeck, swipeHistory
   } = useApp();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const { data: allNames, isLoading } = useNames();
+  const [dailySwipes, setDailySwipes] = useState(getDailySwipeData);
   const [swipeCount, setSwipeCount] = useState(() => {
     const stored = localStorage.getItem("ingoa_swipe_count");
     return stored ? parseInt(stored, 10) : 0;
@@ -40,12 +62,20 @@ const SwipeDeck = () => {
       localStorage.setItem("ingoa_swipe_count", String(next));
       return next;
     });
+    setDailySwipes((c) => {
+      const next = c + 1;
+      setDailySwipeData(next);
+      return next;
+    });
     if (currentIndex < filteredNames.length - 1) {
       setCurrentIndex((i) => i + 1);
     } else {
       setCurrentIndex(filteredNames.length);
     }
   };
+
+  // Check if user has hit the daily limit (free users only)
+  const isAtLimit = dailySwipes >= DAILY_SWIPE_LIMIT;
 
   const handleLike = () => {
     if (currentName) {likeName(currentName);advance();}
@@ -70,7 +100,34 @@ const SwipeDeck = () => {
       <div className="flex-1 flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-foreground/50" />
       </div>);
+  }
 
+  if (isAtLimit) {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="text-6xl mb-6">
+          ✨
+        </motion.div>
+        <h3 className="text-2xl font-display font-extrabold text-foreground mb-2 uppercase">Daily Limit Reached</h3>
+        <p className="text-foreground/60 font-body mb-2">
+          You've used your {DAILY_SWIPE_LIMIT} free swipes for today.
+        </p>
+        <p className="text-foreground/50 font-body text-sm mb-6">
+          Upgrade to Premium for unlimited swipes, couple mode, and access to every name.
+        </p>
+        <button
+          onClick={() => navigate("/subscribe")}
+          className="px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-body font-bold flex items-center gap-2 uppercase tracking-wider transition-opacity hover:opacity-90">
+          Unlock Unlimited
+        </button>
+        <p className="text-foreground/40 font-body text-xs mt-4">
+          Or come back tomorrow for {DAILY_SWIPE_LIMIT} more free swipes
+        </p>
+      </div>
+    );
   }
 
   if (!currentName) {
