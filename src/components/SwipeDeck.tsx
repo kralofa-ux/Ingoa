@@ -62,12 +62,20 @@ const SwipeDeck = () => {
       localStorage.setItem("ingoa_swipe_count", String(next));
       return next;
     });
+    setDailySwipes((c) => {
+      const next = c + 1;
+      setDailySwipeData(next);
+      return next;
+    });
     if (currentIndex < filteredNames.length - 1) {
       setCurrentIndex((i) => i + 1);
     } else {
       setCurrentIndex(filteredNames.length);
     }
   };
+
+  // Check if user has hit the daily limit (free users only)
+  const isAtLimit = dailySwipes >= DAILY_SWIPE_LIMIT;
 
   const handleLike = () => {
     if (currentName) {likeName(currentName);advance();}
