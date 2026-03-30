@@ -13,6 +13,8 @@ import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
 import ResetPassword from "./pages/ResetPassword";
 import Settings from "./pages/Settings";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 import Subscription from "./pages/Subscription";
 import BottomNav from "./components/BottomNav";
 import NotFound from "./pages/NotFound";
