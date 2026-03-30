@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, Copy, Check, Link2, Unlink, Loader2 } from "lucide-react";
+import { Copy, Check, Link2, Unlink, Loader2 } from "lucide-react";
+import NavMatchesIcon from "@/components/icons/NavMatchesIcon";
 import { usePartner } from "@/hooks/usePartner";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/context/AuthContext";
@@ -83,7 +84,7 @@ const PartnerConnect = () => {
       <div className="frosted-pill rounded-2xl overflow-hidden">
         <div className="p-4 flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-            <Users className="w-5 h-5 text-primary-foreground" />
+            <NavMatchesIcon className="w-5 h-5 text-primary-foreground" />
           </div>
           <div className="flex-1">
             <p className="text-sm font-body font-semibold text-foreground">
@@ -133,7 +134,7 @@ const PartnerConnect = () => {
     <div className="frosted-pill rounded-2xl p-4 space-y-4">
       <div className="text-center">
         <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center mx-auto mb-3">
-          <Users className="w-6 h-6 text-primary-foreground" />
+          <NavMatchesIcon className="w-6 h-6 text-primary-foreground" />
         </div>
         <h3 className="text-xl font-display font-extrabold text-foreground">Connect with Partner</h3>
         <p className="text-xs text-foreground/50 font-body mt-1">
