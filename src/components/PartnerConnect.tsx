@@ -16,6 +16,7 @@ const PartnerConnect = () => {
   const [showDisconnect, setShowDisconnect] = useState(false);
   const [disconnecting, setDisconnecting] = useState(false);
   const [mode, setMode] = useState<"choose" | "generate" | "enter">("choose");
+  const [joinError, setJoinError] = useState("");
 
   const handleGenerate = async () => {
     setGenerating(true);
