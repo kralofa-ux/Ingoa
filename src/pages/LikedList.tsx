@@ -88,11 +88,6 @@ const LikedList = () => {
   return (
     <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg">
       <PageTitle className="mb-1">Liked Names</PageTitle>
-      {mode === "couple" && (
-        <p className="text-sm text-foreground/60 font-body mb-4">
-          Partner {currentPartner}'s list
-        </p>
-      )}
       {displayNames.length === 0 ? (
         <div className="text-center py-16">
           <EmptyIcon />
