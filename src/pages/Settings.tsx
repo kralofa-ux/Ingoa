@@ -300,6 +300,12 @@ const Settings = () => {
             </div>
           )}
         </div>
+
+        {/* Legal Links */}
+        <div className="flex justify-center gap-6 pt-2">
+          <button onClick={() => navigate("/privacy")} className="text-xs text-foreground/50 font-body underline">Privacy Policy</button>
+          <button onClick={() => navigate("/terms")} className="text-xs text-foreground/50 font-body underline">Terms of Service</button>
+        </div>
       </div>
     </div>
   );
