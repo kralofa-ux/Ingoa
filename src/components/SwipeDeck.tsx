@@ -6,6 +6,26 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { RefreshCw, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
+
+const DAILY_SWIPE_LIMIT = 20;
+
+const getDailySwipeData = () => {
+  const stored = localStorage.getItem("ingoa_daily_swipes");
+  if (stored) {
+    const parsed = JSON.parse(stored);
+    const today = new Date().toDateString();
+    if (parsed.date === today) return parsed.count;
+  }
+  return 0;
+};
+
+const setDailySwipeData = (count: number) => {
+  localStorage.setItem("ingoa_daily_swipes", JSON.stringify({
+    date: new Date().toDateString(),
+    count,
+  }));
+};
 
 const SwipeDeck = () => {
   const {
@@ -14,7 +34,9 @@ const SwipeDeck = () => {
     undoLastSwipe, refreshDeck, swipeHistory
   } = useApp();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const { data: allNames, isLoading } = useNames();
+  const [dailySwipes, setDailySwipes] = useState(getDailySwipeData);
   const [swipeCount, setSwipeCount] = useState(() => {
     const stored = localStorage.getItem("ingoa_swipe_count");
     return stored ? parseInt(stored, 10) : 0;
