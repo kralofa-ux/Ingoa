@@ -233,37 +233,54 @@ const Onboarding = () => {
 
     subscription: (
       <motion.div key="subscription" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="text-left">
-        <h2 className="text-3xl font-display font-extrabold text-foreground uppercase tracking-tight leading-tight mb-6">
+        <h2 className="text-3xl font-display font-extrabold text-foreground uppercase tracking-tight leading-tight mb-2">
           Choose Your Plan
         </h2>
+        <p className="text-sm text-foreground/50 font-body mb-6">
+          Unlock the full experience
+        </p>
+
+        {/* Premium tier — featured */}
+        <motion.div
+          initial={{ scale: 0.97 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.15, duration: 0.35 }}
+          className="rounded-2xl p-6 mb-4 relative overflow-hidden"
+          style={{ background: "linear-gradient(145deg, hsl(235 50% 22%), hsl(235 55% 14%))" }}
+        >
+          <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-foreground/10 rounded-full px-2.5 py-1">
+            <Sparkles className="w-3 h-3 text-[hsl(var(--accent))]" />
+            <span className="text-[10px] font-body font-bold text-foreground/80 uppercase tracking-wider">Recommended</span>
+          </div>
+          <h3 className="font-display font-extrabold text-foreground text-xl uppercase tracking-wide mb-1 flex items-center gap-2">
+            <Crown className="w-5 h-5 text-[hsl(var(--accent))]" /> Premium
+          </h3>
+          <p className="text-xs text-foreground/40 font-body mb-4">Everything you need</p>
+          <ul className="space-y-3 text-sm font-body text-foreground/80">
+            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-[hsl(var(--accent))] shrink-0" /> Unlimited swipes</li>
+            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-[hsl(var(--accent))] shrink-0" /> Couple mode — match together</li>
+            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-[hsl(var(--accent))] shrink-0" /> Full name catalogue</li>
+            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-[hsl(var(--accent))] shrink-0" /> Name preview & sharing</li>
+          </ul>
+          <motion.button
+            whileTap={{ scale: 0.97 }}
+            className="w-full mt-5 py-3.5 rounded-full bg-[hsl(var(--accent))] text-white text-sm font-body font-bold uppercase tracking-wider shadow-glow-accent active:scale-[0.98] transition-all"
+          >
+            Upgrade to Premium
+          </motion.button>
+        </motion.div>
 
         {/* Free tier */}
-        <div className="frosted-pill rounded-2xl p-5 mb-3">
-          <h3 className="font-display font-extrabold text-foreground text-lg uppercase tracking-wide mb-3">Free</h3>
-          <ul className="space-y-2 text-sm font-body text-foreground/70">
-            <li className="flex items-center gap-2"><Check className="w-4 h-4 text-foreground/50 shrink-0" /> 20 swipes per day</li>
-            <li className="flex items-center gap-2"><Check className="w-4 h-4 text-foreground/50 shrink-0" /> Save liked names</li>
-            <li className="flex items-center gap-2"><Check className="w-4 h-4 text-foreground/50 shrink-0" /> Basic name details</li>
-          </ul>
-        </div>
-
-        {/* Premium tier */}
-        <div className="rounded-2xl p-5 bg-primary/20 border border-primary/30 relative overflow-hidden">
-          <div className="absolute top-3 right-3">
-            <Crown className="w-5 h-5 text-primary" />
+        <div className="frosted-pill rounded-2xl p-5">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-display font-extrabold text-foreground text-base uppercase tracking-wide">Free</h3>
+            <span className="text-[10px] font-body font-bold text-foreground/40 uppercase tracking-wider bg-foreground/10 rounded-full px-2.5 py-1">Current</span>
           </div>
-          <h3 className="font-display font-extrabold text-foreground text-lg uppercase tracking-wide mb-3 flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-primary" /> Premium
-          </h3>
-          <ul className="space-y-2 text-sm font-body text-foreground/70">
-            <li className="flex items-center gap-2"><Check className="w-4 h-4 text-primary shrink-0" /> Unlimited swipes</li>
-            <li className="flex items-center gap-2"><Check className="w-4 h-4 text-primary shrink-0" /> Couple mode</li>
-            <li className="flex items-center gap-2"><Check className="w-4 h-4 text-primary shrink-0" /> Full name catalogue</li>
-            <li className="flex items-center gap-2"><Check className="w-4 h-4 text-primary shrink-0" /> Name preview & sharing</li>
+          <ul className="space-y-2.5 text-sm font-body text-foreground/60">
+            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-foreground/40 shrink-0" /> 20 swipes per day</li>
+            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-foreground/40 shrink-0" /> Save liked names</li>
+            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-foreground/40 shrink-0" /> Basic name details</li>
           </ul>
-          <button className="w-full mt-4 py-3 rounded-full bg-primary text-primary-foreground text-sm font-body font-bold uppercase tracking-wider">
-            Upgrade
-          </button>
         </div>
       </motion.div>
     ),

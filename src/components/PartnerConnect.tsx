@@ -48,11 +48,7 @@ const PartnerConnect = () => {
         description: `You're now matched with ${data.partner_name}`,
       });
     } catch (err: any) {
-      toast({
-        title: "Error",
-        description: err.message || "Failed to join",
-        variant: "destructive",
-      });
+      setJoinError(err.message || "Invalid code. Please try again.");
     } finally {
       setJoining(false);
     }
