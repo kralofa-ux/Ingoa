@@ -92,8 +92,16 @@ const Settings = () => {
     }
   };
 
-  const handleSendFeedback = () => {
-    if (!feedback.trim()) return;
+  const handleSendFeedback = async () => {
+    if (!feedback.trim() || !user) return;
+    const { error } = await supabase.from("feedback").insert({
+      user_id: user.id,
+      message: feedback.trim(),
+    });
+    if (error) {
+      toast({ title: "Error", description: "Failed to send feedback", variant: "destructive" });
+      return;
+    }
     toast({ title: "Thank you!", description: "Your feedback has been sent" });
     setFeedback("");
     setShowFeedback(false);
