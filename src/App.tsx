@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { AppProvider } from "@/context/AppContext";
+import { AnimatePresence } from "framer-motion";
+import PageTransition from "@/components/PageTransition";
 import Index from "./pages/Index";
 import Browse from "./pages/Browse";
 import LikedList from "./pages/LikedList";
