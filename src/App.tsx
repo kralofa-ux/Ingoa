@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { AppProvider } from "@/context/AppContext";
+import { AnimatePresence } from "framer-motion";
+import PageTransition from "@/components/PageTransition";
 import Index from "./pages/Index";
 import Browse from "./pages/Browse";
 import LikedList from "./pages/LikedList";
@@ -40,20 +42,22 @@ const AppLayout = () => {
 
   return (
     <>
-      <Routes>
-        <Route path="/" element={user ? (profile?.onboarding_completed ? <Navigate to="/browse" replace /> : <Navigate to="/onboarding" replace />) : <Index />} />
-        <Route path="/auth" element={user ? <Navigate to="/browse" replace /> : <Auth />} />
-        <Route path="/onboarding" element={user ? <Onboarding /> : <Navigate to="/auth" replace />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/browse" element={<ProtectedRoute><Browse /></ProtectedRoute>} />
-        <Route path="/liked" element={<ProtectedRoute><LikedList /></ProtectedRoute>} />
-        <Route path="/matches" element={<ProtectedRoute><Matches /></ProtectedRoute>} />
-        <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-        <Route path="/subscribe" element={<ProtectedRoute><Subscription /></ProtectedRoute>} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={user ? (profile?.onboarding_completed ? <Navigate to="/browse" replace /> : <Navigate to="/onboarding" replace />) : <PageTransition><Index /></PageTransition>} />
+          <Route path="/auth" element={user ? <Navigate to="/browse" replace /> : <PageTransition><Auth /></PageTransition>} />
+          <Route path="/onboarding" element={user ? <Onboarding /> : <Navigate to="/auth" replace />} />
+          <Route path="/reset-password" element={<PageTransition><ResetPassword /></PageTransition>} />
+          <Route path="/browse" element={<ProtectedRoute><PageTransition><Browse /></PageTransition></ProtectedRoute>} />
+          <Route path="/liked" element={<ProtectedRoute><PageTransition><LikedList /></PageTransition></ProtectedRoute>} />
+          <Route path="/matches" element={<ProtectedRoute><PageTransition><Matches /></PageTransition></ProtectedRoute>} />
+          <Route path="/settings" element={<ProtectedRoute><PageTransition><Settings /></PageTransition></ProtectedRoute>} />
+          <Route path="/subscribe" element={<ProtectedRoute><PageTransition><Subscription /></PageTransition></ProtectedRoute>} />
+          <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
+          <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
+          <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
+        </Routes>
+      </AnimatePresence>
       {!hideNav && user && <BottomNav />}
     </>
   );

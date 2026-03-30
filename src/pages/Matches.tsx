@@ -4,6 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 import NameDetail from "@/components/NameDetail";
 import { PolynesianName, Culture, Gender } from "@/data/names";
 import { supabase } from "@/lib/supabase";
@@ -80,8 +81,13 @@ const Matches = () => {
 
   if (partnerLoading || loading) {
     return (
-      <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto flex items-center justify-center bg-[#0012ee] flower-bg">
-        <Loader2 className="w-8 h-8 animate-spin text-foreground/50" />
+      <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg">
+        <PageTitle className="mb-1">Matched Names</PageTitle>
+        <div className="space-y-2 mt-4">
+          {[...Array(4)].map((_, i) => (
+            <Skeleton key={i} className="h-14 w-full rounded-full bg-foreground/10" />
+          ))}
+        </div>
       </div>
     );
   }

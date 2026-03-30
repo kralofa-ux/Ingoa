@@ -30,6 +30,7 @@ const BottomNav = () => {
               }`}
             >
               <link.Icon className={`text-white ${link.large ? "w-8 h-8" : "w-6 h-6"}`} />
+              <span className="sr-only">{link.label}</span>
               {active && <div className="absolute -bottom-1.5 w-1.5 h-1.5 rounded-full bg-foreground" />}
               {link.count !== undefined && link.count > 0 && (
                 <span className="absolute -top-0.5 right-1 w-5 h-5 rounded-full bg-accent text-accent-foreground text-[10px] font-bold flex items-center justify-center">

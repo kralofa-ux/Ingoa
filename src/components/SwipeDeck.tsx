@@ -159,7 +159,7 @@ const SwipeDeck = () => {
     <div className="flex-1 flex flex-col items-center px-4 relative">
       {mode === "couple" &&
       <div className="mb-3 px-5 py-2 rounded-full bg-primary text-primary-foreground text-sm font-body font-semibold">
-          Partner {currentPartner}'s turn
+          Couple Mode
         </div>
       }
 
