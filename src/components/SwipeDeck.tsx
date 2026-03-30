@@ -100,6 +100,35 @@ const SwipeDeck = () => {
       <div className="flex-1 flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-foreground/50" />
       </div>);
+  }
+
+  if (isAtLimit) {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="text-6xl mb-6">
+          ✨
+        </motion.div>
+        <h3 className="text-2xl font-display font-extrabold text-foreground mb-2 uppercase">Daily Limit Reached</h3>
+        <p className="text-foreground/60 font-body mb-2">
+          You've used your {DAILY_SWIPE_LIMIT} free swipes for today.
+        </p>
+        <p className="text-foreground/50 font-body text-sm mb-6">
+          Upgrade to Premium for unlimited swipes, couple mode, and access to every name.
+        </p>
+        <button
+          onClick={() => navigate("/subscribe")}
+          className="px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-body font-bold flex items-center gap-2 uppercase tracking-wider transition-opacity hover:opacity-90">
+          Unlock Unlimited
+        </button>
+        <p className="text-foreground/40 font-body text-xs mt-4">
+          Or come back tomorrow for {DAILY_SWIPE_LIMIT} more free swipes
+        </p>
+      </div>
+    );
+  }
 
   }
 
