@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, Copy, Check, Link2, Unlink, Loader2 } from "lucide-react";
+import { Copy, Check, Link2, Unlink, Loader2 } from "lucide-react";
+import NavMatchesIcon from "@/components/icons/NavMatchesIcon";
 import { usePartner } from "@/hooks/usePartner";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/context/AuthContext";
