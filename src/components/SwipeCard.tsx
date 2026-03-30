@@ -91,7 +91,10 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, sw
             </span>
           </div>
 
-          <h2 className="text-6xl md:text-7xl font-display font-extrabold text-white mb-3 text-center leading-none tracking-tight">
+          <h2
+            className="font-display font-extrabold text-white mb-3 text-center leading-[1.05] tracking-tight break-words"
+            style={{ fontSize: `${nameFontSize}rem` }}
+          >
             {name.name}
           </h2>
 
