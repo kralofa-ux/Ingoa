@@ -84,7 +84,7 @@ const PartnerConnect = () => {
       <div className="frosted-pill rounded-2xl overflow-hidden">
         <div className="p-4 flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-            <Users className="w-5 h-5 text-primary-foreground" />
+            <NavMatchesIcon className="w-5 h-5 text-primary-foreground" />
           </div>
           <div className="flex-1">
             <p className="text-sm font-body font-semibold text-foreground">
