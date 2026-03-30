@@ -1,5 +1,5 @@
 import { motion, useMotionValue, useTransform, PanInfo } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 import { PolynesianName } from "@/data/names";
 import { useApp } from "@/context/AppContext";
 import CultureIcon from "@/components/CultureIcon";
@@ -36,6 +36,15 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, sw
 
   const gColor = getGenderColor(name.gender);
   const showOverlays = swipeCount < 3;
+
+  const nameFontSize = useMemo(() => {
+    const len = name.name.length;
+    if (len <= 6) return 3.75;   // ~text-6xl
+    if (len <= 9) return 3;      // ~text-5xl
+    if (len <= 12) return 2.5;   // ~text-4xl
+    if (len <= 16) return 2;     // ~text-3xl
+    return 1.65;                 // ~text-2xl+
+  }, [name.name]);
 
   return (
     <motion.div
@@ -91,7 +100,10 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, sw
             </span>
           </div>
 
-          <h2 className="text-6xl md:text-7xl font-display font-extrabold text-white mb-3 text-center leading-none tracking-tight">
+          <h2
+            className="font-display font-extrabold text-white mb-3 text-center leading-[1.05] tracking-tight break-words"
+            style={{ fontSize: `${nameFontSize}rem` }}
+          >
             {name.name}
           </h2>
 
