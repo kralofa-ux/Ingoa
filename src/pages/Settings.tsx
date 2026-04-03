@@ -35,7 +35,7 @@ const genderOptions: { value: Gender | "all"; label: string; color: string }[] =
 ];
 
 const Settings = () => {
-  const { user, profile, updateProfile, signOut } = useAuth();
+  const { user, profile, updateProfile, signOut, isSubscribed, subscriptionTier } = useAuth();
   const {
     cultureFilter, setCultureFilter,
     genderFilter, setGenderFilter,
@@ -220,13 +220,30 @@ const Settings = () => {
           </AnimatePresence>
         </section>
 
-        {/* Upgrade to Premium */}
-        <button
-          onClick={() => navigate("/subscribe")}
-          className="w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-primary text-white text-sm font-body font-extrabold uppercase tracking-wider hover:bg-primary/80 active:scale-[0.98] transition-all"
-        >
-          ✨ Upgrade to Premium
-        </button>
+        {/* Subscription Status */}
+        {isSubscribed ? (
+          <div className="frosted-pill rounded-2xl p-4 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-body font-bold text-foreground uppercase tracking-wider">
+                ✨ Premium ({subscriptionTier === "lifetime" ? "Lifetime" : "Monthly"})
+              </span>
+              <span className="text-[10px] font-body font-bold text-[hsl(var(--accent))] uppercase tracking-wider bg-[hsl(var(--accent))]/20 rounded-full px-2.5 py-1">Active</span>
+            </div>
+            <button
+              onClick={() => navigate("/subscribe")}
+              className="w-full py-3 rounded-full frosted-pill text-foreground text-sm font-body font-bold uppercase tracking-wider hover:bg-foreground/10 transition-all"
+            >
+              Manage Plan
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => navigate("/subscribe")}
+            className="w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-primary text-white text-sm font-body font-extrabold uppercase tracking-wider hover:bg-primary/80 active:scale-[0.98] transition-all"
+          >
+            ✨ Upgrade to Premium
+          </button>
+        )}
 
 
         <section className="text-center">

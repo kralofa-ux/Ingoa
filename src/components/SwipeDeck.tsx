@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 import { RefreshCw, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 const DAILY_SWIPE_LIMIT = 20;
 
@@ -35,6 +36,7 @@ const SwipeDeck = () => {
   } = useApp();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { isSubscribed } = useAuth();
   const { data: allNames, isLoading } = useNames();
   const [dailySwipes, setDailySwipes] = useState(getDailySwipeData);
   const [swipeCount, setSwipeCount] = useState(() => {
@@ -74,8 +76,8 @@ const SwipeDeck = () => {
     }
   };
 
-  // Check if user has hit the daily limit (free users only)
-  const isAtLimit = dailySwipes >= DAILY_SWIPE_LIMIT;
+  // Premium users bypass daily limit
+  const isAtLimit = !isSubscribed && dailySwipes >= DAILY_SWIPE_LIMIT;
 
   const handleLike = () => {
     if (currentName) {likeName(currentName);advance();}
