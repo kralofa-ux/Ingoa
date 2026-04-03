@@ -76,8 +76,8 @@ const SwipeDeck = () => {
     }
   };
 
-  // Check if user has hit the daily limit (free users only)
-  const isAtLimit = dailySwipes >= DAILY_SWIPE_LIMIT;
+  // Premium users bypass daily limit
+  const isAtLimit = !isSubscribed && dailySwipes >= DAILY_SWIPE_LIMIT;
 
   const handleLike = () => {
     if (currentName) {likeName(currentName);advance();}
