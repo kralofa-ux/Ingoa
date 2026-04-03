@@ -35,7 +35,7 @@ const genderOptions: { value: Gender | "all"; label: string; color: string }[] =
 ];
 
 const Settings = () => {
-  const { user, profile, updateProfile, signOut } = useAuth();
+  const { user, profile, updateProfile, signOut, isSubscribed, subscriptionTier } = useAuth();
   const {
     cultureFilter, setCultureFilter,
     genderFilter, setGenderFilter,
