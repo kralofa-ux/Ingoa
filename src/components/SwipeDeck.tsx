@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 import { RefreshCw, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 const DAILY_SWIPE_LIMIT = 20;
 
