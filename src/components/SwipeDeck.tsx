@@ -36,6 +36,7 @@ const SwipeDeck = () => {
   } = useApp();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { isSubscribed } = useAuth();
   const { data: allNames, isLoading } = useNames();
   const [dailySwipes, setDailySwipes] = useState(getDailySwipeData);
   const [swipeCount, setSwipeCount] = useState(() => {
