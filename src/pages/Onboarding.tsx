@@ -236,7 +236,7 @@ const Onboarding = () => {
         <h2 className="text-3xl font-display font-extrabold text-foreground uppercase tracking-tight leading-tight mb-2">
           Choose Your Plan
         </h2>
-        <p className="text-sm text-foreground/50 font-body mb-6">
+        <p className="text-sm text-white/50 font-body mb-6">
           Unlock the full experience
         </p>
 
@@ -246,40 +246,48 @@ const Onboarding = () => {
           animate={{ scale: 1 }}
           transition={{ delay: 0.15, duration: 0.35 }}
           className="rounded-2xl p-6 mb-4 relative overflow-hidden"
-          style={{ background: "linear-gradient(145deg, hsl(235 50% 22%), hsl(235 55% 14%))" }}
+          style={{ background: "linear-gradient(145deg, #003199, #000456)" }}
         >
-          <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-foreground/10 rounded-full px-2.5 py-1">
-            <Sparkles className="w-3 h-3 text-[hsl(var(--accent))]" />
-            <span className="text-[10px] font-body font-bold text-foreground/80 uppercase tracking-wider">Recommended</span>
+          <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-white/10 rounded-full px-2.5 py-1">
+            <Sparkles className="w-3 h-3 text-[#00DBFF]" />
+            <span className="text-[10px] font-body font-bold text-white/80 uppercase tracking-wider">Recommended</span>
           </div>
-          <h3 className="font-display font-extrabold text-foreground text-xl uppercase tracking-wide mb-1 flex items-center gap-2">
-            <Crown className="w-5 h-5 text-[hsl(var(--accent))]" /> Premium
+          <h3 className="font-display font-extrabold text-white text-xl uppercase tracking-wide mb-1 flex items-center gap-2">
+            <Crown className="w-5 h-5 text-[#00DBFF]" /> Premium
           </h3>
-          <p className="text-xs text-foreground/40 font-body mb-4">Everything you need</p>
-          <ul className="space-y-3 text-sm font-body text-foreground/80">
-            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-[hsl(var(--accent))] shrink-0" /> Unlimited swipes</li>
-            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-[hsl(var(--accent))] shrink-0" /> Couple mode — match together</li>
-            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-[hsl(var(--accent))] shrink-0" /> Full name catalogue</li>
-            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-[hsl(var(--accent))] shrink-0" /> Name preview & sharing</li>
+          <p className="text-xs text-white/40 font-body mb-4">Everything you need</p>
+          <ul className="space-y-3 text-sm font-body text-white/80">
+            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-[#00DBFF] shrink-0" /> Unlimited swipes</li>
+            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-[#00DBFF] shrink-0" /> Couple mode — match together</li>
+            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-[#00DBFF] shrink-0" /> Full name catalogue</li>
+            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-[#00DBFF] shrink-0" /> Name preview & sharing</li>
           </ul>
-          <motion.button
-            whileTap={{ scale: 0.97 }}
-            className="w-full mt-5 py-3.5 rounded-full bg-[hsl(var(--accent))] text-white text-sm font-body font-bold uppercase tracking-wider shadow-glow-accent active:scale-[0.98] transition-all"
-          >
-            Upgrade to Premium
-          </motion.button>
+          <div className="flex gap-2 mt-5">
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              className="flex-1 py-3 rounded-full bg-[#00DBFF] text-[#000456] text-xs font-body font-bold uppercase tracking-wider shadow-lg active:scale-[0.98] transition-all"
+            >
+              $9.99/mo
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              className="flex-1 py-3 rounded-full bg-[#0088F0] text-white text-xs font-body font-bold uppercase tracking-wider shadow-lg active:scale-[0.98] transition-all"
+            >
+              $20 Lifetime
+            </motion.button>
+          </div>
         </motion.div>
 
         {/* Free tier */}
-        <div className="frosted-pill rounded-2xl p-5">
+        <div className="rounded-2xl p-5 bg-white/5 border border-white/10">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="font-display font-extrabold text-foreground text-base uppercase tracking-wide">Free</h3>
-            <span className="text-[10px] font-body font-bold text-foreground/40 uppercase tracking-wider bg-foreground/10 rounded-full px-2.5 py-1">Current</span>
+            <h3 className="font-display font-extrabold text-white text-base uppercase tracking-wide">Free</h3>
+            <span className="text-[10px] font-body font-bold text-white/40 uppercase tracking-wider bg-white/10 rounded-full px-2.5 py-1">Current</span>
           </div>
-          <ul className="space-y-2.5 text-sm font-body text-foreground/60">
-            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-foreground/40 shrink-0" /> 20 swipes per day</li>
-            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-foreground/40 shrink-0" /> Save liked names</li>
-            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-foreground/40 shrink-0" /> Basic name details</li>
+          <ul className="space-y-2.5 text-sm font-body text-white/50">
+            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-white/30 shrink-0" /> 20 swipes per day</li>
+            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-white/30 shrink-0" /> Save liked names</li>
+            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-white/30 shrink-0" /> Basic name details</li>
           </ul>
         </div>
       </motion.div>
