@@ -1,93 +1,83 @@
 
 
-# Stripe Integration Plan — Both Payment Options
+# Ingoa — Mobile-First Optimization & Store Readiness
 
-## Summary
-Wire up functional Stripe checkout for both the monthly subscription ($9.99/mo) and one-time purchase ($20) on the Subscription page. Add subscription status checking to AuthContext so premium features are gated app-wide.
+## Current Score: ~68/100 → Target: 85+
 
-## Stripe Products
-- **Monthly**: `price_1THeOlS2YuVDTyoq2oCosiMb` (NZD $9.99/mo, recurring)
-- **Lifetime**: `price_1THePVS2YuVDTyoqFgQQ1N8d` (NZD $20, one-time)
+The app has auth, Stripe payments, swipe engine, and cloud persistence. The remaining gaps fall into three categories: **mobile UX polish**, **missing integrations**, and **native packaging**.
 
 ---
 
-## Step 1: Create `check-subscription` Edge Function
-**File:** `supabase/functions/check-subscription/index.ts`
+## Implementation Plan (ordered by priority)
 
-- Authenticates user via JWT
-- Looks up Stripe customer by email
-- Checks for active subscription OR completed one-time payment (via checkout sessions with `payment_status: 'paid'`)
-- Returns `{ subscribed, product_id, subscription_end }`
-- Called on login, page load, and periodically
+### 1. Stripe Webhook Edge Function
+**Why:** After checkout, subscription status relies on polling. Webhooks give instant confirmation.
+- Create `supabase/functions/stripe-webhook/index.ts`
+- Handle `checkout.session.completed` and `customer.subscription.deleted`
+- Verify Stripe signature using `STRIPE_WEBHOOK_SECRET` (will need to add this secret)
+- Set `verify_jwt = false` in config for this function
+- Update user's subscription status in profiles table
 
-## Step 2: Create `create-checkout` Edge Function
-**File:** `supabase/functions/create-checkout/index.ts`
+### 2. Wire Onboarding Plan Buttons to Stripe
+**Why:** The "Choose Your Plan" step buttons are non-functional — they don't trigger checkout.
+- Edit `src/pages/Onboarding.tsx` to call `create-checkout` when Monthly/Lifetime buttons are clicked
+- Add loading state to buttons during redirect
+- "Continue Free" keeps existing behavior
 
-- Accepts `{ priceId }` in request body
-- Authenticates user via JWT
-- Finds or references existing Stripe customer
-- Creates checkout session with `mode: "subscription"` or `mode: "payment"` based on whether the price is recurring
-- Returns `{ url }` for redirect
-- Success URL: `/subscribe?success=true`, Cancel URL: `/subscribe`
+### 3. Safe Area Insets for BottomNav
+**Why:** On iPhone notch/Dynamic Island devices, the bottom nav overlaps the home indicator.
+- Edit `src/components/BottomNav.tsx` — add `pb-[env(safe-area-inset-bottom)]` padding
+- Remove safe-area padding from `body` in `src/index.css` (it adds unnecessary top padding on all pages) and apply it per-component instead
+- Add top safe area to page headers (Browse, Liked, Matches, Settings)
 
-## Step 3: Create `customer-portal` Edge Function
-**File:** `supabase/functions/customer-portal/index.ts`
+### 4. Disable Text Selection & Overscroll
+**Why:** Native apps don't have rubber-band scrolling or text selection on UI elements.
+- Add `-webkit-user-select: none` and `user-select: none` to body
+- Add `overscroll-behavior: none` to prevent pull-to-refresh bounce
+- Add `-webkit-touch-callout: none` to prevent long-press context menus
+- Keep text selection enabled on input fields
 
-- Authenticates user, finds Stripe customer
-- Creates a Stripe Customer Portal session
-- Returns `{ url }` — lets users manage/cancel subscriptions
+### 5. Skeleton Loading States
+**Why:** Spinner feels web-like. Skeleton cards feel native.
+- Replace `<Loader2>` spinner in `SwipeDeck` with a skeleton card matching SwipeCard dimensions
+- Add skeleton rows to LikedList and Matches loading states
 
-## Step 4: Add Subscription State to AuthContext
-**File:** `src/context/AuthContext.tsx`
+### 6. Haptic Feedback on Swipe Actions
+**Why:** Tactile feedback is expected in native swipe-based apps.
+- Install `@capacitor/haptics`
+- Add `Haptics.impact()` on swipe complete (like/pass), undo, and button taps
+- Wrap in try/catch so it degrades gracefully on web
 
-- Add `isSubscribed`, `subscriptionTier`, `subscriptionEnd` to context
-- Call `check-subscription` after login and on initial load
-- Auto-refresh every 60 seconds
-- Expose `checkSubscription()` for manual refresh
+### 7. Checkout Opens In-App (not new tab)
+**Why:** `window.open("_blank")` breaks on iOS Capacitor — it opens Safari outside the app.
+- Change `window.open(url, "_blank")` to `window.location.href = url` in Subscription.tsx and Onboarding.tsx
+- Stripe redirects back to the app's success URL
 
-## Step 5: Update Subscription Page UI
-**File:** `src/pages/Subscription.tsx`
-
-- Show both plan options: Monthly ($9.99/mo) and Lifetime ($20)
-- "Upgrade" buttons call `create-checkout` with the appropriate `priceId`
-- Redirect to Stripe Checkout URL
-- Handle `?success=true` query param to show confirmation + refresh subscription status
-- If already subscribed, show "Your Plan" badge and "Manage Subscription" button (customer portal)
-
-## Step 6: Gate Premium Features
-**File:** `src/components/SwipeDeck.tsx`
-
-- Check `isSubscribed` from AuthContext
-- If subscribed, skip the daily swipe limit
-- If not subscribed, keep the 20/day limit and show upgrade CTA when hit
-
-## Step 7: Update Settings Page
-**File:** `src/pages/Settings.tsx`
-
-- Show current plan status (Free / Premium)
-- If subscribed: "Manage Subscription" button → customer portal
-- If not subscribed: "Upgrade to Premium" → `/subscribe`
+### 8. Sign in with Apple
+**Why:** Required by Apple if any third-party login exists. Currently only email/password.
+- Configure Apple auth in Lovable Cloud
+- Add Apple sign-in button to `src/pages/Auth.tsx`
+- Use `supabase.auth.signInWithOAuth({ provider: 'apple' })`
 
 ---
 
-## Technical Details
+## Files to Create
+- `supabase/functions/stripe-webhook/index.ts`
 
-**Edge function constants (hardcoded in source):**
-```typescript
-const PRICES = {
-  monthly: "price_1THeOlS2YuVDTyoq2oCosiMb",
-  lifetime: "price_1THePVS2YuVDTyoqFgQQ1N8d",
-};
-```
+## Files to Edit
+- `src/pages/Onboarding.tsx` — wire plan buttons + safe area
+- `src/components/BottomNav.tsx` — safe area bottom padding
+- `src/components/SwipeDeck.tsx` — skeleton loading + haptics
+- `src/components/SwipeCard.tsx` — haptics on swipe
+- `src/pages/Subscription.tsx` — fix `window.open` for in-app
+- `src/pages/Auth.tsx` — Apple sign-in button
+- `src/pages/Browse.tsx` — safe area top padding
+- `src/pages/LikedList.tsx` — safe area top
+- `src/pages/Matches.tsx` — safe area top
+- `src/pages/Settings.tsx` — safe area top
+- `src/index.css` — disable overscroll, text selection, move safe area from body to components
+- `supabase/config.toml` — webhook function config
 
-**Files created (3):**
-- `supabase/functions/check-subscription/index.ts`
-- `supabase/functions/create-checkout/index.ts`
-- `supabase/functions/customer-portal/index.ts`
-
-**Files modified (3):**
-- `src/context/AuthContext.tsx`
-- `src/pages/Subscription.tsx`
-- `src/components/SwipeDeck.tsx`
-- `src/pages/Settings.tsx`
+## Estimated Effort
+~3-4 days for all 8 items. Items 1-7 can be done in Lovable. Item 8 requires Apple Developer configuration from you.
 
