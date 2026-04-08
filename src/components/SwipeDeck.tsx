@@ -4,10 +4,15 @@ import SwipeCard from "@/components/SwipeCard";
 import SwipeTutorial from "@/components/SwipeTutorial";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState } from "react";
-import { RefreshCw, Loader2 } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import { Haptics, ImpactStyle } from "@capacitor/haptics";
+
+const triggerHaptic = async () => {
+  try { await Haptics.impact({ style: ImpactStyle.Medium }); } catch {}
+};
 
 const DAILY_SWIPE_LIMIT = 20;
 
@@ -80,11 +85,20 @@ const SwipeDeck = () => {
   const isAtLimit = !isSubscribed && dailySwipes >= DAILY_SWIPE_LIMIT;
 
   const handleLike = () => {
-    if (currentName) {likeName(currentName);advance();}
+    if (currentName) { triggerHaptic(); likeName(currentName); advance(); }
   };
 
   const handlePass = () => {
-    if (currentName) {passName(currentName.id, currentName);advance();}
+    if (currentName) { triggerHaptic(); passName(currentName.id, currentName); advance(); }
+  };
+
+  const handleUndo = () => {
+    const success = undoLastSwipe();
+    if (success) {
+      triggerHaptic();
+      setCurrentIndex((i) => Math.max(0, i - 1));
+      toast({ title: "Undo", description: "Last swipe undone" });
+    }
   };
 
   const handleUndo = () => {
@@ -99,9 +113,18 @@ const SwipeDeck = () => {
 
   if (isLoading) {
     return (
-      <div className="flex-1 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-foreground/50" />
-      </div>);
+      <div className="flex-1 flex flex-col items-center px-4 relative">
+        <div className="relative w-full max-w-sm h-[560px] mx-auto">
+          <div className="h-full rounded-3xl bg-foreground/10 animate-pulse flex flex-col items-center justify-center p-8">
+            <div className="w-20 h-4 rounded-full bg-foreground/10 mb-8" />
+            <div className="w-48 h-10 rounded-full bg-foreground/10 mb-4" />
+            <div className="w-36 h-4 rounded-full bg-foreground/10 mb-6" />
+            <div className="w-56 h-5 rounded-full bg-foreground/10 mb-6" />
+            <div className="w-24 h-8 rounded-full bg-foreground/10" />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (isAtLimit) {
