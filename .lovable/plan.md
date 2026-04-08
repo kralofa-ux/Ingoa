@@ -1,50 +1,57 @@
 
 
-# Mobile-Only Polish — Skipping Stripe Steps
+# What's Next — App Store Readiness Checklist
 
-Since the app is mobile-only (iOS/Android via Capacitor), Stripe web checkout won't apply — you'll use Apple IAP / Google Play billing later via RevenueCat or similar. Skipping all Stripe wiring steps.
-
-## Remaining items to implement now
-
-### 1. Safe Area Insets
-**Why:** iPhone notch/Dynamic Island clips the bottom nav and top content.
-- **BottomNav:** Add `pb-[env(safe-area-inset-bottom)]` padding inside the nav
-- **Body CSS:** Remove the blanket `padding-top/bottom/left/right: env(safe-area-inset-*)` from body (causes double padding) — apply per-component instead
-- **Page headers:** Add `pt-[env(safe-area-inset-top)]` to Browse, Liked, Matches, Settings top wrappers
-
-### 2. Native Mobile CSS
-**Why:** Web behaviors (text selection, overscroll bounce, long-press callout) feel non-native.
-- Add to `index.css` body: `user-select: none`, `overscroll-behavior: none`, `-webkit-touch-callout: none`
-- Keep `user-select: auto` on inputs/textareas
-
-### 3. Skeleton Loading States
-**Why:** Spinner looks web-like. Skeleton card placeholder feels native.
-- Replace `<Loader2>` spinner in `SwipeDeck` with a skeleton card matching SwipeCard shape (rounded-3xl, same height)
-
-### 4. Haptic Feedback
-**Why:** Native swipe apps have tactile feedback.
-- `@capacitor/haptics` is already installed
-- Add `Haptics.impact()` on swipe like/pass and undo in SwipeCard/SwipeDeck
-- Wrap in try/catch for web fallback
-
-### 5. Sign in with Apple
-**Why:** Required by Apple if any social login exists. Even with email-only, Apple recommends it.
-- Add Apple sign-in button to Auth page
-- Use `supabase.auth.signInWithOAuth({ provider: 'apple' })`
-- Requires Apple Developer config from you (Services ID, private key)
+All 5 mobile polish items from the previous plan are **done**. Here's what remains before you can submit to the App Store and Google Play.
 
 ---
 
-## Files to edit
-- `src/index.css` — remove body safe-area padding, add native CSS rules
-- `src/components/BottomNav.tsx` — safe area bottom padding
-- `src/pages/Browse.tsx` — safe area top
-- `src/pages/LikedList.tsx` — safe area top
-- `src/pages/Matches.tsx` — safe area top
-- `src/pages/Settings.tsx` — safe area top
-- `src/components/SwipeDeck.tsx` — skeleton loading + haptics
-- `src/components/SwipeCard.tsx` — haptic on drag end
-- `src/pages/Auth.tsx` — Apple sign-in button
+## Things I Can Do Now (in Lovable)
 
-## Effort: ~1.5 days
+### 1. Network Error Handling
+Add offline detection and error boundaries so the app doesn't silently fail when there's no connection. Show a toast or banner when network requests fail.
+- Files: `src/App.tsx`, `src/hooks/useNames.ts`, `src/context/AppContext.tsx`
+
+### 2. Server-Side Swipe Limit
+The daily swipe counter is currently in `localStorage` — users can clear it to bypass limits. Move it to the database with an RPC or edge function.
+- Files: `src/components/SwipeDeck.tsx`, new migration, possibly new edge function
+
+### 3. Remove Body Safe-Area Top/Bottom Padding
+The plan called for removing blanket `padding-top/bottom` from body CSS to avoid double-padding, but `padding-left` and `padding-right` were kept. Currently body still has left/right which is fine, but verify no pages have double top padding.
+
+### 4. Page Transitions Consistency
+Wrap all pages in `PageTransition` for consistent enter/exit animations, including Onboarding.
+
+---
+
+## Things That Need Your Action (Outside Lovable)
+
+### 5. Apple Developer Setup for Sign in with Apple
+The button is wired in code, but you need to:
+- Create a Services ID in Apple Developer Console
+- Generate a private key (.p8) for Sign in with Apple
+- Configure the redirect URL in Apple Developer Console
+- Add credentials in Lovable Cloud auth settings
+
+### 6. App Icon & Splash Screen
+Apple requires a 1024x1024 app icon. You need to design this and add it to the Capacitor iOS/Android projects via Xcode and Android Studio.
+
+### 7. In-App Purchases (RevenueCat)
+Since you're skipping Stripe for mobile, you'll need RevenueCat or StoreKit/Google Play Billing for the $9.99/mo and $20 lifetime products. This is native SDK work done outside Lovable.
+
+### 8. Privacy Policy & Terms URLs
+Apple requires working privacy policy and terms URLs. You have `/privacy` and `/terms` pages — make sure they're hosted at public URLs you can provide during App Store review.
+
+### 9. App Store Screenshots & Metadata
+Prepare 6.7" and 5.5" screenshots, app description, keywords, and category for App Store Connect.
+
+---
+
+## Recommended Next Step
+
+**Option A**: I implement items 1-2 (network error handling + server-side swipe limit) — the two remaining code gaps.
+
+**Option B**: You set up Apple Developer credentials for Sign in with Apple, and I help configure it in Lovable Cloud.
+
+Which would you like to tackle?
 
