@@ -101,13 +101,6 @@ const SwipeDeck = () => {
     }
   };
 
-  const handleUndo = () => {
-    const success = undoLastSwipe();
-    if (success) {
-      setCurrentIndex((i) => Math.max(0, i - 1));
-      toast({ title: "Undo", description: "Last swipe undone" });
-    }
-  };
 
   const showTutorial = swipeCount < 5;
 
