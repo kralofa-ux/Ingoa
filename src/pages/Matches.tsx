@@ -94,6 +94,12 @@ const Matches = () => {
 
   if (!status.connected) {
     return (
+      <div className="min-h-screen pb-24 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}>
+    );
+  }
+
+  if (!status.connected) {
+    return (
       <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg">
         <PageTitle className="mb-1">Matched Names</PageTitle>
         <div className="text-center py-16">

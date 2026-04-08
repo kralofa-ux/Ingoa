@@ -108,7 +108,7 @@ const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg">
+    <div className="min-h-screen pb-24 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}>
       {/* Header — text only, no arrow */}
       <PageTitle className="mb-6">Settings</PageTitle>
 
