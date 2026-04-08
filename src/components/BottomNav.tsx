@@ -17,7 +17,7 @@ const BottomNav = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 backdrop-blur-lg border-t border-foreground/10 bg-[#0012ee]">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 backdrop-blur-lg border-t border-foreground/10 bg-[#0012ee]" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
       <div className="max-w-lg mx-auto flex justify-around py-3 bg-[#0012ee]">
         {links.map((link) => {
           const active = location.pathname === link.to;
