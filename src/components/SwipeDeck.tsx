@@ -3,12 +3,13 @@ import { useNames, buildWeightedDeck } from "@/hooks/useNames";
 import SwipeCard from "@/components/SwipeCard";
 import SwipeTutorial from "@/components/SwipeTutorial";
 import { AnimatePresence, motion } from "framer-motion";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { Haptics, ImpactStyle } from "@capacitor/haptics";
+import { supabase } from "@/integrations/supabase/client";
 
 const triggerHaptic = async () => {
   try { await Haptics.impact({ style: ImpactStyle.Medium }); } catch {}
@@ -24,13 +25,28 @@ const SwipeDeck = () => {
   } = useApp();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { isSubscribed } = useAuth();
+  const { isSubscribed, user } = useAuth();
   const { data: allNames, isLoading } = useNames();
-  const [dailySwipes, setDailySwipes] = useState(getDailySwipeData);
+  const [dailySwipes, setDailySwipes] = useState(0);
   const [swipeCount, setSwipeCount] = useState(() => {
     const stored = localStorage.getItem("ingoa_swipe_count");
     return stored ? parseInt(stored, 10) : 0;
   });
+
+  // Load today's swipe count from server
+  useEffect(() => {
+    if (!user) return;
+    const loadSwipes = async () => {
+      const { data } = await supabase
+        .from("daily_swipes")
+        .select("swipe_count")
+        .eq("user_id", user.id)
+        .eq("swipe_date", new Date().toISOString().split("T")[0])
+        .maybeSingle();
+      if (data) setDailySwipes(data.swipe_count);
+    };
+    loadSwipes();
+  }, [user]);
 
   const filteredNames = useMemo(() => {
     if (!allNames) return [];
@@ -52,11 +68,14 @@ const SwipeDeck = () => {
       localStorage.setItem("ingoa_swipe_count", String(next));
       return next;
     });
-    setDailySwipes((c) => {
-      const next = c + 1;
-      setDailySwipeData(next);
-      return next;
-    });
+    // Record swipe server-side
+    if (user) {
+      supabase.rpc("record_swipe").then(({ data }) => {
+        if (typeof data === "number") setDailySwipes(data);
+      });
+    } else {
+      setDailySwipes((c) => c + 1);
+    }
     if (currentIndex < filteredNames.length - 1) {
       setCurrentIndex((i) => i + 1);
     } else {
