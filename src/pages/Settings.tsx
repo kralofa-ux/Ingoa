@@ -247,10 +247,9 @@ const Settings = () => {
           <button
             onClick={async () => {
               if (isNative()) {
-                const { presentPaywall } = await import("@/lib/revenuecat");
-                const { purchased, restored } = await presentPaywall();
+                const { presentPaywall: showPaywall } = await import("@/lib/revenuecat");
+                const { purchased, restored } = await showPaywall();
                 if (purchased || restored) {
-                  const { checkSubscription } = useAuth();
                   await checkSubscription();
                 }
               } else {
