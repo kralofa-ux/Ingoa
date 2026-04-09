@@ -48,7 +48,7 @@ const AppLayout = () => {
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={user ? (profile?.onboarding_completed ? <Navigate to="/browse" replace /> : <Navigate to="/onboarding" replace />) : <PageTransition><Index /></PageTransition>} />
           <Route path="/auth" element={user ? <Navigate to="/browse" replace /> : <PageTransition><Auth /></PageTransition>} />
-          <Route path="/onboarding" element={user ? <Onboarding /> : <Navigate to="/auth" replace />} />
+          <Route path="/onboarding" element={user ? <PageTransition><Onboarding /></PageTransition> : <Navigate to="/auth" replace />} />
           <Route path="/reset-password" element={<PageTransition><ResetPassword /></PageTransition>} />
           <Route path="/browse" element={<ProtectedRoute><PageTransition><Browse /></PageTransition></ProtectedRoute>} />
           <Route path="/liked" element={<ProtectedRoute><PageTransition><LikedList /></PageTransition></ProtectedRoute>} />
