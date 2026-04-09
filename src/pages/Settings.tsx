@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
 import PageTitle from "@/components/PageTitle";
+import { presentCustomerCenter, restorePurchases, isNative } from "@/lib/revenuecat";
 
 const cultures: { value: Culture; label: string }[] = [
   { value: "Cook Islands", label: "Cook Islands" },

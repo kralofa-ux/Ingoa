@@ -1,6 +1,13 @@
 import { createContext, useContext, useEffect, useState, useCallback, useRef, ReactNode } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
+import {
+  initRevenueCat,
+  loginRevenueCat,
+  logoutRevenueCat,
+  getSubscriptionStatus,
+  isNative,
+} from "@/lib/revenuecat";
 
 export interface Profile {
   id: string;
@@ -68,6 +75,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const checkSubscription = useCallback(async () => {
+    // On native platforms, use RevenueCat as source of truth
+    if (isNative()) {
+      const status = await getSubscriptionStatus();
+      setSubState({
+        isSubscribed: status.isSubscribed,
+        subscriptionTier: status.tier,
+        subscriptionEnd: status.expiresDate,
+      });
+      return;
+    }
+
+    // Web fallback: use edge function (Stripe)
     const { data: { session: currentSession } } = await supabase.auth.getSession();
     if (!currentSession) return;
     try {
@@ -87,16 +106,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
+    // Initialise RevenueCat early (anonymous until login)
+    initRevenueCat();
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         if (session?.user) {
+          // Identify user in RevenueCat
+          if (isNative()) {
+            await loginRevenueCat(session.user.id);
+          }
           setTimeout(() => fetchProfile(session.user.id), 0);
           setTimeout(() => checkSubscription(), 100);
         } else {
           setProfile(null);
           setSubState({ isSubscribed: false, subscriptionTier: "free", subscriptionEnd: null });
+          if (isNative()) {
+            await logoutRevenueCat();
+          }
         }
         setLoading(false);
       }
@@ -106,6 +135,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
+        if (isNative()) loginRevenueCat(session.user.id);
         fetchProfile(session.user.id);
         checkSubscription();
       }
@@ -144,6 +174,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signOut = async () => {
+    if (isNative()) await logoutRevenueCat();
     await supabase.auth.signOut();
     setProfile(null);
     setSubState({ isSubscribed: false, subscriptionTier: "free", subscriptionEnd: null });
