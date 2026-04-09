@@ -231,7 +231,13 @@ const Settings = () => {
               <span className="text-[10px] font-body font-bold text-[hsl(var(--accent))] uppercase tracking-wider bg-[hsl(var(--accent))]/20 rounded-full px-2.5 py-1">Active</span>
             </div>
             <button
-              onClick={() => navigate("/subscribe")}
+              onClick={async () => {
+                if (isNative()) {
+                  try { await presentCustomerCenter(); } catch { /* ignore */ }
+                } else {
+                  navigate("/subscribe");
+                }
+              }}
               className="w-full py-3 rounded-full frosted-pill text-foreground text-sm font-body font-bold uppercase tracking-wider hover:bg-foreground/10 transition-all"
             >
               Manage Plan
@@ -239,7 +245,18 @@ const Settings = () => {
           </div>
         ) : (
           <button
-            onClick={() => navigate("/subscribe")}
+            onClick={async () => {
+              if (isNative()) {
+                const { presentPaywall } = await import("@/lib/revenuecat");
+                const { purchased, restored } = await presentPaywall();
+                if (purchased || restored) {
+                  const { checkSubscription } = useAuth();
+                  await checkSubscription();
+                }
+              } else {
+                navigate("/subscribe");
+              }
+            }}
             className="w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-primary text-white text-sm font-body font-extrabold uppercase tracking-wider hover:bg-primary/80 active:scale-[0.98] transition-all"
           >
             ✨ Upgrade to Premium
