@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      daily_swipes: {
+        Row: {
+          created_at: string
+          id: string
+          swipe_count: number
+          swipe_date: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          swipe_count?: number
+          swipe_date?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          swipe_count?: number
+          swipe_date?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       feedback: {
         Row: {
           created_at: string
@@ -258,6 +282,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      record_swipe: { Args: never; Returns: number }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
