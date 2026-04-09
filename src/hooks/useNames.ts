@@ -23,6 +23,8 @@ export const useNames = () => {
       }));
     },
     staleTime: 1000 * 60 * 10, // 10 min cache
+    retry: 3,
+    retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 10000),
   });
 };
 

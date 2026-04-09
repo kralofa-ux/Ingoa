@@ -16,23 +16,6 @@ const triggerHaptic = async () => {
 
 const DAILY_SWIPE_LIMIT = 20;
 
-const getDailySwipeData = () => {
-  const stored = localStorage.getItem("ingoa_daily_swipes");
-  if (stored) {
-    const parsed = JSON.parse(stored);
-    const today = new Date().toDateString();
-    if (parsed.date === today) return parsed.count;
-  }
-  return 0;
-};
-
-const setDailySwipeData = (count: number) => {
-  localStorage.setItem("ingoa_daily_swipes", JSON.stringify({
-    date: new Date().toDateString(),
-    count,
-  }));
-};
-
 const SwipeDeck = () => {
   const {
     likeName, passName, passedIds, likedNames,
