@@ -156,7 +156,8 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
           </div>
         </div>
       </motion.div>
-    </motion.div>
+    </motion.div>,
+    document.body
   );
 };
 
