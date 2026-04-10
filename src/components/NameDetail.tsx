@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, useMotionValue, useTransform, PanInfo } from "framer-motion";
 import { X, Share2 } from "lucide-react";
 import { PolynesianName } from "@/data/names";
