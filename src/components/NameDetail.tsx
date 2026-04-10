@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, useMotionValue, useTransform, PanInfo } from "framer-motion";
 import { X, Share2 } from "lucide-react";
 import { PolynesianName } from "@/data/names";
@@ -60,7 +61,7 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
     }
   }
 
-  return (
+  return createPortal(
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -155,7 +156,8 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
           </div>
         </div>
       </motion.div>
-    </motion.div>
+    </motion.div>,
+    document.body
   );
 };
 
