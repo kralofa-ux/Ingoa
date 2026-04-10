@@ -41,7 +41,7 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md p-4"
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-lg p-4"
       onClick={onClose}
     >
       <motion.div

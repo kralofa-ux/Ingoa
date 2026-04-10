@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, ArrowLeft as ArrowLeftIcon, User, Users, Check, Crown, Sparkles } from "lucide-react";
+import { ArrowRight, ArrowLeft as ArrowLeftIcon, Check, Crown, Sparkles } from "lucide-react";
+import modeSoloIcon from "@/assets/mode-solo.svg";
+import modeCoupleIcon from "@/assets/mode-couple.svg";
 import NavSwipeRightIcon from "@/components/icons/NavSwipeRightIcon";
 import NavPassIcon from "@/components/icons/NavPassIcon";
 import UndoSwipeIcon from "@/components/icons/UndoSwipeIcon";
@@ -100,17 +102,17 @@ const Onboarding = () => {
         </h2>
         <div className="flex gap-3">
           <motion.button whileTap={{ scale: 0.95 }} animate={mode === "solo" ? { scale: [1, 1.05, 1] } : { scale: 1 }} transition={{ duration: 0.3 }} onClick={() => setMode("solo")}
-            className={`flex-1 py-4 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-all ${
+            className={`flex-1 py-5 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-all flex flex-col items-center gap-2 ${
               mode === "solo" ? "bg-[#00cfff] text-white ring-4 ring-white/60 shadow-lg scale-105" : "bg-[#00cfff]/40 text-white/60"
             }`}>
-            <User className="w-5 h-5 mx-auto mb-1" />
+            <img src={modeSoloIcon} alt="" className="w-7 h-7 invert" />
             Solo
           </motion.button>
           <motion.button whileTap={{ scale: 0.95 }} animate={mode === "couple" ? { scale: [1, 1.05, 1] } : { scale: 1 }} transition={{ duration: 0.3 }} onClick={() => setMode("couple")}
-            className={`flex-1 py-4 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-all ${
+            className={`flex-1 py-5 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-all flex flex-col items-center gap-2 ${
               mode === "couple" ? "bg-[#0074ff] text-white ring-4 ring-white/60 shadow-lg scale-105" : "bg-[#0074ff]/40 text-white/60"
             }`}>
-            <Users className="w-5 h-5 mx-auto mb-1" />
+            <img src={modeCoupleIcon} alt="" className="w-9 h-9 invert" />
             Couple
           </motion.button>
         </div>
@@ -172,7 +174,7 @@ const Onboarding = () => {
           <button onClick={() => setGenderPref("all")}
             className={`w-full py-4 rounded-full font-body text-sm font-extrabold uppercase tracking-wider transition-all text-white bg-[hsl(30,85%,55%)] ${
               genderPref === "all" ? "ring-4 ring-white/60 shadow-lg scale-105" : ""
-            }`}>Both</button>
+            }`}>Surprise</button>
         </div>
       </motion.div>
     ),
@@ -232,11 +234,11 @@ const Onboarding = () => {
     ),
 
     subscription: (
-      <motion.div key="subscription" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="text-left">
-        <h2 className="text-3xl font-display font-extrabold text-foreground uppercase tracking-tight leading-tight mb-2">
+      <motion.div key="subscription" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="text-left pt-8">
+        <h2 className="text-3xl font-display font-extrabold text-foreground uppercase tracking-tight leading-tight mb-3">
           Choose Your Plan
         </h2>
-        <p className="text-sm text-white/50 font-body mb-6">
+        <p className="text-sm text-white/50 font-body mb-8">
           Unlock the full experience
         </p>
 
