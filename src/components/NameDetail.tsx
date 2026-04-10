@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion, useMotionValue, useTransform, PanInfo } from "framer-motion";
 import { X, Share2 } from "lucide-react";
 import { PolynesianName } from "@/data/names";
 import CultureIcon from "@/components/CultureIcon";
@@ -13,17 +14,40 @@ interface NameDetailProps {
 const NameDetail = ({ name, onClose }: NameDetailProps) => {
   const gColor = getGenderColor(name.gender);
   const { showNamePreview, middleName, lastName } = useApp();
+  const y = useMotionValue(0);
+  const cardOpacity = useTransform(y, [0, 200], [1, 0.4]);
+  const cardScale = useTransform(y, [0, 200], [1, 0.92]);
+  const overlayOpacity = useTransform(y, [0, 200], [1, 0]);
 
-  const shareName = () => {
+  // Lock body scroll while open
+  useEffect(() => {
+    const original = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = original;
+    };
+  }, []);
+
+  const shareName = async () => {
     const text = `${name.name}\n${name.meaning}\n${name.culture}`;
-    if (navigator.share) {
-      navigator.share({ title: name.name, text });
-    } else {
-      navigator.clipboard.writeText(text);
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: name.name, text });
+      } else {
+        await navigator.clipboard.writeText(text);
+      }
+    } catch {
+      // user cancelled or permission denied — ignore
     }
   };
 
-  const previewLines = [];
+  const handleDragEnd = (_: any, info: PanInfo) => {
+    if (info.offset.y > 80 || info.velocity.y > 300) {
+      onClose();
+    }
+  };
+
+  const previewLines: string[] = [];
   if (showNamePreview) {
     previewLines.push(name.name);
     if (middleName.trim()) {
@@ -41,24 +65,42 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-lg p-4"
+      transition={{ duration: 0.25 }}
+      className="fixed inset-0 z-[100] flex items-center justify-center p-6"
       onClick={onClose}
     >
+      {/* Backdrop */}
       <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        className={`${gColor.bg} rounded-3xl shadow-card-hover max-w-sm w-full p-8 relative`}
+        className="absolute inset-0 bg-black/60 backdrop-blur-xl"
+        style={{ opacity: overlayOpacity }}
+      />
+
+      {/* Card */}
+      <motion.div
+        initial={{ scale: 0.88, opacity: 0, y: 30 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.88, opacity: 0, y: 30 }}
+        transition={{ type: "spring", damping: 28, stiffness: 340 }}
+        style={{ y, opacity: cardOpacity, scale: cardScale }}
+        drag="y"
+        dragConstraints={{ top: 0, bottom: 0 }}
+        dragElastic={0.5}
+        onDragEnd={handleDragEnd}
+        className={`${gColor.bg} rounded-3xl shadow-2xl max-w-sm w-full p-8 relative cursor-grab active:cursor-grabbing`}
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Swipe indicator */}
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-10 h-1 rounded-full bg-white/25" />
+
+        {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/15 flex items-center justify-center text-white/70 hover:text-white transition-colors backdrop-blur-sm"
+          className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/15 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/25 transition-colors backdrop-blur-sm"
         >
           <X className="w-4 h-4" />
         </button>
 
-        <div className="text-center space-y-5">
+        <div className="text-center space-y-5 mt-3">
           {/* Culture */}
           <div className="flex items-center justify-center gap-2">
             <CultureIcon culture={name.culture} size={24} />
@@ -68,7 +110,9 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
           </div>
 
           {/* Name */}
-          <h2 className="text-5xl font-display font-extrabold text-white tracking-tight">{name.name}</h2>
+          <h2 className="text-5xl font-display font-extrabold text-white tracking-tight">
+            {name.name}
+          </h2>
 
           {/* Meaning */}
           <p className="text-lg text-white/80 font-body leading-relaxed font-medium">
