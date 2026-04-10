@@ -61,7 +61,7 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
     }
   }
 
-  return (
+  return createPortal(
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
