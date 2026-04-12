@@ -4,7 +4,7 @@ import SwipeCard from "@/components/SwipeCard";
 import SwipeTutorial from "@/components/SwipeTutorial";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState, useEffect } from "react";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Sparkles, Crown, Zap, Heart, BookOpen } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -124,28 +124,84 @@ const SwipeDeck = () => {
 
   if (isAtLimit) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+      <div className="flex-1 flex flex-col items-center px-4 pt-8 pb-24">
+        {/* Header */}
         <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="text-6xl mb-6">
-          ✨
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="text-center mb-6"
+        >
+          <div className="inline-flex items-center gap-1.5 bg-foreground/10 rounded-full px-3 py-1.5 mb-4">
+            <Sparkles className="w-3.5 h-3.5 text-[hsl(var(--accent))]" />
+            <span className="text-[10px] font-body font-bold text-foreground/70 uppercase tracking-wider">Daily limit reached</span>
+          </div>
+          <h3 className="text-2xl font-display font-extrabold text-foreground uppercase tracking-tight mb-1">
+            Unlock Unlimited Names
+          </h3>
+          <p className="text-sm text-foreground/50 font-body">
+            Upgrade for the full Ingoa experience
+          </p>
         </motion.div>
-        <h3 className="text-2xl font-display font-extrabold text-foreground mb-2 uppercase">Daily Limit Reached</h3>
-        <p className="text-foreground/60 font-body mb-2">
-          You've used your {DAILY_SWIPE_LIMIT} free swipes for today.
-        </p>
-        <p className="text-foreground/50 font-body text-sm mb-6">
-          Upgrade to Premium for unlimited swipes, couple mode, and access to every name.
-        </p>
-        <button
-          onClick={() => navigate("/subscribe")}
-          className="px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-body font-bold flex items-center gap-2 uppercase tracking-wider transition-opacity hover:opacity-90">
-          Unlock Unlimited
-        </button>
-        <p className="text-foreground/40 font-body text-xs mt-4">
-          Or come back tomorrow for {DAILY_SWIPE_LIMIT} more free swipes
-        </p>
+
+        {/* Premium card */}
+        <motion.div
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.1, duration: 0.35 }}
+          className="w-full max-w-sm rounded-2xl p-6 mb-4 relative overflow-hidden"
+          style={{ background: "linear-gradient(145deg, hsl(235 50% 22%), hsl(235 55% 14%))" }}
+        >
+          <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-foreground/10 rounded-full px-2.5 py-1">
+            <Crown className="w-3 h-3 text-[hsl(var(--accent))]" />
+            <span className="text-[10px] font-body font-bold text-foreground/80 uppercase tracking-wider">Pro</span>
+          </div>
+
+          <h4 className="font-display font-extrabold text-foreground text-lg uppercase tracking-wide mb-4 flex items-center gap-2">
+            <Crown className="w-5 h-5 text-[hsl(var(--accent))]" /> INGOA Pro
+          </h4>
+
+          <ul className="space-y-3 text-sm font-body text-foreground/80 mb-6">
+            <li className="flex items-center gap-3">
+              <div className="w-7 h-7 rounded-full bg-[hsl(var(--accent))]/20 flex items-center justify-center shrink-0">
+                <Zap className="w-3.5 h-3.5 text-[hsl(var(--accent))]" />
+              </div>
+              Unlimited swipes
+            </li>
+            <li className="flex items-center gap-3">
+              <div className="w-7 h-7 rounded-full bg-[hsl(var(--accent))]/20 flex items-center justify-center shrink-0">
+                <Heart className="w-3.5 h-3.5 text-[hsl(var(--accent))]" />
+              </div>
+              Couple mode — match together
+            </li>
+            <li className="flex items-center gap-3">
+              <div className="w-7 h-7 rounded-full bg-[hsl(var(--accent))]/20 flex items-center justify-center shrink-0">
+                <BookOpen className="w-3.5 h-3.5 text-[hsl(var(--accent))]" />
+              </div>
+              Full name catalogue access
+            </li>
+          </ul>
+
+          <motion.button
+            whileTap={{ scale: 0.97 }}
+            onClick={() => navigate("/subscribe")}
+            className="w-full py-4 rounded-full bg-[hsl(var(--accent))] text-white text-sm font-body font-bold uppercase tracking-wider shadow-glow-accent active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+          >
+            Go Premium
+          </motion.button>
+        </motion.div>
+
+        {/* Free tier reminder */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25, duration: 0.3 }}
+          className="w-full max-w-sm frosted-pill rounded-2xl p-5 text-center"
+        >
+          <p className="text-xs text-foreground/40 font-body">
+            Or come back tomorrow for {DAILY_SWIPE_LIMIT} more free swipes
+          </p>
+        </motion.div>
       </div>
     );
   }
