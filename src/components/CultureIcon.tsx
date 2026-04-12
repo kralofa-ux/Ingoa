@@ -29,15 +29,17 @@ const CultureIcon = ({ culture, size = 20, className = "" }: CultureIconProps) =
         src={svg}
         alt={`${culture} flag`}
         className={`inline-block object-cover rounded-sm ${className}`}
-        style={{ width: size, height: size }}
+        style={{ width: size, height: size, minWidth: size, minHeight: size }}
+        loading="eager"
+        decoding="sync"
       />
     );
   }
   const emoji = emojiMap[culture];
   if (emoji) {
-    return <span className={className} style={{ fontSize: size * 0.9 }}>{emoji}</span>;
+    return <span className={className} style={{ fontSize: size * 0.9, lineHeight: `${size}px`, display: 'inline-block', width: size, height: size, textAlign: 'center' }}>{emoji}</span>;
   }
-  return <span className={className} style={{ fontSize: size * 0.9 }}>🌊</span>;
+  return <span className={className} style={{ fontSize: size * 0.9, lineHeight: `${size}px`, display: 'inline-block', width: size, height: size, textAlign: 'center' }}>🌊</span>;
 };
 
 export default CultureIcon;
