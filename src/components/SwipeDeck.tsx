@@ -4,7 +4,7 @@ import SwipeCard from "@/components/SwipeCard";
 import SwipeTutorial from "@/components/SwipeTutorial";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState, useEffect } from "react";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Sparkles, Crown, Zap, Heart, BookOpen } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
