@@ -1,0 +1,1 @@
+ALTER TABLE public.profiles ALTER COLUMN gender_preference SET DEFAULT 'all';
