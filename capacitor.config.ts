@@ -1,12 +1,17 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
+// Production config: the native app bundles the built web files (dist) and runs offline.
+// For live-reload development on a device, temporarily add:
+// server: { url: '<preview-url>', cleartext: true }
 const config: CapacitorConfig = {
-  appId: 'app.lovable.08ae3a55f8af4882b86a13025d74b3bb',
+  appId: 'nz.ingoa.app',
   appName: 'Ingoa',
   webDir: 'dist',
-  server: {
-    url: 'https://08ae3a55-f8af-4882-b86a-13025d74b3bb.lovableproject.com?forceHideBadge=true',
-    cleartext: true,
+  ios: {
+    contentInset: 'never',
+  },
+  android: {
+    allowMixedContent: false,
   },
 };
 
