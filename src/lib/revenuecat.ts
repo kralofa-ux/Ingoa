@@ -3,7 +3,16 @@ import { RevenueCatUI, PAYWALL_RESULT } from "@revenuecat/purchases-capacitor-ui
 import { Capacitor } from "@capacitor/core";
 
 // ─── Constants ───────────────────────────────────────────────────────
-const RC_API_KEY = "test_iQKgTFYODjRWiMGahKWImRvSrGC";
+// Public SDK keys (safe in client code). Replace with live keys from RevenueCat before release.
+const RC_TEST_KEY = "test_iQKgTFYODjRWiMGahKWImRvSrGC";
+const RC_IOS_KEY = ""; // appl_...
+const RC_ANDROID_KEY = ""; // goog_...
+function getApiKey(): string {
+  const platform = Capacitor.getPlatform();
+  if (platform === "ios" && RC_IOS_KEY) return RC_IOS_KEY;
+  if (platform === "android" && RC_ANDROID_KEY) return RC_ANDROID_KEY;
+  return RC_TEST_KEY;
+}
 const ENTITLEMENT_ID = "INGOA Pro";
 
 // ─── Initialisation ──────────────────────────────────────────────────
@@ -17,9 +26,9 @@ export async function initRevenueCat(appUserId?: string): Promise<void> {
   }
 
   try {
-    await Purchases.setLogLevel({ level: LOG_LEVEL.DEBUG });
+    await Purchases.setLogLevel({ level: import.meta.env.DEV ? LOG_LEVEL.DEBUG : LOG_LEVEL.WARN });
     await Purchases.configure({
-      apiKey: RC_API_KEY,
+      apiKey: getApiKey(),
       appUserID: appUserId ?? undefined,
     });
     initialised = true;

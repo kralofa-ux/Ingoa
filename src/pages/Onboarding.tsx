@@ -69,6 +69,21 @@ const Onboarding = () => {
     navigate("/browse");
   };
 
+  const handlePlanTap = async () => {
+    // Save onboarding, then show the plan options (native store paywall / web checkout)
+    setSubmitting(true);
+    await updateProfile({
+      mode,
+      selected_cultures: selectedCultures,
+      gender_preference: genderPref,
+      last_name: lastName,
+      middle_name: middleName,
+      onboarding_completed: true,
+    });
+    setSubmitting(false);
+    navigate("/subscription");
+  };
+
   const nextStep = () => {
     if (step === totalSteps - 1) handleFinish();
     else setStep((s) => s + 1);
@@ -267,17 +282,26 @@ const Onboarding = () => {
           <div className="flex gap-2 mt-5">
             <motion.button
               whileTap={{ scale: 0.97 }}
+              onClick={handlePlanTap}
+              disabled={submitting}
               className="flex-1 py-3 rounded-full bg-[#00DBFF] text-[#000456] text-xs font-body font-bold uppercase tracking-wider shadow-lg active:scale-[0.98] transition-all"
             >
               $9.99/mo
             </motion.button>
             <motion.button
               whileTap={{ scale: 0.97 }}
+              onClick={handlePlanTap}
+              disabled={submitting}
               className="flex-1 py-3 rounded-full bg-[#0088F0] text-white text-xs font-body font-bold uppercase tracking-wider shadow-lg active:scale-[0.98] transition-all"
             >
               $20 Lifetime
             </motion.button>
           </div>
+          <p className="mt-3 text-[10px] leading-relaxed text-white/40 font-body text-center">
+            Monthly auto-renews until cancelled. Lifetime is a one-time purchase.{" "}
+            <a href="/terms" target="_blank" rel="noreferrer" className="underline">Terms</a> ·{" "}
+            <a href="/privacy" target="_blank" rel="noreferrer" className="underline">Privacy</a>
+          </p>
         </motion.div>
 
         {/* Free tier */}

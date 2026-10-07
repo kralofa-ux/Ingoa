@@ -369,7 +369,24 @@ const Subscription = () => {
       >
         {isSubscribed ? "Back" : "Continue with Free"}
       </button>
+
+      {!isSubscribed && (
+        <div className="mt-4 px-2 text-[11px] leading-relaxed font-body text-foreground/40 text-center space-y-2">
+          <p>
+            INGOA Pro Monthly is an auto-renewing subscription at $9.99 NZD per month. Lifetime is a one-time purchase of $20 NZD.
+            {native
+              ? " Payment is charged to your Apple ID or Google Play account at confirmation. The subscription renews automatically unless cancelled at least 24 hours before the end of the current period. Manage or cancel anytime in your account settings."
+              : " The subscription renews automatically each month unless cancelled. Manage or cancel anytime from Settings."}
+          </p>
+          <p>
+            <a href="/terms" onClick={(e) => { e.preventDefault(); navigate("/terms"); }} className="underline text-foreground/60">Terms of Use</a>
+            {" · "}
+            <a href="/privacy" onClick={(e) => { e.preventDefault(); navigate("/privacy"); }} className="underline text-foreground/60">Privacy Policy</a>
+          </p>
+        </div>
+      )}
     </div>
+
   );
 };
 
