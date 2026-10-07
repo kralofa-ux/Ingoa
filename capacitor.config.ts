@@ -4,7 +4,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 // For live-reload development on a device, temporarily add:
 // server: { url: '<preview-url>', cleartext: true }
 const config: CapacitorConfig = {
-  appId: 'nz.ingoa.app',
+  appId: 'com.ingoa.app',
   appName: 'Ingoa',
   webDir: 'dist',
   ios: {
