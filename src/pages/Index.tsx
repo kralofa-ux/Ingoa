@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Seo from "@/components/Seo";
-import logo from "@/assets/logo.png";
+import flower from "@/assets/onboarding-flower.png.asset.json";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ const Index = () => {
           animate={{ scale: 1 }}
           transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
           className="w-24 h-24 flex items-center justify-center mx-auto mb-8">
-          <img src={logo} alt="Ingoa" className="w-full h-full object-contain" loading="eager" fetchPriority="high" />
+          <img src={flower.url} alt="Ingoa" className="w-full h-full object-contain" loading="eager" fetchPriority="high" />
         </motion.div>
 
         <h1 className="md:text-6xl font-display font-extrabold text-foreground mb-4 uppercase tracking-tight text-8xl">
