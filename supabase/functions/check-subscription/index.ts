@@ -32,13 +32,18 @@ serve(async (req) => {
     if (!stripeKey) throw new Error("STRIPE_SECRET_KEY is not set");
 
     const authHeader = req.headers.get("Authorization");
-    if (!authHeader) throw new Error("No authorization header provided");
+    const unauth = () => new Response(JSON.stringify({ subscribed: false, tier: "free" }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200,
+    });
+    if (!authHeader) return unauth();
 
     const token = authHeader.replace("Bearer ", "");
     const { data: userData, error: userError } = await supabaseClient.auth.getUser(token);
-    if (userError) throw new Error(`Authentication error: ${userError.message}`);
-    const user = userData.user;
-    if (!user?.email) throw new Error("User not authenticated or email not available");
+    const user = userData?.user;
+    if (userError || !user?.email) {
+      logStep("No valid session", { message: userError?.message });
+      return unauth();
+    }
     logStep("User authenticated", { email: user.email });
 
     const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
