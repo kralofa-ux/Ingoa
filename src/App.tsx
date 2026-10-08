@@ -22,7 +22,6 @@ import BottomNav from "./components/BottomNav";
 import NetworkStatus from "./components/NetworkStatus";
 import NativeSplash from "./components/NativeSplash";
 import Seo from "@/components/Seo";
-import MaoriBoyNames from "./pages/MaoriBoyNames";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,7 +39,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 const AppLayout = () => {
   const location = useLocation();
   const { user, loading, profile } = useAuth();
-  const hideNav = ["/", "/auth", "/onboarding", "/reset-password", "/subscribe", "/privacy", "/terms", "/maori-boy-names"].includes(location.pathname);
+  const hideNav = ["/", "/auth", "/onboarding", "/reset-password", "/subscribe", "/privacy", "/terms"].includes(location.pathname);
 
   if (loading) return null;
 
@@ -51,7 +50,6 @@ const AppLayout = () => {
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={user ? (profile?.onboarding_completed ? <Navigate to="/browse" replace /> : <Navigate to="/onboarding" replace />) : <PageTransition><Index /></PageTransition>} />
-          <Route path="/maori-boy-names" element={<PageTransition><MaoriBoyNames /></PageTransition>} />
           <Route path="/auth" element={user ? <Navigate to="/browse" replace /> : <PageTransition><Seo title="Sign In — Ingoa" description="Sign in or create your Ingoa account to start discovering meaningful Pacific baby names." path="/auth" /><Auth /></PageTransition>} />
           <Route path="/onboarding" element={user ? <PageTransition><Onboarding /></PageTransition> : <Navigate to="/auth" replace />} />
           <Route path="/reset-password" element={<PageTransition><ResetPassword /></PageTransition>} />
