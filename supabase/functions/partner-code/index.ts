@@ -12,6 +12,40 @@ function generateCode(): string {
   return String(100000 + (buf[0] % 900000));
 }
 
+async function hasPaidAccess(userId: string, email?: string | null): Promise<boolean> {
+  // RevenueCat (native purchases) — checked when a secret key is configured
+  const rcKey = Deno.env.get("REVENUECAT_SECRET_KEY");
+  if (rcKey) {
+    try {
+      const r = await fetch(`https://api.revenuecat.com/v1/subscribers/${encodeURIComponent(userId)}`, {
+        headers: { Authorization: `Bearer ${rcKey}` },
+      });
+      if (r.ok) {
+        const j = await r.json();
+        const ents = j?.subscriber?.entitlements ?? {};
+        const now = Date.now();
+        for (const e of Object.values(ents) as any[]) {
+          if (!e.expires_date || new Date(e.expires_date).getTime() > now) return true;
+        }
+      }
+    } catch (_) { /* fall through */ }
+  }
+  // Stripe (web purchases)
+  const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
+  if (stripeKey && email) {
+    const h = { Authorization: `Bearer ${stripeKey}` };
+    const c = await fetch(`https://api.stripe.com/v1/customers?email=${encodeURIComponent(email)}&limit=1`, { headers: h }).then((r) => r.json());
+    const cid = c?.data?.[0]?.id;
+    if (cid) {
+      const subs = await fetch(`https://api.stripe.com/v1/subscriptions?customer=${cid}&status=active&limit=1`, { headers: h }).then((r) => r.json());
+      if (subs?.data?.length) return true;
+      const pays = await fetch(`https://api.stripe.com/v1/checkout/sessions?customer=${cid}&limit=20`, { headers: h }).then((r) => r.json());
+      if (pays?.data?.some((s: any) => s.mode === "payment" && s.payment_status === "paid")) return true;
+    }
+  }
+  return false;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -59,6 +93,13 @@ Deno.serve(async (req) => {
 
     if (action === "join") {
       if (!joinCode) throw new Error("Code required");
+
+      if (!(await hasPaidAccess(user.id, user.email))) {
+        return new Response(JSON.stringify({ error: "A paid plan is required to connect with a partner" }), {
+          status: 402,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
 
       // Look up the code
       const { data: codeRow, error: lookupErr } = await admin
