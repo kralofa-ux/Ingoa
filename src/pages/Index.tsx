@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import Seo from "@/components/Seo";
 import logo from "@/assets/logo.png";
 
 const Index = () => {
@@ -7,6 +8,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden bg-[#0012ee] flower-bg">
+      <Seo
+        title="Ingoa — Pacific Baby Names"
+        description="Discover meaningful Pacific baby names from Māori, Samoan, Tongan, Fijian, Hawaiian, Niuean and Tahitian cultures. Swipe solo or with your partner."
+        path="/"
+      />
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -45,6 +51,12 @@ const Index = () => {
         <p className="mt-6 text-xs text-foreground/40 font-body">
           Swipe right to love, left to pass — solo or with your partner
         </p>
+
+        <Link
+          to="/maori-boy-names"
+          className="inline-block mt-4 text-xs text-foreground/50 font-body underline underline-offset-4 hover:text-foreground/80 transition-colors">
+          Browse Māori boy names
+        </Link>
       </motion.div>
     </div>);
 
