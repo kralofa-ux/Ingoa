@@ -1,6 +1,6 @@
 # Ingoa native splash screen
 
-The launch artwork uses the exact white flower and royal blue background from `icon.png`. Splash sources are stored as CDN asset pointers and downloaded only while generating native resources. Light and dark mode use the same branding.
+The app icon uses the uploaded artwork in `icon.png.asset.json`. Icon and splash sources are stored as CDN asset pointers and downloaded only while generating native resources. Light and dark mode use the same branding.
 
 After pulling this project onto your computer:
 
