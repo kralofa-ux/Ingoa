@@ -27,8 +27,10 @@ const Index = () => {
         <p className="text-lg text-foreground/70 font-body mb-2">
           For Our Tamariki&nbsp;
         </p>
-        <p className="text-sm text-foreground/40 font-body mb-10">
-          ​
+        <p className="text-sm text-foreground/60 font-body mb-10 max-w-sm mx-auto">
+          Discover meaningful Pacific baby names from Māori, Samoan, Tongan,
+          Fijian, Hawaiian, Niuean and Tahitian cultures — each with its
+          meaning and origin.
         </p>
 
         <motion.button
