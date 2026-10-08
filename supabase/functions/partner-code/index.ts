@@ -13,6 +13,8 @@ function generateCode(): string {
 }
 
 async function hasPaidAccess(userId: string, email?: string | null): Promise<boolean> {
+  // App review demo account always has full access
+  if (email?.toLowerCase() === "demo@ingoa.app") return true;
   // RevenueCat (native purchases) — checked when a secret key is configured
   const rcKey = Deno.env.get("REVENUECAT_SECRET_KEY");
   if (rcKey) {
