@@ -6,7 +6,7 @@ import modeCoupleIcon from "@/assets/mode-couple.svg";
 import NavSwipeRightIcon from "@/components/icons/NavSwipeRightIcon";
 import NavPassIcon from "@/components/icons/NavPassIcon";
 import UndoSwipeIcon from "@/components/icons/UndoSwipeIcon";
-import appIcon from "../../resources/icon.png.asset.json";
+import onboardingFlower from "@/assets/onboarding-flower.png.asset.json";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Culture } from "@/data/names";
@@ -99,7 +99,7 @@ const Onboarding = () => {
           animate={{ scale: 1 }}
           transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
           className="w-20 h-20 mb-6">
-          <img src={appIcon.url} alt="Ingoa" className="w-full h-full object-contain" loading="eager" decoding="sync" fetchPriority="high" />
+          <img src={onboardingFlower.url} alt="Ingoa" className="w-full h-full object-contain" loading="eager" decoding="sync" fetchPriority="high" />
         </motion.div>
         <h1 className="text-6xl font-display font-extrabold text-foreground leading-none tracking-tight uppercase">
           ingoa
