@@ -75,6 +75,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const checkSubscription = useCallback(async () => {
+    // App review demo account always has full access
+    const { data: { session: s } } = await supabase.auth.getSession();
+    if (s?.user?.email?.toLowerCase() === "demo@ingoa.app") {
+      setSubState({ isSubscribed: true, subscriptionTier: "lifetime", subscriptionEnd: null });
+      return;
+    }
     // On native platforms, use RevenueCat as source of truth
     if (isNative()) {
       const status = await getSubscriptionStatus();
