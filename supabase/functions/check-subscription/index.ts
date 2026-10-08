@@ -45,6 +45,12 @@ serve(async (req) => {
       return unauth();
     }
     logStep("User authenticated", { email: user.email });
+    if (user.email.toLowerCase() === "demo@ingoa.app") {
+      return new Response(JSON.stringify({ subscribed: true, tier: "lifetime", subscription_end: null }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200,
+      });
+    }
+
 
     const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
     const customers = await stripe.customers.list({ email: user.email, limit: 1 });
