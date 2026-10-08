@@ -38,7 +38,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 const AppLayout = () => {
   const location = useLocation();
   const { user, loading, profile } = useAuth();
-  const hideNav = ["/", "/auth", "/onboarding", "/reset-password", "/subscribe", "/privacy", "/terms"].includes(location.pathname);
+  const hideNav = ["/", "/auth", "/onboarding", "/reset-password", "/subscribe", "/privacy", "/terms", "/maori-boy-names"].includes(location.pathname);
 
   if (loading) return null;
 
@@ -49,7 +49,8 @@ const AppLayout = () => {
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={user ? (profile?.onboarding_completed ? <Navigate to="/browse" replace /> : <Navigate to="/onboarding" replace />) : <PageTransition><Index /></PageTransition>} />
-          <Route path="/auth" element={user ? <Navigate to="/browse" replace /> : <PageTransition><Auth /></PageTransition>} />
+          <Route path="/maori-boy-names" element={<PageTransition><MaoriBoyNames /></PageTransition>} />
+          <Route path="/auth" element={user ? <Navigate to="/browse" replace /> : <PageTransition><Seo title="Sign In — Ingoa" description="Sign in or create your Ingoa account to start discovering meaningful Pacific baby names." path="/auth" /><Auth /></PageTransition>} />
           <Route path="/onboarding" element={user ? <PageTransition><Onboarding /></PageTransition> : <Navigate to="/auth" replace />} />
           <Route path="/reset-password" element={<PageTransition><ResetPassword /></PageTransition>} />
           <Route path="/browse" element={<ProtectedRoute><PageTransition><Browse /></PageTransition></ProtectedRoute>} />
@@ -57,8 +58,8 @@ const AppLayout = () => {
           <Route path="/matches" element={<ProtectedRoute><PageTransition><Matches /></PageTransition></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><PageTransition><Settings /></PageTransition></ProtectedRoute>} />
           <Route path="/subscribe" element={<ProtectedRoute><PageTransition><Subscription /></PageTransition></ProtectedRoute>} />
-          <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
-          <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
+          <Route path="/privacy" element={<PageTransition><Seo title="Privacy Policy — Ingoa" description="How Ingoa collects, uses and protects your personal information." path="/privacy" /><Privacy /></PageTransition>} />
+          <Route path="/terms" element={<PageTransition><Seo title="Terms of Service — Ingoa" description="The terms that govern your use of the Ingoa Pacific baby names app." path="/terms" /><Terms /></PageTransition>} />
           <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
         </Routes>
       </AnimatePresence>
