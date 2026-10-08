@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Seo from "@/components/Seo";
 import logo from "@/assets/logo.png";
 
@@ -52,11 +52,6 @@ const Index = () => {
           Swipe right to love, left to pass — solo or with your partner
         </p>
 
-        <Link
-          to="/maori-boy-names"
-          className="inline-block mt-4 text-xs text-foreground/50 font-body underline underline-offset-4 hover:text-foreground/80 transition-colors">
-          Browse Māori boy names
-        </Link>
       </motion.div>
     </div>);
 
