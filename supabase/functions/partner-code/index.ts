@@ -7,7 +7,9 @@ const corsHeaders = {
 };
 
 function generateCode(): string {
-  return String(Math.floor(100000 + Math.random() * 900000));
+  const buf = new Uint32Array(1);
+  crypto.getRandomValues(buf);
+  return String(100000 + (buf[0] % 900000));
 }
 
 Deno.serve(async (req) => {
