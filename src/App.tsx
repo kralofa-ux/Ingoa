@@ -21,6 +21,8 @@ import Subscription from "./pages/Subscription";
 import BottomNav from "./components/BottomNav";
 import NetworkStatus from "./components/NetworkStatus";
 import NativeSplash from "./components/NativeSplash";
+import Seo from "@/components/Seo";
+import MaoriBoyNames from "./pages/MaoriBoyNames";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();

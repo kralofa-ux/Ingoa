@@ -9,7 +9,7 @@ interface NameRow {
   id: string;
   name: string;
   meaning: string | null;
-  origin: string | null;
+  culture: string | null;
 }
 
 const MaoriBoyNames = () => {
@@ -20,9 +20,10 @@ const MaoriBoyNames = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("names")
-        .select("id, name, meaning, origin")
+        .select("id, name, meaning, culture")
         .eq("gender", "male")
-        .ilike("origin", "%maori%")
+        .eq("status", "active")
+        .ilike("culture", "%maori%")
         .order("name")
         .limit(24);
       if (error) throw error;
