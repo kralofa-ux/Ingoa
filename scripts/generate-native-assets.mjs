@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, writeFile, copyFile, access, rm, mkdir } from 'node:fs/promises';
+import { mkdtemp, readFile, writeFile, access, rm, mkdir } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -11,11 +11,9 @@ if (!ios && !android) {
 }
 const staging = await mkdtemp(join(tmpdir(), 'ingoa-native-assets-'));
 try {
-  for (const name of ['icon-only.png', 'icon-foreground.png']) {
-    await copyFile('resources/icon.png', join(staging, name));
-  }
   const origin = process.env.INGOA_ASSET_ORIGIN || 'https://id-preview--08ae3a55-f8af-4882-b86a-13025d74b3bb.lovable.app';
   for (const [pointerPath, destinations] of [
+    ['resources/icon.png.asset.json', ['icon-only.png', 'icon-foreground.png']],
     ['resources/splash.png.asset.json', ['splash.png', 'splash-dark.png']],
     ['resources/icon-background.png.asset.json', ['icon-background.png']],
   ]) {
