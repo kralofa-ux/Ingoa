@@ -20,6 +20,7 @@ import Terms from "./pages/Terms";
 import Subscription from "./pages/Subscription";
 import BottomNav from "./components/BottomNav";
 import NetworkStatus from "./components/NetworkStatus";
+import NativeSplash from "./components/NativeSplash";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -43,6 +44,7 @@ const AppLayout = () => {
 
   return (
     <>
+      <NativeSplash />
       <NetworkStatus />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
