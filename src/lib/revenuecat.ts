@@ -5,8 +5,8 @@ import { Capacitor } from "@capacitor/core";
 // ─── Constants ───────────────────────────────────────────────────────
 // Public SDK keys (safe in client code). Replace with live keys from RevenueCat before release.
 const RC_TEST_KEY = "test_iQKgTFYODjRWiMGahKWImRvSrGC";
-const RC_IOS_KEY = ""; // appl_...
-const RC_ANDROID_KEY = ""; // goog_...
+const RC_IOS_KEY = "appl_xrLdNidncifgczwGydxDPwTvIpm";
+const RC_ANDROID_KEY = "goog_xYMyoPpjxfQbUskxGideGKewsaX";
 function getApiKey(): string {
   const platform = Capacitor.getPlatform();
   if (platform === "ios" && RC_IOS_KEY) return RC_IOS_KEY;
