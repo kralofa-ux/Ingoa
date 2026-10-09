@@ -128,6 +128,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setSwipeHistory((prev) => [...prev, { name, action: "like" }]);
       if (user) {
         await supabase.from("liked_names").upsert({ user_id: user.id, name_id: name.id });
+        notifyLiked(name.id);
       }
     },
     [mode, currentPartner, user]
