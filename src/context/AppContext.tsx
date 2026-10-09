@@ -2,6 +2,7 @@ import { createContext, useContext, useState, ReactNode, useCallback, useEffect 
 import { PolynesianName, Culture, Gender } from "@/data/names";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase";
+import { notifyLiked } from "@/lib/push";
 
 interface AppState {
   mode: "solo" | "couple";

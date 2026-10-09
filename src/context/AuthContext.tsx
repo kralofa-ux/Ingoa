@@ -8,6 +8,7 @@ import {
   getSubscriptionStatus,
   isNative,
 } from "@/lib/revenuecat";
+import { unregisterPush } from "@/lib/push";
 
 export interface Profile {
   id: string;
@@ -180,7 +181,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signOut = async () => {
-    if (isNative()) await logoutRevenueCat();
+    if (isNative()) {
+      await unregisterPush();
+      await logoutRevenueCat();
+    }
     await supabase.auth.signOut();
     setProfile(null);
     setSubState({ isSubscribed: false, subscriptionTier: "free", subscriptionEnd: null });
