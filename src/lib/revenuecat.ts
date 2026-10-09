@@ -14,6 +14,13 @@ function getApiKey(): string {
   return RC_TEST_KEY;
 }
 const ENTITLEMENT_ID = "INGOA Pro";
+const ENTITLEMENT_IDS = ["INGOA Pro", "ingoa_pro"];
+function findActiveEntitlement(active: Record<string, any>) {
+  for (const id of ENTITLEMENT_IDS) if (active[id]) return active[id];
+  const wanted = ENTITLEMENT_IDS.map((i) => i.toLowerCase().replace(/[\s_]/g, ""));
+  const key = Object.keys(active).find((k) => wanted.includes(k.toLowerCase().replace(/[\s_]/g, "")));
+  return key ? active[key] : undefined;
+}
 
 // ─── Initialisation ──────────────────────────────────────────────────
 let initialised = false;
@@ -52,7 +59,7 @@ export async function getSubscriptionStatus(): Promise<SubscriptionStatus> {
 
   try {
     const { customerInfo } = await Purchases.getCustomerInfo();
-    const entitlement = customerInfo.entitlements.active[ENTITLEMENT_ID];
+    const entitlement = findActiveEntitlement(customerInfo.entitlements.active);
 
     if (!entitlement) {
       return { isSubscribed: false, tier: "free", expiresDate: null };
@@ -83,7 +90,7 @@ export async function restorePurchases(): Promise<SubscriptionStatus> {
 
   try {
     const { customerInfo } = await Purchases.restorePurchases();
-    const entitlement = customerInfo.entitlements.active[ENTITLEMENT_ID];
+    const entitlement = findActiveEntitlement(customerInfo.entitlements.active);
 
     if (!entitlement) {
       return { isSubscribed: false, tier: "free", expiresDate: null };
@@ -153,9 +160,9 @@ export async function presentPaywallIfNeeded(): Promise<{
   }
 
   try {
-    const { result } = await RevenueCatUI.presentPaywallIfNeeded({
-      requiredEntitlementIdentifier: ENTITLEMENT_ID,
-    });
+    const status = await getSubscriptionStatus();
+    if (status.isSubscribed) return { purchased: false, restored: false };
+    const { result } = await RevenueCatUI.presentPaywall();
     return {
       purchased: result === PAYWALL_RESULT.PURCHASED,
       restored: result === PAYWALL_RESULT.RESTORED,
