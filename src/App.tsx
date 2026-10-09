@@ -21,6 +21,7 @@ import Subscription from "./pages/Subscription";
 import BottomNav from "./components/BottomNav";
 import NetworkStatus from "./components/NetworkStatus";
 import NativeSplash from "./components/NativeSplash";
+import PushSetup from "./components/PushSetup";
 import Seo from "@/components/Seo";
 import NotFound from "./pages/NotFound";
 
@@ -46,6 +47,7 @@ const AppLayout = () => {
   return (
     <>
       <NativeSplash />
+      <PushSetup />
       <NetworkStatus />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>

@@ -2,6 +2,7 @@ import { createContext, useContext, useState, ReactNode, useCallback, useEffect 
 import { PolynesianName, Culture, Gender } from "@/data/names";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase";
+import { notifyLiked } from "@/lib/push";
 
 interface AppState {
   mode: "solo" | "couple";
@@ -128,6 +129,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setSwipeHistory((prev) => [...prev, { name, action: "like" }]);
       if (user) {
         await supabase.from("liked_names").upsert({ user_id: user.id, name_id: name.id });
+        notifyLiked(name.id);
       }
     },
     [mode, currentPartner, user]
