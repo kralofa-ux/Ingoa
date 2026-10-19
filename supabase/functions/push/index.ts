@@ -10,7 +10,7 @@ const GATEWAY_URL = "https://connector-gateway.lovable.dev/firebase_messaging";
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
-const UUID = /^[0-9a-f-]{36}$/i;
+
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -32,22 +32,23 @@ Deno.serve(async (req) => {
       const token = typeof body.token === "string" ? body.token.trim() : "";
       const platform = ["ios", "android", "web"].includes(body.platform) ? body.platform : "unknown";
       if (!token || token.length > 4096) return json({ error: "Invalid token" }, 400);
-      await admin.from("push_tokens").upsert(
+      const {error}=await admin.from("push_tokens").upsert(
         { user_id: user.id, token, platform, updated_at: new Date().toISOString() },
         { onConflict: "token" },
       );
+      if(error)throw error;
       return json({ ok: true });
     }
 
     if (action === "unregister") {
       const token = typeof body.token === "string" ? body.token : "";
-      if (token) await admin.from("push_tokens").delete().eq("token", token).eq("user_id", user.id);
+      if (token) {const {error}=await admin.from("push_tokens").delete().eq("token", token).eq("user_id", user.id);if(error)throw error;}
       return json({ ok: true });
     }
 
     if (action === "liked") {
       const nameId = body.name_id;
-      if (typeof nameId !== "string" || !UUID.test(nameId)) return json({ error: "Invalid name" }, 400);
+      if (typeof nameId !== "string" || !nameId.trim() || nameId.length > 255) return json({ error: "Invalid name" }, 400);
 
       const { data: conn } = await admin
         .from("partner_connections")

@@ -14,9 +14,10 @@ export async function initPush(navigate?: (path: string) => void): Promise<void>
       listenersAdded = true;
       await PushNotifications.addListener("registration", async ({ value }) => {
         currentToken = value;
-        await supabase.functions.invoke("push", {
+        const {error}=await supabase.functions.invoke("push", {
           body: { action: "register", token: value, platform: Capacitor.getPlatform() },
         });
+        if(error)console.warn("Unable to register match notifications",error);
       });
       await PushNotifications.addListener("registrationError", (err) =>
         console.warn("[Push] registration error", err)
@@ -41,13 +42,12 @@ export async function initPush(navigate?: (path: string) => void): Promise<void>
 /** Remove this phone's token on sign-out so the old account stops getting alerts. */
 export async function unregisterPush(): Promise<void> {
   if (!Capacitor.isNativePlatform() || !currentToken) return;
-  try {
-    await supabase.functions.invoke("push", { body: { action: "unregister", token: currentToken } });
-  } catch { /* ignore */ }
-  currentToken = null;
+  const {error}=await supabase.functions.invoke('push',{body:{action:'unregister',token:currentToken}});
+  if(error)throw error;
+  currentToken=null;
 }
 
 /** Tell the server a name was liked; it notifies the partner if it's a mutual match. */
 export function notifyLiked(nameId: string): void {
-  supabase.functions.invoke("push", { body: { action: "liked", name_id: nameId } }).catch(() => {});
+  void supabase.functions.invoke("push", { body: { action: "liked", name_id: nameId } }).then(({error})=>{if(error)console.warn("Match alert could not be sent",error);}).catch(error=>console.warn("Match alert could not be sent",error));
 }
