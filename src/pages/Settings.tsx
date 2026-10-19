@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
 import PageTitle from "@/components/PageTitle";
-import { presentCustomerCenter, restorePurchases, isNative } from "@/lib/revenuecat";
+import { presentCustomerCenter, isNative } from "@/lib/revenuecat";
 
 const cultures: { value: Culture; label: string }[] = [
   { value: "Cook Islands", label: "Cook Islands" },
@@ -50,26 +50,30 @@ const Settings = () => {
   const [feedback, setFeedback] = useState("");
   const [showFeedback, setShowFeedback] = useState(false);
 
+  const saveProfile = async (updates: Parameters<typeof updateProfile>[0]) => {
+    const {error}=await updateProfile(updates);
+    if(error)throw error;
+  };
+  const saveError = () => toast({title:"Unable to save",description:"Please try again",variant:"destructive"});
   const toggleCulture = (culture: Culture) => {
     const updated = cultureFilter.includes(culture)
       ? cultureFilter.filter((c) => c !== culture)
       : [...cultureFilter, culture];
     setCultureFilter(updated);
-    updateProfile({ selected_cultures: updated });
+    void saveProfile({ selected_cultures: updated }).catch(saveError);
   };
 
   const handleGenderChange = (value: Gender | "all") => {
     setGenderFilter(value);
-    updateProfile({ gender_preference: value === "all" ? "all" : value });
+    void saveProfile({ gender_preference: value }).catch(saveError);
   };
 
   const handleNamePreviewToggle = (checked: boolean) => {
     setShowNamePreview(checked);
   };
 
-  const handleSaveNamePreview = () => {
-    updateProfile({ last_name: lastName, middle_name: middleName });
-    toast({ title: "Saved", description: "Name preview updated" });
+  const handleSaveNamePreview = async () => {
+    try { await saveProfile({last_name:lastName,middle_name:middleName});toast({title:"Saved",description:"Name preview updated"}); } catch {saveError();}
   };
 
   const handleSignOut = async () => {
@@ -86,8 +90,9 @@ const Settings = () => {
         headers: { Authorization: `Bearer ${session.access_token}` },
       });
       if (res.error) throw res.error;
+      await signOut();
       toast({ title: "Account deleted", description: "All your data has been removed" });
-      navigate("/");
+      navigate("/", {replace:true});
     } catch {
       toast({ title: "Error", description: "Failed to delete account. Please try again.", variant: "destructive" });
     }

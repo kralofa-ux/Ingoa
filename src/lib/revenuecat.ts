@@ -15,7 +15,7 @@ function getApiKey(): string {
 }
 const ENTITLEMENT_ID = "INGOA Pro";
 const ENTITLEMENT_IDS = ["INGOA Pro", "ingoa_pro"];
-function findActiveEntitlement(active: Record<string, any>) {
+function findActiveEntitlement(active: Record<string, { productIdentifier?: string; expirationDate?: string | null }>) {
   for (const id of ENTITLEMENT_IDS) if (active[id]) return active[id];
   const wanted = ENTITLEMENT_IDS.map((i) => i.toLowerCase().replace(/[\s_]/g, ""));
   const key = Object.keys(active).find((k) => wanted.includes(k.toLowerCase().replace(/[\s_]/g, "")));
@@ -24,25 +24,16 @@ function findActiveEntitlement(active: Record<string, any>) {
 
 // ─── Initialisation ──────────────────────────────────────────────────
 let initialised = false;
+let initialization: Promise<void> | undefined;
 
 export async function initRevenueCat(appUserId?: string): Promise<void> {
-  if (initialised) return;
-  if (!Capacitor.isNativePlatform()) {
-    console.log("[RevenueCat] Skipping init — not a native platform");
-    return;
-  }
-
-  try {
+  if (!Capacitor.isNativePlatform() || initialised) return;
+  if (!initialization) initialization = (async () => {
     await Purchases.setLogLevel({ level: import.meta.env.DEV ? LOG_LEVEL.DEBUG : LOG_LEVEL.WARN });
-    await Purchases.configure({
-      apiKey: getApiKey(),
-      appUserID: appUserId ?? undefined,
-    });
-    initialised = true;
-    console.log("[RevenueCat] SDK configured");
-  } catch (err) {
-    console.error("[RevenueCat] Init failed:", err);
-  }
+    await Purchases.configure({apiKey:getApiKey(),appUserID:appUserId});
+    initialised=true;
+  })().catch(error=>{initialization=undefined;throw error;});
+  await initialization;
 }
 
 // ─── Customer Info & Entitlement Checks ──────────────────────────────
@@ -58,6 +49,7 @@ export async function getSubscriptionStatus(): Promise<SubscriptionStatus> {
   }
 
   try {
+    await initRevenueCat();
     const { customerInfo } = await Purchases.getCustomerInfo();
     const entitlement = findActiveEntitlement(customerInfo.entitlements.active);
 
@@ -79,7 +71,7 @@ export async function getSubscriptionStatus(): Promise<SubscriptionStatus> {
     };
   } catch (err) {
     console.error("[RevenueCat] Failed to get customer info:", err);
-    return { isSubscribed: false, tier: "free", expiresDate: null };
+    throw err;
   }
 }
 
@@ -89,6 +81,7 @@ export async function restorePurchases(): Promise<SubscriptionStatus> {
   }
 
   try {
+    await initRevenueCat();
     const { customerInfo } = await Purchases.restorePurchases();
     const entitlement = findActiveEntitlement(customerInfo.entitlements.active);
 
@@ -114,9 +107,11 @@ export async function restorePurchases(): Promise<SubscriptionStatus> {
 export async function loginRevenueCat(appUserId: string): Promise<void> {
   if (!Capacitor.isNativePlatform()) return;
   try {
+    await initRevenueCat();
     await Purchases.logIn({ appUserID: appUserId });
   } catch (err) {
     console.error("[RevenueCat] Login failed:", err);
+    throw err;
   }
 }
 
@@ -140,6 +135,7 @@ export async function presentPaywall(): Promise<{
   }
 
   try {
+    await initRevenueCat();
     const { result } = await RevenueCatUI.presentPaywall();
     return {
       purchased: result === PAYWALL_RESULT.PURCHASED,
@@ -147,29 +143,7 @@ export async function presentPaywall(): Promise<{
     };
   } catch (err) {
     console.error("[RevenueCat] Paywall error:", err);
-    return { purchased: false, restored: false };
-  }
-}
-
-export async function presentPaywallIfNeeded(): Promise<{
-  purchased: boolean;
-  restored: boolean;
-}> {
-  if (!Capacitor.isNativePlatform()) {
-    return { purchased: false, restored: false };
-  }
-
-  try {
-    const status = await getSubscriptionStatus();
-    if (status.isSubscribed) return { purchased: false, restored: false };
-    const { result } = await RevenueCatUI.presentPaywall();
-    return {
-      purchased: result === PAYWALL_RESULT.PURCHASED,
-      restored: result === PAYWALL_RESULT.RESTORED,
-    };
-  } catch (err) {
-    console.error("[RevenueCat] Paywall error:", err);
-    return { purchased: false, restored: false };
+    throw err;
   }
 }
 

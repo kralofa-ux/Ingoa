@@ -9,6 +9,7 @@ import UndoSwipeIcon from "@/components/icons/UndoSwipeIcon";
 import onboardingFlower from "@/assets/onboarding-flower.png.asset.json";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 import { Culture } from "@/data/names";
 import CultureIcon from "@/components/CultureIcon";
 import PartnerConnect from "@/components/PartnerConnect";
@@ -30,6 +31,7 @@ const Onboarding = () => {
   const [submitting, setSubmitting] = useState(false);
   const { updateProfile } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const toggleCulture = (c: string) => {
     setSelectedCultures((prev) =>
@@ -55,34 +57,18 @@ const Onboarding = () => {
     return true;
   };
 
-  const handleFinish = async () => {
+  const finish = async (destination: '/browse' | '/subscribe') => {
+    if (submitting) return;
     setSubmitting(true);
-    await updateProfile({
-      mode,
-      selected_cultures: selectedCultures,
-      gender_preference: genderPref,
-      last_name: lastName,
-      middle_name: middleName,
-      onboarding_completed: true,
-    });
-    setSubmitting(false);
-    navigate("/browse");
+    try {
+      const { error } = await updateProfile({mode,selected_cultures:selectedCultures,gender_preference:genderPref,last_name:lastName,middle_name:middleName,onboarding_completed:true});
+      if(error)throw error;
+      navigate(destination);
+    } catch(error) { toast({title:'Unable to save',description:error && typeof error==='object' && 'message' in error ? String(error.message) : 'Please try again',variant:'destructive'}); }
+    finally {setSubmitting(false);}
   };
-
-  const handlePlanTap = async () => {
-    // Save onboarding, then show the plan options (native store paywall / web checkout)
-    setSubmitting(true);
-    await updateProfile({
-      mode,
-      selected_cultures: selectedCultures,
-      gender_preference: genderPref,
-      last_name: lastName,
-      middle_name: middleName,
-      onboarding_completed: true,
-    });
-    setSubmitting(false);
-    navigate("/subscription");
-  };
+  const handleFinish = () => finish('/browse');
+  const handlePlanTap = () => finish('/subscribe');
 
   const nextStep = () => {
     if (step === totalSteps - 1) handleFinish();
