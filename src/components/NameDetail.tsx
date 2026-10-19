@@ -42,7 +42,7 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
     }
   };
 
-  const handleDragEnd = (_: any, info: PanInfo) => {
+  const handleDragEnd = (_: unknown, info: PanInfo) => {
     if (info.offset.y > 80 || info.velocity.y > 300) {
       onClose();
     }

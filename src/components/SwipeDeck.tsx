@@ -1,5 +1,6 @@
 import { useApp } from "@/context/AppContext";
 import { useNames, buildWeightedDeck } from "@/hooks/useNames";
+import PremiumBenefits from "@/components/PremiumBenefits";
 import SwipeCard from "@/components/SwipeCard";
 import SwipeTutorial from "@/components/SwipeTutorial";
 import { AnimatePresence, motion } from "framer-motion";
@@ -139,26 +140,7 @@ const SwipeDeck = () => {
             <Crown className="w-5 h-5 text-[hsl(var(--accent))]" /> INGOA Pro
           </h4>
 
-          <ul className="space-y-3 text-sm font-body text-foreground/80 mb-6">
-            <li className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-full bg-[hsl(var(--accent))]/20 flex items-center justify-center shrink-0">
-                <Zap className="w-3.5 h-3.5 text-[hsl(var(--accent))]" />
-              </div>
-              Unlimited swipes
-            </li>
-            <li className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-full bg-[hsl(var(--accent))]/20 flex items-center justify-center shrink-0">
-                <Heart className="w-3.5 h-3.5 text-[hsl(var(--accent))]" />
-              </div>
-              Couple mode — match together
-            </li>
-            <li className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-full bg-[hsl(var(--accent))]/20 flex items-center justify-center shrink-0">
-                <BookOpen className="w-3.5 h-3.5 text-[hsl(var(--accent))]" />
-              </div>
-              Full name catalogue access
-            </li>
-          </ul>
+          <PremiumBenefits className="mb-6" />
 
           <motion.button
             whileTap={{ scale: 0.97 }}

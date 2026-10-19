@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -55,6 +53,8 @@
     --gender-girl: 340 70% 65%;
     --gender-surprise: 35 90% 55%;
 
+    --gradient-premium: linear-gradient(145deg, hsl(235 50% 22%), hsl(235 55% 14%));
+    --gradient-onboarding-premium: linear-gradient(145deg, #003199, #000456);
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(235 65% 42%), hsl(235 50% 18%));
     --gradient-coral: linear-gradient(135deg, hsl(12 80% 58%), hsl(24 90% 55%));
@@ -227,4 +227,9 @@
     position: relative;
     z-index: 1;
   }
+}
+
+@layer utilities {
+ .premium-surface { background: var(--gradient-premium); }
+ .onboarding-premium { background: var(--gradient-onboarding-premium); }
 }

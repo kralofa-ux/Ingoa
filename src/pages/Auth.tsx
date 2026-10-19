@@ -1,3 +1,4 @@
+import { errorMessage } from "@/lib/errors";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Lock, ArrowLeft } from "lucide-react";
@@ -30,8 +31,8 @@ const Auth = () => {
         toast({ title: "Error", description: String(result.error), variant: "destructive" });
       }
       if (result.redirected) return;
-    } catch (err: any) {
-      toast({ title: "Error", description: err.message || "Apple sign-in failed", variant: "destructive" });
+    } catch (err: unknown) {
+      toast({ title: "Error", description: errorMessage(err, "Apple sign-in failed"), variant: "destructive" });
     } finally {
       setAppleLoading(false);
     }

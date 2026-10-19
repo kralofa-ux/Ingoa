@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 import { Check, Crown, Sparkles, ArrowLeft, Lock, Zap, Heart, BookOpen, Loader2, ExternalLink, RotateCcw } from "lucide-react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase";
-import { useState, useEffect } from "react";
+import { useSubscriptionActions } from "@/hooks/useSubscriptionActions";
+import PremiumBenefits from "@/components/PremiumBenefits";
 import { useToast } from "@/hooks/use-toast";
 import {
   presentPaywall,
@@ -19,105 +20,10 @@ const PRICES = {
 
 const Subscription = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+
   const { isSubscribed, subscriptionTier, subscriptionEnd, checkSubscription } = useAuth();
-  const { toast } = useToast();
-  const [loadingPrice, setLoadingPrice] = useState<string | null>(null);
-  const [portalLoading, setPortalLoading] = useState(false);
-  const [restoring, setRestoring] = useState(false);
 
-  // Handle success redirect (web/Stripe only)
-  useEffect(() => {
-    if (searchParams.get("success") === "true") {
-      checkSubscription();
-      toast({ title: "Welcome to Premium! 🎉", description: "Your upgrade is now active." });
-      window.history.replaceState({}, "", "/subscribe");
-    }
-  }, [searchParams, checkSubscription, toast]);
-
-  // ── Native: show RevenueCat paywall ────────────────────────────────
-  const handleNativePaywall = async () => {
-    setLoadingPrice("native");
-    try {
-      const { purchased, restored } = await presentPaywall();
-      if (purchased || restored) {
-        await checkSubscription();
-        toast({ title: "Welcome to Premium! 🎉", description: "Your upgrade is now active." });
-      }
-    } catch (e: any) {
-      toast({ title: "Error", description: e.message || "Purchase failed", variant: "destructive" });
-    } finally {
-      setLoadingPrice(null);
-    }
-  };
-
-  // ── Native: restore purchases ──────────────────────────────────────
-  const handleRestore = async () => {
-    setRestoring(true);
-    try {
-      const status = await restorePurchases();
-      await checkSubscription();
-      if (status.isSubscribed) {
-        toast({ title: "Purchases restored! 🎉", description: "Your premium access is active." });
-      } else {
-        toast({ title: "No purchases found", description: "We couldn't find any previous purchases." });
-      }
-    } catch (e: any) {
-      toast({ title: "Restore failed", description: e.message || "Please try again", variant: "destructive" });
-    } finally {
-      setRestoring(false);
-    }
-  };
-
-  // ── Native: customer center (manage subscription) ──────────────────
-  const handleNativeManage = async () => {
-    setPortalLoading(true);
-    try {
-      await presentCustomerCenter();
-      await checkSubscription();
-    } catch (e: any) {
-      toast({ title: "Error", description: e.message || "Failed to open subscription manager", variant: "destructive" });
-    } finally {
-      setPortalLoading(false);
-    }
-  };
-
-  // ── Web: Stripe checkout ───────────────────────────────────────────
-  const handleCheckout = async (priceId: string) => {
-    setLoadingPrice(priceId);
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) { navigate("/auth"); return; }
-      const res = await supabase.functions.invoke("create-checkout", {
-        headers: { Authorization: `Bearer ${session.access_token}` },
-        body: { priceId },
-      });
-      if (res.error) throw res.error;
-      if (res.data?.url) window.open(res.data.url, "_blank");
-    } catch (e: any) {
-      toast({ title: "Error", description: e.message || "Failed to start checkout", variant: "destructive" });
-    } finally {
-      setLoadingPrice(null);
-    }
-  };
-
-  // ── Web: Stripe customer portal ────────────────────────────────────
-  const handleManage = async () => {
-    setPortalLoading(true);
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
-      const res = await supabase.functions.invoke("customer-portal", {
-        headers: { Authorization: `Bearer ${session.access_token}` },
-      });
-      if (res.error) throw res.error;
-      if (res.data?.url) window.open(res.data.url, "_blank");
-    } catch (e: any) {
-      toast({ title: "Error", description: e.message || "Failed to open portal", variant: "destructive" });
-    } finally {
-      setPortalLoading(false);
-    }
-  };
+  const {loadingPrice,portalLoading,restoring,handleNativePaywall,handleRestore,handleNativeManage,handleCheckout,handleManage}=useSubscriptionActions();
 
   const native = isNative();
 
@@ -188,26 +94,7 @@ const Subscription = () => {
             <p className="text-sm text-foreground/60 font-body mb-5">
               Unlimited swipes, couple mode, and full catalogue access
             </p>
-            <ul className="space-y-3.5 text-sm font-body text-foreground/80 mb-6">
-              <li className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-full bg-[hsl(var(--accent))]/20 flex items-center justify-center shrink-0">
-                  <Zap className="w-3.5 h-3.5 text-[hsl(var(--accent))]" />
-                </div>
-                Unlimited swipes
-              </li>
-              <li className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-full bg-[hsl(var(--accent))]/20 flex items-center justify-center shrink-0">
-                  <Heart className="w-3.5 h-3.5 text-[hsl(var(--accent))]" />
-                </div>
-                Couple mode — match together
-              </li>
-              <li className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-full bg-[hsl(var(--accent))]/20 flex items-center justify-center shrink-0">
-                  <BookOpen className="w-3.5 h-3.5 text-[hsl(var(--accent))]" />
-                </div>
-                Full name catalogue access
-              </li>
-            </ul>
+            <PremiumBenefits className="mb-6" />
 
             <motion.button
               whileTap={{ scale: 0.97 }}
@@ -251,26 +138,7 @@ const Subscription = () => {
             </h3>
             <p className="text-2xl font-display font-extrabold text-foreground mb-1">$9.99<span className="text-sm text-foreground/50 font-body">/mo</span></p>
             <p className="text-xs text-foreground/40 font-body mb-5">Cancel anytime</p>
-            <ul className="space-y-3.5 text-sm font-body text-foreground/80">
-              <li className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-full bg-[hsl(var(--accent))]/20 flex items-center justify-center shrink-0">
-                  <Zap className="w-3.5 h-3.5 text-[hsl(var(--accent))]" />
-                </div>
-                Unlimited swipes
-              </li>
-              <li className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-full bg-[hsl(var(--accent))]/20 flex items-center justify-center shrink-0">
-                  <Heart className="w-3.5 h-3.5 text-[hsl(var(--accent))]" />
-                </div>
-                Couple mode — match together
-              </li>
-              <li className="flex items-center gap-3">
-                <div className="w-7 h-7 rounded-full bg-[hsl(var(--accent))]/20 flex items-center justify-center shrink-0">
-                  <BookOpen className="w-3.5 h-3.5 text-[hsl(var(--accent))]" />
-                </div>
-                Full name catalogue access
-              </li>
-            </ul>
+            <PremiumBenefits />
             <motion.button
               whileTap={{ scale: 0.97 }}
               onClick={() => handleCheckout(PRICES.monthly)}

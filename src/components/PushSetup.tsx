@@ -8,7 +8,7 @@ export default function PushSetup() {
   const { user } = useAuth();
   const navigate = useNavigate();
   useEffect(() => {
-    if (user) void initPush(navigate);
-  }, [user?.id, navigate]);
+    if (user?.id) void initPush(navigate);
+  }, [user, navigate]);
   return null;
 }
