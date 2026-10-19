@@ -17,19 +17,19 @@ const BottomNav = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 backdrop-blur-lg border-t border-foreground/10 bg-[#0012ee]" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-      <div className="max-w-lg mx-auto flex justify-around py-3 bg-[#0012ee]">
+    <nav className="safe-fixed-navigation fixed bottom-0 left-0 right-0 z-50 backdrop-blur-lg border-t border-foreground/10 bg-[hsl(var(--navigation-surface))]">
+      <div className="w-full min-w-0 max-w-lg mx-auto grid grid-cols-4 py-3 bg-[hsl(var(--navigation-surface))]">
         {links.map((link) => {
           const active = location.pathname === link.to;
           return (
             <Link
               key={link.to}
               to={link.to}
-              className={`flex flex-col items-center px-5 py-1 rounded-xl transition-all relative ${
+              className={`min-w-0 flex flex-col items-center px-2 py-1 sm:px-5 rounded-xl transition-all relative ${
                 active ? "opacity-100" : "opacity-50 hover:opacity-70"
               }`}
             >
-              <link.Icon className={`text-white ${link.large ? "w-8 h-8" : "w-6 h-6"}`} />
+              <link.Icon className={`text-foreground ${link.large ? "w-8 h-8" : "w-6 h-6"}`} />
               <span className="sr-only">{link.label}</span>
               {active && <div className="absolute -bottom-1.5 w-1.5 h-1.5 rounded-full bg-foreground" />}
               {link.count !== undefined && link.count > 0 && (

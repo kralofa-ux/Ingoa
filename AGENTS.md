@@ -10,3 +10,4 @@
 - Serialize native billing initialization before identifying the user, and discard outdated auth/subscription responses to prevent startup and account-switch races.
 - Keep subscription actions separate from presentation and focused onboarding/settings sections separate from page orchestration to limit responsibility growth.
 - Define feature colors and gradients as role-named global CSS tokens and preserve custom control layouts through the shared Button variant so cleanup does not redesign the app.
+- Keep document and root sizing border-box and parent-relative; clip horizontal swipe travel at the document boundary and apply shared safe-area insets to both body content and fixed overlays so native screens cannot gain a wider scroll canvas.

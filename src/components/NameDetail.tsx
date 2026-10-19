@@ -68,7 +68,7 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.25 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center p-6"
+      className="safe-name-overlay fixed inset-0 z-[100] flex items-center justify-center"
       onClick={onClose}
     >
       {/* Backdrop */}
@@ -88,7 +88,7 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
         dragConstraints={{ top: 0, bottom: 0 }}
         dragElastic={0.5}
         onDragEnd={handleDragEnd}
-        className={`${gColor.bg} rounded-3xl shadow-2xl max-w-sm w-full p-8 relative cursor-grab active:cursor-grabbing`}
+        className={`${gColor.bg} min-w-0 rounded-3xl shadow-2xl max-w-sm w-full p-8 relative cursor-grab active:cursor-grabbing`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Swipe indicator */}
@@ -113,12 +113,12 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
           </div>
 
           {/* Name */}
-          <h2 className="text-5xl font-display font-extrabold text-foreground tracking-tight">
+          <h2 className="name-text text-5xl font-display font-extrabold text-foreground tracking-tight">
             {name.name}
           </h2>
 
           {/* Meaning */}
-          <p className="text-lg text-foreground/80 font-body leading-relaxed font-medium">
+          <p className="name-text text-lg text-foreground/80 font-body leading-relaxed font-medium">
             {name.meaning}
           </p>
 
@@ -136,7 +136,7 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
               {previewLines.map((line, i) => (
                 <p
                   key={i}
-                  className={`font-display font-extrabold text-foreground/90 ${
+                  className={`name-text font-display font-extrabold text-foreground/90 ${
                     i === previewLines.length - 1 ? "text-xl" : "text-sm text-foreground/60"
                   }`}
                 >
