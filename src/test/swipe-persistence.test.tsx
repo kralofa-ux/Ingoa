@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act } from 'react';
 import { createRoot } from 'react-dom/client';
 import { useEffect } from 'react';
@@ -5,14 +6,15 @@ import { useEffect } from 'react';
 function renderHook(hook: typeof useApp, { wrapper: Wrapper }: { wrapper: typeof AppProvider }) {
  const host = document.createElement('div');
  const root = createRoot(host);
+ const client=new QueryClient({defaultOptions:{queries:{retry:false}}});
  const result = { current: undefined as ReturnType<typeof useApp> | undefined };
  function Probe() { const value = hook(); useEffect(() => { result.current = value; }); return null; }
- const rerender = () => act(() => root.render(<Wrapper><Probe /></Wrapper>));
+ const rerender = () => act(() => root.render(<QueryClientProvider client={client}><Wrapper><Probe /></Wrapper></QueryClientProvider>));
  rerender();
  return { result, rerender };
 }
 async function waitFor(assertion: () => void) {
- for (let i = 0; i < 10; i++) { await act(async () => {}); try { assertion(); return; } catch (e) { if (i === 9) throw e; } }
+ for (let i = 0; i < 10; i++) { await act(async () => {await new Promise(resolve=>setTimeout(resolve,10));}); try { assertion(); return; } catch (e) { if (i === 9) throw e; } }
 }
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AppProvider, useApp } from '@/context/AppContext';

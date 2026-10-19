@@ -3,8 +3,8 @@ import type { PolynesianName, Culture, Gender } from '@/data/names';
 import { useAuth } from '@/context/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { notifyLiked } from '@/lib/push';
-import { readAll } from '@/lib/pagination';
-import { toName } from '@/lib/nameData';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { loadSwipeData } from '@/lib/swipeData';
 interface Swipe { name: PolynesianName; action: 'like' | 'pass' }
 interface AppContextType {
  mode: 'solo' | 'couple'; likedNames: PolynesianName[]; likedNamesA: PolynesianName[];
@@ -22,45 +22,27 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
  const { profile, user } = useAuth();
  const userId = user?.id;
  const activeUser = useRef(userId); activeUser.current = userId;
- const [likedNames, setLikedNames] = useState<PolynesianName[]>([]);
- const [passedIds, setPassedIds] = useState<Set<string>>(new Set());
+ const client=useQueryClient();
+ const key=['swipes',userId];
+ const query=useQuery({queryKey:key,queryFn:()=>userId?loadSwipeData(userId):Promise.resolve({likedNames:[],passedIds:new Set<string>()}),enabled:Boolean(userId),staleTime:0,refetchOnWindowFocus:false});
+ const likedNames=query.data?.likedNames??[];
+ const passedIds=query.data?.passedIds??new Set<string>();
+ const setLikedNames=(update:(previous:PolynesianName[])=>PolynesianName[])=>client.setQueryData(key,(previous:Awaited<ReturnType<typeof loadSwipeData>>|undefined)=>({likedNames:update(previous?.likedNames??[]),passedIds:previous?.passedIds??new Set<string>()}));
+ const setPassedIds=(update:Set<string>|((previous:Set<string>)=>Set<string>))=>client.setQueryData(key,(previous:Awaited<ReturnType<typeof loadSwipeData>>|undefined)=>({likedNames:previous?.likedNames??[],passedIds:typeof update==='function'?update(previous?.passedIds??new Set<string>()):update}));
  const [swipeHistory, setHistory] = useState<Swipe[]>([]);
  const [cultureFilter, setCultureFilter] = useState<Culture[]>([]);
  const [genderFilter, setGenderFilter] = useState<Gender | 'all'>('all');
  const [lastName, setLastName] = useState(''); const [middleName, setMiddleName] = useState('');
  const [showNamePreview, setShowNamePreview] = useState(false);
- const [swipeLoading, setLoading] = useState(false); const [swipeError, setError] = useState<string | null>(null);
- const [reload, setReload] = useState(0);
+ const swipeLoading=Boolean(userId)&&query.isPending;
+ const swipeError=query.error?'Unable to load saved names':null;
  useEffect(() => {
   setCultureFilter((profile?.selected_cultures ?? []) as Culture[]);
   setGenderFilter(profile?.gender_preference === 'male' || profile?.gender_preference === 'female' ? profile.gender_preference : 'all');
   setLastName(profile?.last_name ?? ''); setMiddleName(profile?.middle_name ?? '');
   setShowNamePreview(Boolean(profile?.last_name?.trim() || profile?.middle_name?.trim()));
  }, [profile]);
- useEffect(() => {
-  let current = true;
-  setLikedNames([]); setPassedIds(new Set()); setHistory([]); setError(null);
-  if (!userId) { setLoading(false); return; }
-  setLoading(true);
-  void (async () => {
-   try {
-    const [likes, passes] = await Promise.all([
-     readAll((from,to) => supabase.from('liked_names').select('name_id').eq('user_id',userId).order('id').range(from,to)),
-     readAll((from,to) => supabase.from('passed_names').select('name_id').eq('user_id',userId).order('id').range(from,to)),
-    ]);
-    const names: PolynesianName[] = [];
-    for (let start=0; start<likes.length; start+=200) {
-     const ids = likes.slice(start,start+200).map(row=>row.name_id);
-     const rows = await readAll((from,to) => supabase.from('names').select('id,name,culture,gender,meaning').in('id',ids).order('id').range(from,to));
-     names.push(...rows.map(toName));
-    }
-    if (!current) return;
-    setLikedNames(names); setPassedIds(new Set(passes.map(row=>row.name_id)));
-   } catch (error) { if (current) setError(error instanceof Error ? error.message : 'Unable to load saved names'); }
-   finally { if (current) setLoading(false); }
-  })();
-  return () => { current = false; };
- }, [userId,reload]);
+ useEffect(()=>{setHistory([]);return()=>{client.removeQueries({queryKey:['swipes',userId],exact:true});};},[client,userId]);
  const saveSwipe = useCallback(async (name: PolynesianName, action: 'like' | 'pass') => {
   if (!userId) throw new Error('Please sign in again');
   const table = action === 'like' ? 'liked_names' : 'passed_names';
@@ -70,7 +52,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   if (action === 'like') { setLikedNames(prev => prev.some(item=>item.id===name.id) ? prev : [...prev,name]); notifyLiked(name.id); }
   else setPassedIds(prev=>new Set(prev).add(name.id));
   setHistory(prev=>[...prev,{name,action}]);
- }, [userId]);
+ }, [userId,client]);
  const likeName = useCallback((name: PolynesianName) => saveSwipe(name,'like'),[saveSwipe]);
  const passName = useCallback(async (id: string, name?: PolynesianName) => {
   if (name) return saveSwipe(name,'pass');
@@ -78,13 +60,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const { error } = await supabase.from('passed_names').upsert({user_id:userId,name_id:id},{onConflict:'user_id,name_id'});
   if (error) throw error;
   if (activeUser.current===userId) setPassedIds(prev=>new Set(prev).add(id));
- },[saveSwipe,userId]);
+ },[saveSwipe,userId,client]);
  const removeLikedName = useCallback(async (id: string) => {
   if (!userId) throw new Error('Please sign in again');
   const { error } = await supabase.from('liked_names').delete().eq('user_id',userId).eq('name_id',id);
   if (error) throw error;
   if (activeUser.current===userId) setLikedNames(prev=>prev.filter(name=>name.id!==id));
- },[userId]);
+ },[userId,client]);
  const undoLastSwipe = useCallback(async () => {
   const last = swipeHistory.at(-1);
   if (!last || !userId) return null;
@@ -95,12 +77,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   else setPassedIds(prev=> { const next=new Set(prev); next.delete(last.name.id); return next; });
   setHistory(prev=>prev.slice(0,-1));
   return last.name;
- },[swipeHistory,userId]);
+ },[swipeHistory,userId,client]);
  const refreshDeck = useCallback(async () => {
   if (!userId) throw new Error('Please sign in again');
   const { error } = await supabase.from('passed_names').delete().eq('user_id',userId);
   if (error) throw error;
   if (activeUser.current===userId) { setPassedIds(new Set()); setHistory([]); }
- },[userId]);
- return <AppContext.Provider value={{mode:profile?.mode==='couple'?'couple':'solo',likedNames,likedNamesA:likedNames,passedIds,cultureFilter,genderFilter,lastName,middleName,showNamePreview,swipeHistory,swipeLoading,swipeError,retrySwipes:()=>setReload(value=>value+1),likeName,passName,removeLikedName,undoLastSwipe,refreshDeck,setCultureFilter,setGenderFilter,setLastName,setMiddleName,setShowNamePreview}}>{children}</AppContext.Provider>;
+ },[userId,client]);
+ return <AppContext.Provider value={{mode:profile?.mode==='couple'?'couple':'solo',likedNames,likedNamesA:likedNames,passedIds,cultureFilter,genderFilter,lastName,middleName,showNamePreview,swipeHistory,swipeLoading,swipeError,retrySwipes:()=>{void query.refetch();},likeName,passName,removeLikedName,undoLastSwipe,refreshDeck,setCultureFilter,setGenderFilter,setLastName,setMiddleName,setShowNamePreview}}>{children}</AppContext.Provider>;
 };
