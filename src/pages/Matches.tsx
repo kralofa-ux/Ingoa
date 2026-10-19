@@ -28,7 +28,7 @@ const Matches = () => {
 
   if (partnerLoading || loading) {
     return (
-      <div className="min-h-screen pb-24 px-4 max-w-lg mx-auto bg-[hsl(var(--ingoa-tone-4))] flower-bg" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}>
+      <div className="min-h-screen pb-24 px-4 max-w-lg mx-auto bg-[hsl(var(--app-surface))] flower-bg" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}>
         <PageTitle className="mb-1">Matched Names</PageTitle>
         <div className="space-y-2 mt-4">
           {[...Array(4)].map((_, i) => (
@@ -41,7 +41,7 @@ const Matches = () => {
 
   if (!status.connected) {
     return (
-      <div className="min-h-screen pb-24 px-4 max-w-lg mx-auto bg-[hsl(var(--ingoa-tone-4))] flower-bg" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}>
+      <div className="min-h-screen pb-24 px-4 max-w-lg mx-auto bg-[hsl(var(--app-surface))] flower-bg" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}>
         <PageTitle className="mb-1">Matched Names</PageTitle>
         <div className="text-center py-16">
           <EmptyIcon />
@@ -60,7 +60,7 @@ const Matches = () => {
   }
 
   return (
-    <div className="min-h-screen pb-24 px-4 max-w-lg mx-auto bg-[hsl(var(--ingoa-tone-4))] flower-bg" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}>
+    <div className="min-h-screen pb-24 px-4 max-w-lg mx-auto bg-[hsl(var(--app-surface))] flower-bg" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}>
       <PageTitle className="mb-1">Matched Names</PageTitle>
       <p className="text-sm text-foreground/60 font-body mb-4">
         Names you and {status.partner_name} both loved 💕

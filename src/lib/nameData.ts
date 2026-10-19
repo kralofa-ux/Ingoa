@@ -12,12 +12,12 @@ export function reconcileOrder<T extends { id: string }>(ordered: T[], available
 }
 
 export const preferenceCultureClasses = {
- 'Cook Islands': 'bg-[hsl(var(--ingoa-tone-7))]',
- 'Samoa': 'bg-[hsl(var(--ingoa-tone-12))]',
- 'Aotearoa': 'bg-[hsl(var(--ingoa-tone-9))]',
- 'Tonga': 'bg-[hsl(var(--ingoa-tone-13))]',
- 'Fiji': 'bg-[hsl(var(--ingoa-tone-14))]',
- 'Hawaii': 'bg-[hsl(var(--ingoa-tone-8))]',
- 'Niue': 'bg-[hsl(var(--ingoa-tone-15))]',
- 'Tahiti': 'bg-[hsl(var(--ingoa-tone-10))]',
+ 'Cook Islands': 'bg-[hsl(var(--action-cyan))]',
+ 'Samoa': 'bg-[hsl(var(--preference-samoa))]',
+ 'Aotearoa': 'bg-[hsl(var(--preference-aotearoa))]',
+ 'Tonga': 'bg-[hsl(var(--preference-tonga))]',
+ 'Fiji': 'bg-[hsl(var(--preference-fiji))]',
+ 'Hawaii': 'bg-[hsl(var(--preference-niue))]',
+ 'Niue': 'bg-[hsl(var(--preference-niue-deep))]',
+ 'Tahiti': 'bg-[hsl(var(--preference-tahiti))]',
 };

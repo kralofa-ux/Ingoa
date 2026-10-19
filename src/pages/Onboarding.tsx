@@ -1,3 +1,4 @@
+import OnboardingPlan from "@/components/OnboardingPlan";
 import { preferenceCultureClasses } from "@/lib/nameData";
 import { Button } from "@/components/ui/button";
 import { saveThenNavigate } from "@/lib/profileActions";
@@ -103,14 +104,14 @@ const Onboarding = () => {
         <div className="flex gap-3">
           <MotionButton variant="unstyled" whileTap={{ scale: 0.95 }} animate={mode === "solo" ? { scale: [1, 1.05, 1] } : { scale: 1 }} transition={{ duration: 0.3 }} onClick={() => setMode("solo")}
             className={`flex-1 py-5 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-all flex flex-col items-center gap-2 ${
-              mode === "solo" ? "bg-[hsl(var(--ingoa-tone-5))] text-foreground ring-4 ring-foreground/60 shadow-lg scale-105" : "bg-[hsl(var(--ingoa-tone-5))]/40 text-foreground/60"
+              mode === "solo" ? "bg-[hsl(var(--selection-solo))] text-foreground ring-4 ring-foreground/60 shadow-lg scale-105" : "bg-[hsl(var(--selection-solo))]/40 text-foreground/60"
             }`}>
             <img src={modeSoloIcon} alt="" className="w-7 h-7 invert" />
             Solo
           </MotionButton>
           <MotionButton variant="unstyled" whileTap={{ scale: 0.95 }} animate={mode === "couple" ? { scale: [1, 1.05, 1] } : { scale: 1 }} transition={{ duration: 0.3 }} onClick={() => setMode("couple")}
             className={`flex-1 py-5 rounded-full font-body font-extrabold text-sm uppercase tracking-wider transition-all flex flex-col items-center gap-2 ${
-              mode === "couple" ? "bg-[hsl(var(--ingoa-tone-6))] text-foreground ring-4 ring-foreground/60 shadow-lg scale-105" : "bg-[hsl(var(--ingoa-tone-6))]/40 text-foreground/60"
+              mode === "couple" ? "bg-[hsl(var(--selection-couple))] text-foreground ring-4 ring-foreground/60 shadow-lg scale-105" : "bg-[hsl(var(--selection-couple))]/40 text-foreground/60"
             }`}>
             <img src={modeCoupleIcon} alt="" className="w-9 h-9 invert" />
             Couple
@@ -163,15 +164,15 @@ const Onboarding = () => {
         </h2>
         <div className="space-y-3">
           <Button variant="unstyled" onClick={() => setGenderPref("male")}
-            className={`w-full py-4 rounded-full font-body text-sm font-extrabold uppercase tracking-wider transition-all text-foreground bg-[hsl(var(--ingoa-tone-1))] ${
+            className={`w-full py-4 rounded-full font-body text-sm font-extrabold uppercase tracking-wider transition-all text-foreground bg-[hsl(var(--gender-male-surface))] ${
               genderPref === "male" ? "ring-4 ring-foreground/60 shadow-lg scale-105" : ""
             }`}>Boy</Button>
           <Button variant="unstyled" onClick={() => setGenderPref("female")}
-            className={`w-full py-4 rounded-full font-body text-sm font-extrabold uppercase tracking-wider transition-all text-foreground bg-[hsl(var(--ingoa-tone-2))] ${
+            className={`w-full py-4 rounded-full font-body text-sm font-extrabold uppercase tracking-wider transition-all text-foreground bg-[hsl(var(--gender-female-surface))] ${
               genderPref === "female" ? "ring-4 ring-foreground/60 shadow-lg scale-105" : ""
             }`}>Girl</Button>
           <Button variant="unstyled" onClick={() => setGenderPref("all")}
-            className={`w-full py-4 rounded-full font-body text-sm font-extrabold uppercase tracking-wider transition-all text-foreground bg-[hsl(var(--ingoa-tone-3))] ${
+            className={`w-full py-4 rounded-full font-body text-sm font-extrabold uppercase tracking-wider transition-all text-foreground bg-[hsl(var(--gender-unisex-surface))] ${
               genderPref === "all" ? "ring-4 ring-foreground/60 shadow-lg scale-105" : ""
             }`}>Surprise</Button>
         </div>
@@ -185,7 +186,7 @@ const Onboarding = () => {
         </h2>
         <div className="space-y-5">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-[hsl(var(--ingoa-tone-7))] flex items-center justify-center shrink-0">
+            <div className="w-14 h-14 rounded-full bg-[hsl(var(--action-cyan))] flex items-center justify-center shrink-0">
               <NavSwipeRightIcon className="w-7 h-7 text-foreground" />
             </div>
             <div>
@@ -194,7 +195,7 @@ const Onboarding = () => {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-[hsl(var(--ingoa-tone-6))] flex items-center justify-center shrink-0">
+            <div className="w-14 h-14 rounded-full bg-[hsl(var(--selection-couple))] flex items-center justify-center shrink-0">
               <NavPassIcon className="w-7 h-7 text-foreground" />
             </div>
             <div>
@@ -203,7 +204,7 @@ const Onboarding = () => {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-[hsl(var(--ingoa-tone-8))] flex items-center justify-center shrink-0">
+            <div className="w-14 h-14 rounded-full bg-[hsl(var(--preference-niue))] flex items-center justify-center shrink-0">
               <UndoSwipeIcon className="w-8 h-8 text-foreground" />
             </div>
             <div>
@@ -225,87 +226,20 @@ const Onboarding = () => {
         </p>
         <div className="space-y-3">
           <input type="text" placeholder="Middle name" value={middleName} onChange={(e) => setMiddleName(e.target.value)}
-            className="w-full px-5 py-3.5 rounded-full bg-[hsl(var(--ingoa-tone-7))] text-foreground text-sm font-body font-semibold placeholder:text-foreground/60 focus:outline-none focus:ring-2 focus:ring-foreground/30 border-0 uppercase tracking-wider" />
+            className="w-full px-5 py-3.5 rounded-full bg-[hsl(var(--action-cyan))] text-foreground text-sm font-body font-semibold placeholder:text-foreground/60 focus:outline-none focus:ring-2 focus:ring-foreground/30 border-0 uppercase tracking-wider" />
           <input type="text" placeholder="Last name" value={lastName} onChange={(e) => setLastName(e.target.value)}
-            className="w-full px-5 py-3.5 rounded-full bg-[hsl(var(--ingoa-tone-9))] text-foreground text-sm font-body font-semibold placeholder:text-foreground/60 focus:outline-none focus:ring-2 focus:ring-foreground/30 border-0 uppercase tracking-wider" />
+            className="w-full px-5 py-3.5 rounded-full bg-[hsl(var(--preference-aotearoa))] text-foreground text-sm font-body font-semibold placeholder:text-foreground/60 focus:outline-none focus:ring-2 focus:ring-foreground/30 border-0 uppercase tracking-wider" />
         </div>
       </motion.div>
     ),
 
     subscription: (
-      <motion.div key="subscription" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} className="text-left pt-8">
-        <h2 className="text-3xl font-display font-extrabold text-foreground uppercase tracking-tight leading-tight mb-3">
-          Choose Your Plan
-        </h2>
-        <p className="text-sm text-foreground/50 font-body mb-8">
-          Unlock the full experience
-        </p>
-
-        {/* Premium tier — featured */}
-        <motion.div
-          initial={{ scale: 0.97 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.15, duration: 0.35 }}
-          className="onboarding-premium rounded-2xl p-6 mb-4 relative overflow-hidden"
-          
-        >
-          <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-foreground/10 rounded-full px-2.5 py-1">
-            <Sparkles className="w-3 h-3 text-[hsl(var(--ingoa-tone-7))]" />
-            <span className="text-[10px] font-body font-bold text-foreground/80 uppercase tracking-wider">Recommended</span>
-          </div>
-          <h3 className="font-display font-extrabold text-foreground text-xl uppercase tracking-wide mb-1 flex items-center gap-2">
-            <Crown className="w-5 h-5 text-[hsl(var(--ingoa-tone-7))]" /> Premium
-          </h3>
-          <p className="text-xs text-foreground/40 font-body mb-4">Everything you need</p>
-          <ul className="space-y-3 text-sm font-body text-foreground/80">
-            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-[hsl(var(--ingoa-tone-7))] shrink-0" /> Unlimited swipes</li>
-            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-[hsl(var(--ingoa-tone-7))] shrink-0" /> Couple mode — match together</li>
-            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-[hsl(var(--ingoa-tone-7))] shrink-0" /> Full name catalogue</li>
-            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-[hsl(var(--ingoa-tone-7))] shrink-0" /> Name preview & sharing</li>
-          </ul>
-          <div className="flex gap-2 mt-5">
-            <MotionButton variant="unstyled"
-              whileTap={{ scale: 0.97 }}
-              onClick={handlePlanTap}
-              disabled={submitting}
-              className="flex-1 py-3 rounded-full bg-[hsl(var(--ingoa-tone-7))] text-[hsl(var(--ingoa-tone-10))] text-xs font-body font-bold uppercase tracking-wider shadow-lg active:scale-[0.98] transition-all"
-            >
-              $9.99/mo
-            </MotionButton>
-            <MotionButton variant="unstyled"
-              whileTap={{ scale: 0.97 }}
-              onClick={handlePlanTap}
-              disabled={submitting}
-              className="flex-1 py-3 rounded-full bg-[hsl(var(--ingoa-tone-9))] text-foreground text-xs font-body font-bold uppercase tracking-wider shadow-lg active:scale-[0.98] transition-all"
-            >
-              $20 Lifetime
-            </MotionButton>
-          </div>
-          <p className="mt-3 text-[10px] leading-relaxed text-foreground/40 font-body text-center">
-            Monthly auto-renews until cancelled. Lifetime is a one-time purchase.{" "}
-            <a href="/terms" target="_blank" rel="noreferrer" className="underline">Terms</a> ·{" "}
-            <a href="/privacy" target="_blank" rel="noreferrer" className="underline">Privacy</a>
-          </p>
-        </motion.div>
-
-        {/* Free tier */}
-        <div className="rounded-2xl p-5 bg-foreground/5 border border-foreground/10">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-display font-extrabold text-foreground text-base uppercase tracking-wide">Free</h3>
-            <span className="text-[10px] font-body font-bold text-foreground/40 uppercase tracking-wider bg-foreground/10 rounded-full px-2.5 py-1">Current</span>
-          </div>
-          <ul className="space-y-2.5 text-sm font-body text-foreground/50">
-            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-foreground/30 shrink-0" /> 20 swipes per day</li>
-            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-foreground/30 shrink-0" /> Save liked names</li>
-            <li className="flex items-center gap-3"><Check className="w-4 h-4 text-foreground/30 shrink-0" /> Basic name details</li>
-          </ul>
-        </div>
-      </motion.div>
+      <OnboardingPlan onPlan={handlePlanTap} submitting={submitting} />
     ),
   };
 
   return (
-    <div className="min-h-screen px-6 relative overflow-hidden bg-[hsl(var(--ingoa-tone-4))] flower-bg items-center justify-center flex flex-col">
+    <div className="min-h-screen px-6 relative overflow-hidden bg-[hsl(var(--app-surface))] flower-bg items-center justify-center flex flex-col">
       <div className="w-full max-w-sm relative z-10 flex flex-col flex-1 justify-center pb-20">
         <AnimatePresence mode="wait">{stepContent[currentKey]}</AnimatePresence>
 
