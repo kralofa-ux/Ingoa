@@ -3,11 +3,12 @@ import { usePartner } from "@/hooks/usePartner";
 import { useAuth } from "@/context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2 } from "lucide-react";
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import NameDetail from "@/components/NameDetail";
 import { PolynesianName, Culture, Gender } from "@/data/names";
-import { supabase } from "@/lib/supabase";
+import { useMatches } from "@/hooks/useMatches";
+import { Button } from "@/components/ui/button";
 import { getGenderColor } from "@/lib/genderColors";
 import PageTitle from "@/components/PageTitle";
 import NavMatchesIcon from "@/components/icons/NavMatchesIcon";
@@ -20,64 +21,10 @@ const EmptyIcon = () => (
 const Matches = () => {
   const { likedNamesA } = useApp();
   const { user } = useAuth();
-  const { status, loading: partnerLoading } = usePartner();
+  const { status, loading: partnerLoading, error: partnerError, refreshStatus } = usePartner();
   const [selectedName, setSelectedName] = useState<PolynesianName | null>(null);
-  const [matchedNames, setMatchedNames] = useState<PolynesianName[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchMatches = useCallback(async () => {
-    if (!user || !status.connected) {
-      setMatchedNames([]);
-      setLoading(false);
-      return;
-    }
-    setLoading(true);
-    try {
-      const { data: matchIds } = await supabase.rpc("get_partner_matches", {
-        requesting_user: user.id,
-      });
-      if (!matchIds || matchIds.length === 0) {
-        setMatchedNames([]);
-        setLoading(false);
-        return;
-      }
-      const ids = matchIds.map((r: { name_id: string }) => r.name_id);
-      const { data: nameRows } = await supabase
-        .from("names")
-        .select("id, name, culture, gender, meaning")
-        .in("id", ids);
-      if (nameRows) {
-        setMatchedNames(
-          nameRows.map((r) => ({
-            id: r.id,
-            name: r.name,
-            meaning: r.meaning ?? "",
-            culture: r.culture as Culture,
-            gender: r.gender as Gender,
-          }))
-        );
-      }
-    } catch {
-      setMatchedNames([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [user, status.connected]);
-
-  useEffect(() => { fetchMatches(); }, [fetchMatches, likedNamesA]);
-
-  useEffect(() => {
-    if (!status.connected || !status.partner_id) return;
-    const channel = supabase
-      .channel("partner-likes")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "liked_names", filter: `user_id=eq.${status.partner_id}` },
-        () => fetchMatches()
-      )
-      .subscribe();
-    return () => { supabase.removeChannel(channel); };
-  }, [status.connected, status.partner_id, fetchMatches]);
+  const {data:matchedNames=[],isLoading:loading,error,refetch}=useMatches(user?.id,status.partner_id,likedNamesA.map(name=>name.id).join(','));
+  if (partnerError || error) return <div className="min-h-screen p-8 text-center"><p className="text-foreground mb-4">Unable to load matches. Please try again.</p><Button onClick={()=>{void refetch();void refreshStatus();}}>Retry</Button></div>;
 
   if (partnerLoading || loading) {
     return (

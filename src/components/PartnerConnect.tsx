@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Copy, Check, Link2, Unlink, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import NavMatchesIcon from "@/components/icons/NavMatchesIcon";
 import { usePartner } from "@/hooks/usePartner";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/context/AuthContext";
 
 const PartnerConnect = () => {
-  const { status, loading, code, generateCode, joinCode, disconnect } = usePartner();
+  const { status, loading, error, refreshStatus, code, generateCode, joinCode, disconnect } = usePartner();
   const { refreshProfile } = useAuth();
   const { toast } = useToast();
   const [inputCode, setInputCode] = useState("");
@@ -48,8 +49,8 @@ const PartnerConnect = () => {
         title: "Connected! 🎉",
         description: `You're now matched with ${data.partner_name}`,
       });
-    } catch (err: any) {
-      setJoinError(err.message || "Invalid code. Please try again.");
+    } catch (err: unknown) {
+      setJoinError(err instanceof Error ? err.message : "Invalid code. Please try again.");
     } finally {
       setJoining(false);
     }
@@ -69,6 +70,8 @@ const PartnerConnect = () => {
       setDisconnecting(false);
     }
   };
+
+  if (error) return <div className="frosted-pill rounded-2xl p-6 text-center"><p className="text-foreground mb-4">Unable to load partner connection.</p><Button onClick={()=>void refreshStatus()}>Retry</Button></div>;
 
   if (loading) {
     return (
