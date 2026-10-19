@@ -1,4 +1,19 @@
-import { act, renderHook, waitFor } from '@testing-library/react';
+import { act } from 'react';
+import { createRoot } from 'react-dom/client';
+import { useEffect } from 'react';
+(globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+function renderHook(hook: typeof useApp, { wrapper: Wrapper }: { wrapper: typeof AppProvider }) {
+ const host = document.createElement('div');
+ const root = createRoot(host);
+ const result = { current: undefined as ReturnType<typeof useApp> | undefined };
+ function Probe() { const value = hook(); useEffect(() => { result.current = value; }); return null; }
+ const rerender = () => act(() => root.render(<Wrapper><Probe /></Wrapper>));
+ rerender();
+ return { result, rerender };
+}
+async function waitFor(assertion: () => void) {
+ for (let i = 0; i < 10; i++) { await act(async () => {}); try { assertion(); return; } catch (e) { if (i === 9) throw e; } }
+}
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AppProvider, useApp } from '@/context/AppContext';
 import type { PolynesianName } from '@/data/names';
@@ -21,22 +36,22 @@ describe('persisted swipe behavior', () => {
  beforeEach(() => { mocks.user = { id: 'account-a' }; mocks.requests = []; mocks.likes = []; mocks.error = null; });
  it('executes a cloud delete when undoing a saved like', async () => {
   const { result } = renderHook(() => useApp(), { wrapper: AppProvider });
-  await act(async () => { await result.current.likeName(name); });
-  await act(async () => { await result.current.undoLastSwipe(); });
+  await act(async () => { await result.current?.likeName(name); });
+  await act(async () => { await result.current?.undoLastSwipe(); });
   expect(mocks.requests).toContain('liked_names:delete');
  });
  it('clears previous likes when a new account has no saved likes', async () => {
   mocks.likes = [{ name_id: name.id }];
   const { result, rerender } = renderHook(() => useApp(), { wrapper: AppProvider });
-  await waitFor(() => expect(result.current.likedNames).toHaveLength(1));
+  await waitFor(() => expect(result.current?.likedNames).toHaveLength(1));
   mocks.likes = []; mocks.user = { id: 'account-b' }; rerender();
-  await waitFor(() => expect(result.current.likedNames).toEqual([]));
+  await waitFor(() => expect(result.current?.likedNames).toEqual([]));
  });
  it('does not retain a like after its cloud save fails', async () => {
   const { result } = renderHook(() => useApp(), { wrapper: AppProvider });
   await act(async () => {});
   mocks.error = new Error('Offline');
-  await act(async () => { try { await result.current.likeName(name); } catch { /* Expected failure. */ } });
-  expect(result.current.likedNames).toEqual([]);
+  await act(async () => { try { await result.current?.likeName(name); } catch { /* Expected failure. */ } });
+  expect(result.current?.likedNames).toEqual([]);
  });
 });
