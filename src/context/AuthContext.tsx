@@ -115,7 +115,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           const {data,error}=await supabase.from('profiles').select('*').eq('user_id',nextId).single();
           if (error) throw error;
           if (disposed || current!==version) return;
-          if(activeUser.current===userId)setProfile(data);
+          if(activeUser.current===nextId)setProfile(data);
           if (isNative()) await loginRevenueCat(nextId);
           if (disposed || current!==version) return;
           await checkSubscription();
