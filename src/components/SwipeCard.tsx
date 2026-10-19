@@ -8,6 +8,7 @@ import UndoSwipeIcon from "@/components/icons/UndoSwipeIcon";
 
 interface SwipeCardProps {
   name: PolynesianName;
+  disabled?: boolean;
   onSwipeLeft: () => void;
   onSwipeRight: () => void;
   isTop: boolean;
@@ -16,7 +17,7 @@ interface SwipeCardProps {
   swipeCount?: number;
 }
 
-const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, swipeCount = 99 }: SwipeCardProps) => {
+const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, swipeCount = 99, disabled = false }: SwipeCardProps) => {
   const { showNamePreview, lastName, middleName } = useApp();
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-200, 200], [-12, 12]);
@@ -25,7 +26,8 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, sw
 
   const exitDirection = useRef<"left" | "right">("right");
 
-  const handleDragEnd = (_: any, info: PanInfo) => {
+  const handleDragEnd = (_: unknown, info: PanInfo) => {
+    if (disabled) return;
     if (info.offset.x > 100) { exitDirection.current = "right"; onSwipeRight(); }
     else if (info.offset.x < -100) { exitDirection.current = "left"; onSwipeLeft(); }
   };
@@ -50,7 +52,7 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, sw
     <motion.div
       className="absolute inset-0 z-10 cursor-grab active:cursor-grabbing"
       style={{ x, rotate }}
-      drag="x"
+      drag={disabled ? false : "x"}
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.9}
       onDragEnd={handleDragEnd}

@@ -3,110 +3,88 @@ import { useNames, buildWeightedDeck } from "@/hooks/useNames";
 import SwipeCard from "@/components/SwipeCard";
 import SwipeTutorial from "@/components/SwipeTutorial";
 import { AnimatePresence, motion } from "framer-motion";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { RefreshCw, Sparkles, Crown, Zap, Heart, BookOpen } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { Haptics, ImpactStyle } from "@capacitor/haptics";
-import { supabase } from "@/integrations/supabase/client";
+import { useDailySwipes, DAILY_SWIPE_LIMIT } from "@/hooks/useDailySwipes";
+import { Button } from "@/components/ui/button";
 
 const triggerHaptic = async () => {
-  try { await Haptics.impact({ style: ImpactStyle.Medium }); } catch {}
+  try { await Haptics.impact({ style: ImpactStyle.Medium }); } catch { /* Haptics are optional in browsers. */ }
 };
 
-const DAILY_SWIPE_LIMIT = 20;
+
 
 const SwipeDeck = () => {
   const {
     likeName, passName, passedIds, likedNames,
-    cultureFilter, genderFilter, mode, currentPartner,
+    cultureFilter, genderFilter, mode, swipeLoading, swipeError, retrySwipes,
     undoLastSwipe, refreshDeck, swipeHistory
   } = useApp();
   const { toast } = useToast();
   const navigate = useNavigate();
   const { isSubscribed, user } = useAuth();
-  const { data: allNames, isLoading } = useNames();
-  const [dailySwipes, setDailySwipes] = useState(0);
+  const { data: allNames, isLoading, error: namesError, refetch } = useNames();
+  const { count: dailySwipes, loading: countLoading, error: countError, refresh: refreshCount, record } = useDailySwipes(user?.id);
+  const pendingRef = useRef(false);
+  const [pending, setPending] = useState(false);
   const [swipeCount, setSwipeCount] = useState(() => {
     const stored = localStorage.getItem("ingoa_swipe_count");
     return stored ? parseInt(stored, 10) : 0;
   });
 
-  // Load today's swipe count from server
-  useEffect(() => {
-    if (!user) return;
-    const loadSwipes = async () => {
-      const { data } = await supabase
-        .from("daily_swipes")
-        .select("swipe_count")
-        .eq("user_id", user.id)
-        .eq("swipe_date", new Date().toISOString().split("T")[0])
-        .maybeSingle();
-      if (data) setDailySwipes(data.swipe_count);
-    };
-    loadSwipes();
-  }, [user]);
-
+  const filterKey = JSON.stringify([cultureFilter, genderFilter, user?.id]);
+  const availableNames = useMemo(() => (allNames ?? []).filter(n =>
+    (!cultureFilter.length || cultureFilter.includes(n.culture)) &&
+    (genderFilter === 'all' || n.gender === genderFilter || n.gender === 'unisex')
+  ), [allNames, cultureFilter, genderFilter]);
+  const ordered = useRef<string[]>([]);
+  const previousFilter = useRef('');
   const filteredNames = useMemo(() => {
-    if (!allNames) return [];
-    const filtered = allNames.filter((n) => {
-      if (cultureFilter.length > 0 && !cultureFilter.includes(n.culture)) return false;
-      if (genderFilter !== "all" && n.gender !== genderFilter && n.gender !== "unisex") return false;
-      return true;
-    });
-    const likedIds = new Set(likedNames.map((l) => l.id));
-    return buildWeightedDeck(filtered, passedIds, likedIds);
-  }, [allNames, cultureFilter, genderFilter, passedIds, likedNames]);
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const currentName = filteredNames[currentIndex];
-
-  const advance = () => {
-    setSwipeCount((c) => {
-      const next = c + 1;
-      localStorage.setItem("ingoa_swipe_count", String(next));
-      return next;
-    });
-    // Record swipe server-side
-    if (user) {
-      supabase.rpc("record_swipe").then(({ data }) => {
-        if (typeof data === "number") setDailySwipes(data);
-      });
-    } else {
-      setDailySwipes((c) => c + 1);
-    }
-    if (currentIndex < filteredNames.length - 1) {
-      setCurrentIndex((i) => i + 1);
-    } else {
-      setCurrentIndex(filteredNames.length);
-    }
-  };
-
-  // Premium users bypass daily limit
+    const available = availableNames.filter(n => !passedIds.has(n.id) && !likedNames.some(l=>l.id===n.id));
+    if (previousFilter.current !== filterKey) { ordered.current=[];previousFilter.current=filterKey; }
+    const byId = new Map(available.map(n=>[n.id,n]));
+    const retained = ordered.current.filter(id=>byId.has(id));
+    const existing = new Set(retained);
+    const additions = buildWeightedDeck(available.filter(n=>!existing.has(n.id)),new Set(),new Set());
+    ordered.current = [...retained,...additions.map(n=>n.id)];
+    return ordered.current.flatMap(id=>{const name=byId.get(id);return name?[name]:[];});
+  },[availableNames,passedIds,likedNames,filterKey]);
+  const currentName = filteredNames[0];
   const isAtLimit = !isSubscribed && dailySwipes >= DAILY_SWIPE_LIMIT;
-
-  const handleLike = () => {
-    if (currentName) { triggerHaptic(); likeName(currentName); advance(); }
+  const perform = async (operation: () => Promise<void>) => {
+    if (pendingRef.current) return;
+    pendingRef.current=true;setPending(true);
+    try { await operation(); }
+    catch (error) { toast({title:'Unable to save',description:error instanceof Error?error.message:'Please try again',variant:'destructive'}); }
+    finally { pendingRef.current=false;setPending(false); }
   };
-
-  const handlePass = () => {
-    if (currentName) { triggerHaptic(); passName(currentName.id, currentName); advance(); }
+  const swipe = (action: 'like' | 'pass') => {
+    if (!currentName || isAtLimit || countLoading || countError) return;
+    void perform(async()=> {
+      await record();
+      await (action==='like'?likeName(currentName):passName(currentName.id,currentName));
+      void triggerHaptic();
+      setSwipeCount(count=> {const next=count+1;localStorage.setItem('ingoa_swipe_count',String(next));return next;});
+    });
   };
-
-  const handleUndo = () => {
-    const success = undoLastSwipe();
-    if (success) {
-      triggerHaptic();
-      setCurrentIndex((i) => Math.max(0, i - 1));
-      toast({ title: "Undo", description: "Last swipe undone" });
-    }
-  };
-
+  const handleLike = () => swipe('like');
+  const handlePass = () => swipe('pass');
+  const handleUndo = () => void perform(async()=> {
+    const name = await undoLastSwipe();
+    if (!name) return;
+    ordered.current=[name.id,...ordered.current.filter(id=>id!==name.id)];
+    toast({title:'Undo',description:'Last swipe undone'});
+  });
 
   const showTutorial = swipeCount < 5;
 
-  if (isLoading) {
+  if (namesError || swipeError || countError) return <div className="flex-1 p-8 text-center"><p className="text-foreground mb-4">Unable to load your names. Please try again.</p><Button onClick={()=>{void refetch();retrySwipes();void refreshCount();}}>Retry</Button></div>;
+
+  if (isLoading || swipeLoading || countLoading) {
     return (
       <div className="flex-1 flex flex-col items-center px-4 relative">
         <div className="relative w-full max-w-sm h-[560px] mx-auto">
@@ -149,8 +127,8 @@ const SwipeDeck = () => {
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.1, duration: 0.35 }}
-          className="w-full max-w-sm rounded-2xl p-6 mb-4 relative overflow-hidden"
-          style={{ background: "linear-gradient(145deg, hsl(235 50% 22%), hsl(235 55% 14%))" }}
+          className="w-full max-w-sm rounded-2xl p-6 mb-4 relative overflow-hidden premium-surface"
+          
         >
           <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-foreground/10 rounded-full px-2.5 py-1">
             <Crown className="w-3 h-3 text-[hsl(var(--accent))]" />
@@ -221,7 +199,7 @@ const SwipeDeck = () => {
           You've gone through all available names. Refresh to bring back passed names.
         </p>
         <button
-          onClick={() => {refreshDeck();setCurrentIndex(0);}}
+          onClick={() => void perform(async()=>{await refreshDeck();ordered.current=[];})}
           className="px-6 py-3 rounded-full bg-primary text-primary-foreground font-body font-bold flex items-center gap-2 uppercase tracking-wider transition-opacity hover:opacity-90">
           
           <RefreshCw className="w-4 h-4" />
@@ -248,7 +226,8 @@ const SwipeDeck = () => {
             onSwipeRight={handleLike}
             isTop={true}
             onUndo={handleUndo}
-            canUndo={swipeHistory.length > 0}
+            canUndo={!pending && swipeHistory.length > 0}
+            disabled={pending}
             swipeCount={swipeCount} />
           
         </AnimatePresence>

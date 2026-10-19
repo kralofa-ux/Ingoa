@@ -1,6 +1,8 @@
 import { useApp } from "@/context/AppContext";
 import { motion, AnimatePresence, Reorder, useMotionValue, useTransform } from "framer-motion";
 import { useState } from "react";
+import { reconcileOrder } from "@/lib/nameData";
+import { useToast } from "@/hooks/use-toast";
 import NameDetail from "@/components/NameDetail";
 import { PolynesianName } from "@/data/names";
 import { getGenderColor } from "@/lib/genderColors";
@@ -23,7 +25,7 @@ const SwipeToDeleteItem = ({
   const bgOpacity = useTransform(x, [-150, -80, 0], [1, 0.5, 0]);
   const gColor = getGenderColor(name.gender);
 
-  const handleDragEnd = (_: any, info: { offset: { x: number } }) => {
+  const handleDragEnd = (_: unknown, info: { offset: { x: number } }) => {
     if (info.offset.x < -100) {
       onRemove(name.id);
     }
@@ -73,13 +75,14 @@ const EmptyIcon = () => (
 );
 
 const LikedList = () => {
-  const { likedNames, removeLikedName, mode, currentPartner } = useApp();
+  const { likedNames, removeLikedName } = useApp();
+  const { toast } = useToast();
   const [selectedName, setSelectedName] = useState<PolynesianName | null>(null);
   const [orderedNames, setOrderedNames] = useState<PolynesianName[]>([]);
   const [hasCustomOrder, setHasCustomOrder] = useState(false);
 
   const displayNames = hasCustomOrder
-    ? orderedNames.filter((n) => likedNames.some((l) => l.id === n.id))
+    ? reconcileOrder(orderedNames, likedNames)
     : [...likedNames];
 
   const handleReorder = (newOrder: PolynesianName[]) => {
@@ -112,7 +115,7 @@ const LikedList = () => {
               <SwipeToDeleteItem
                 key={name.id}
                 name={name}
-                onRemove={removeLikedName}
+                onRemove={(id)=>{void removeLikedName(id).catch(()=>toast({title:"Unable to remove name",description:"Please try again",variant:"destructive"}));}}
                 onSelect={setSelectedName}
               />
             ))}
