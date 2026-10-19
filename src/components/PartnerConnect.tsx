@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Copy, Check, Link2, Unlink, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import NavMatchesIcon from "@/components/icons/NavMatchesIcon";
 import { usePartner } from "@/hooks/usePartner";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/context/AuthContext";
 
 const PartnerConnect = () => {
-  const { status, loading, code, generateCode, joinCode, disconnect } = usePartner();
+  const { status, loading, error, refreshStatus, code, generateCode, joinCode, disconnect } = usePartner();
   const { refreshProfile } = useAuth();
   const { toast } = useToast();
   const [inputCode, setInputCode] = useState("");
@@ -48,8 +49,8 @@ const PartnerConnect = () => {
         title: "Connected! 🎉",
         description: `You're now matched with ${data.partner_name}`,
       });
-    } catch (err: any) {
-      setJoinError(err.message || "Invalid code. Please try again.");
+    } catch (err: unknown) {
+      setJoinError(err instanceof Error ? err.message : "Invalid code. Please try again.");
     } finally {
       setJoining(false);
     }
@@ -69,6 +70,8 @@ const PartnerConnect = () => {
       setDisconnecting(false);
     }
   };
+
+  if (error) return <div className="frosted-pill rounded-2xl p-6 text-center"><p className="text-foreground mb-4">Unable to load partner connection.</p><Button onClick={()=>void refreshStatus()}>Retry</Button></div>;
 
   if (loading) {
     return (
@@ -96,32 +99,32 @@ const PartnerConnect = () => {
           </div>
         </div>
         {!showDisconnect ? (
-          <button
+          <Button variant="unstyled"
             onClick={() => setShowDisconnect(true)}
             className="w-full px-4 py-3 border-t border-foreground/10 text-sm font-body text-destructive hover:bg-destructive/10 transition-colors flex items-center justify-center gap-2"
           >
             <Unlink className="w-4 h-4" />
             Disconnect Partner
-          </button>
+          </Button>
         ) : (
           <div className="p-4 border-t border-foreground/10 space-y-3">
             <p className="text-sm font-body text-foreground text-center">
               Match history will be lost. Reconnecting with the same partner is free.
             </p>
             <div className="flex gap-2">
-              <button
+              <Button variant="unstyled"
                 onClick={handleDisconnect}
                 disabled={disconnecting}
                 className="flex-1 py-2.5 rounded-full bg-destructive text-destructive-foreground text-sm font-body font-medium disabled:opacity-50"
               >
                 {disconnecting ? "..." : "Disconnect"}
-              </button>
-              <button
+              </Button>
+              <Button variant="unstyled"
                 onClick={() => setShowDisconnect(false)}
                 className="flex-1 py-2.5 rounded-full frosted-pill text-foreground text-sm font-body font-medium"
               >
                 Cancel
-              </button>
+              </Button>
             </div>
           </div>
         )}
@@ -151,20 +154,20 @@ const PartnerConnect = () => {
             exit={{ opacity: 0 }}
             className="space-y-2"
           >
-            <button
+            <Button variant="unstyled"
               onClick={handleGenerate}
               disabled={generating}
               className="w-full py-3 rounded-full bg-primary text-primary-foreground text-sm font-body font-bold uppercase tracking-wider disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Link2 className="w-4 h-4" />}
               Generate Invite Code
-            </button>
-            <button
+            </Button>
+            <Button variant="unstyled"
               onClick={() => setMode("enter")}
-              className="w-full py-3 rounded-full bg-primary/60 text-white text-sm font-body font-bold uppercase tracking-wider"
+              className="w-full py-3 rounded-full bg-primary/60 text-foreground text-sm font-body font-bold uppercase tracking-wider"
             >
               Enter Partner's Code
-            </button>
+            </Button>
           </motion.div>
         )}
 
@@ -179,20 +182,20 @@ const PartnerConnect = () => {
             <p className="text-xs text-foreground/50 font-body">Share this code with your partner</p>
             <div className="flex items-center justify-center gap-3">
               <span className="text-3xl font-display tracking-[0.3em] text-foreground">{code}</span>
-              <button
+              <Button variant="unstyled"
                 onClick={handleCopy}
                 className="w-8 h-8 rounded-full frosted-pill flex items-center justify-center text-foreground/60 hover:text-foreground transition-colors"
               >
                 {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-              </button>
+              </Button>
             </div>
             <p className="text-xs text-foreground/50 font-body">Expires in 24 hours</p>
-            <button
+            <Button variant="unstyled"
               onClick={() => { setMode("choose"); }}
               className="text-xs text-foreground/50 font-body underline"
             >
               Back
-            </button>
+            </Button>
           </motion.div>
         )}
 
@@ -218,7 +221,7 @@ const PartnerConnect = () => {
                   setInputCode(e.target.value.replace(/\D/g, "").slice(0, 6));
                   setJoinError("");
                 }}
-                className={`w-full px-5 py-3.5 rounded-full bg-[hsl(220,60%,88%)]/20 text-foreground text-center text-2xl font-display tracking-[0.3em] border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/30 transition-all ${
+                className={`w-full px-5 py-3.5 rounded-full bg-[hsl(var(--ingoa-tone-11))]/20 text-foreground text-center text-2xl font-display tracking-[0.3em] border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/30 transition-all ${
                   joinError ? "ring-2 ring-destructive/60" : ""
                 }`}
               />
@@ -235,20 +238,20 @@ const PartnerConnect = () => {
                 )}
               </AnimatePresence>
             </div>
-            <button
+            <Button variant="unstyled"
               onClick={handleJoin}
               disabled={inputCode.length !== 6 || joining}
               className="w-full py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-body font-bold uppercase tracking-wider disabled:opacity-50 flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
             >
               {joining ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
               {joining ? "Connecting..." : "Connect"}
-            </button>
-            <button
+            </Button>
+            <Button variant="unstyled"
               onClick={() => { setMode("choose"); setInputCode(""); setJoinError(""); }}
               className="w-full text-xs text-foreground/50 font-body underline text-center"
             >
               Back
-            </button>
+            </Button>
           </motion.div>
         )}
       </AnimatePresence>

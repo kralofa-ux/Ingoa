@@ -37,11 +37,11 @@ interface AuthContextType {
   isSubscribed: boolean;
   subscriptionTier: "free" | "monthly" | "lifetime";
   subscriptionEnd: string | null;
-  signUp: (email: string, password: string) => Promise<{ error: any }>;
-  signIn: (email: string, password: string) => Promise<{ error: any }>;
+  signUp: (email: string, password: string) => Promise<{ error: { message: string } | null }>;
+  signIn: (email: string, password: string) => Promise<{ error: { message: string } | null }>;
   signOut: () => Promise<void>;
-  resetPassword: (email: string) => Promise<{ error: any }>;
-  updateProfile: (updates: Partial<Profile>) => Promise<{ error: any }>;
+  resetPassword: (email: string) => Promise<{ error: { message: string } | null }>;
+  updateProfile: (updates: Partial<Profile>) => Promise<{ error: { message: string } | null }>;
   refreshProfile: () => Promise<void>;
   checkSubscription: () => Promise<void>;
 }
@@ -67,11 +67,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const fetchProfile = async (userId: string) => {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("profiles")
       .select("*")
       .eq("user_id", userId)
       .single();
+    if (error) throw error;
     setProfile(data);
   };
 
@@ -113,44 +114,40 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    // Initialise RevenueCat early (anonymous until login)
-    initRevenueCat();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          // Identify user in RevenueCat
-          if (isNative()) {
-            await loginRevenueCat(session.user.id);
-          }
-          setTimeout(() => fetchProfile(session.user.id), 0);
-          setTimeout(() => checkSubscription(), 100);
-        } else {
-          setProfile(null);
-          setSubState({ isSubscribed: false, subscriptionTier: "free", subscriptionEnd: null });
-          if (isNative()) {
-            await logoutRevenueCat();
-          }
-        }
-        setLoading(false);
-      }
-    );
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        if (isNative()) loginRevenueCat(session.user.id);
-        fetchProfile(session.user.id);
-        checkSubscription();
-      }
-      setLoading(false);
+    let disposed = false;
+    let version = 0;
+    let lastUserId: string | null | undefined;
+    const hydrate = async (nextSession: Session | null) => {
+      const nextId = nextSession?.user.id ?? null;
+      setSession(nextSession);
+      if (nextId === lastUserId) return;
+      lastUserId = nextId;
+      const current = ++version;
+      setLoading(true);setUser(nextSession?.user ?? null);setProfile(null);
+      setSubState({isSubscribed:false,subscriptionTier:'free',subscriptionEnd:null});
+      try {
+        if (nextId) {
+          const {data,error}=await supabase.from('profiles').select('*').eq('user_id',nextId).single();
+          if (error) throw error;
+          if (disposed || current!==version) return;
+          setProfile(data);
+          if (isNative()) await loginRevenueCat(nextId);
+          if (disposed || current!==version) return;
+          await checkSubscription();
+        } else if (isNative()) await logoutRevenueCat();
+      } catch (error) { console.error('Unable to load account',error); }
+      finally { if (!disposed && current===version) setLoading(false); }
+    };
+    const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,nextSession)=> {
+      setTimeout(()=>{if(!disposed) void hydrate(nextSession);},0);
     });
-
-    return () => subscription.unsubscribe();
-  }, [checkSubscription]);
+    void supabase.auth.getSession().then(({data:{session},error})=> {
+      if(disposed || lastUserId!==undefined)return;
+      if(error)console.error('Unable to restore session',error);
+      void hydrate(session);
+    });
+    return ()=>{disposed=true;version++;subscription.unsubscribe();};
+  },[checkSubscription]);
 
   // Auto-refresh subscription every 60s while logged in
   useEffect(() => {
@@ -182,11 +179,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signOut = async () => {
     if (isNative()) {
-      await unregisterPush();
+      try { await unregisterPush(); } catch (error) { console.warn("Unable to unregister notifications",error); }
       await logoutRevenueCat();
     }
-    await supabase.auth.signOut();
-    setProfile(null);
+    const {error}=await supabase.auth.signOut({scope:"local"});
+    if(error)throw error;
+    setUser(null);setSession(null);setProfile(null);
     setSubState({ isSubscribed: false, subscriptionTier: "free", subscriptionEnd: null });
   };
 
@@ -198,7 +196,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateProfile = async (updates: Partial<Profile>) => {
-    if (!user) return { error: "Not authenticated" };
+    if (!user) return { error: { message: "Not authenticated" } };
     const { error } = await supabase
       .from("profiles")
       .update(updates)

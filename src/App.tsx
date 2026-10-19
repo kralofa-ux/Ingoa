@@ -32,7 +32,8 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   if (loading) return null;
   if (!user) return <Navigate to="/auth" replace />;
-  if (profile && !profile.onboarding_completed) return <Navigate to="/onboarding" replace />;
+  if (!profile) return <div className="p-8 text-center text-foreground">Unable to load your account. Please sign out and try again.</div>;
+  if (!profile.onboarding_completed) return <Navigate to="/onboarding" replace />;
 
   return <>{children}</>;
 };

@@ -26,7 +26,7 @@ async function hasPaidAccess(userId: string, email?: string | null): Promise<boo
         const j = await r.json();
         const ents = j?.subscriber?.entitlements ?? {};
         const now = Date.now();
-        for (const e of Object.values(ents) as any[]) {
+        for (const e of Object.values(ents) as {expires_date?: string|null}[]) {
           if (!e.expires_date || new Date(e.expires_date).getTime() > now) return true;
         }
       }
@@ -42,7 +42,7 @@ async function hasPaidAccess(userId: string, email?: string | null): Promise<boo
       const subs = await fetch(`https://api.stripe.com/v1/subscriptions?customer=${cid}&status=active&limit=1`, { headers: h }).then((r) => r.json());
       if (subs?.data?.length) return true;
       const pays = await fetch(`https://api.stripe.com/v1/checkout/sessions?customer=${cid}&limit=20`, { headers: h }).then((r) => r.json());
-      if (pays?.data?.some((s: any) => s.mode === "payment" && s.payment_status === "paid")) return true;
+      if (pays?.data?.some((s: {mode:string;payment_status:string}) => s.mode === "payment" && s.payment_status === "paid")) return true;
     }
   }
   return false;
