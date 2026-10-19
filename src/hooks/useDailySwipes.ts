@@ -19,7 +19,7 @@ export function useDailySwipes(userId?: string) {
   if(error)setError(true);else setCount(data?.swipe_count??0);
   setLoading(false);
  },[userId,date]);
- useEffect(()=>{void refresh();return()=>{request.current++;};},[refresh]);
+ useEffect(()=>{void refresh();const version=request.current;return()=>{request.current=version+1;};},[refresh]);
  const record=useCallback(async()=> {
   const version=request.current;
   const {data,error}=await supabase.rpc('record_swipe');

@@ -1,3 +1,4 @@
+import { saveThenNavigate } from "@/lib/profileActions";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ArrowLeft as ArrowLeftIcon, Check, Crown, Sparkles } from "lucide-react";
@@ -61,9 +62,7 @@ const Onboarding = () => {
     if (submitting) return;
     setSubmitting(true);
     try {
-      const { error } = await updateProfile({mode,selected_cultures:selectedCultures,gender_preference:genderPref,last_name:lastName,middle_name:middleName,onboarding_completed:true});
-      if(error)throw error;
-      navigate(destination);
+      await saveThenNavigate(()=>updateProfile({mode,selected_cultures:selectedCultures,gender_preference:genderPref,last_name:lastName,middle_name:middleName,onboarding_completed:true}),navigate,destination);
     } catch(error) { toast({title:'Unable to save',description:error && typeof error==='object' && 'message' in error ? String(error.message) : 'Please try again',variant:'destructive'}); }
     finally {setSubmitting(false);}
   };

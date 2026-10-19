@@ -1,3 +1,4 @@
+import { subscriptionStatus } from "@/lib/subscriptionStatus";
 import { Purchases, LOG_LEVEL, PURCHASES_ERROR_CODE } from "@revenuecat/purchases-capacitor";
 import { RevenueCatUI, PAYWALL_RESULT } from "@revenuecat/purchases-capacitor-ui";
 import { Capacitor } from "@capacitor/core";
@@ -14,14 +15,6 @@ function getApiKey(): string {
   return RC_TEST_KEY;
 }
 const ENTITLEMENT_ID = "INGOA Pro";
-const ENTITLEMENT_IDS = ["INGOA Pro", "ingoa_pro"];
-function findActiveEntitlement(active: Record<string, { productIdentifier?: string; expirationDate?: string | null }>) {
-  for (const id of ENTITLEMENT_IDS) if (active[id]) return active[id];
-  const wanted = ENTITLEMENT_IDS.map((i) => i.toLowerCase().replace(/[\s_]/g, ""));
-  const key = Object.keys(active).find((k) => wanted.includes(k.toLowerCase().replace(/[\s_]/g, "")));
-  return key ? active[key] : undefined;
-}
-
 // ─── Initialisation ──────────────────────────────────────────────────
 let initialised = false;
 let initialization: Promise<void> | undefined;
@@ -51,24 +44,7 @@ export async function getSubscriptionStatus(): Promise<SubscriptionStatus> {
   try {
     await initRevenueCat();
     const { customerInfo } = await Purchases.getCustomerInfo();
-    const entitlement = findActiveEntitlement(customerInfo.entitlements.active);
-
-    if (!entitlement) {
-      return { isSubscribed: false, tier: "free", expiresDate: null };
-    }
-
-    // Determine tier from product identifier
-    const productId = entitlement.productIdentifier?.toLowerCase() ?? "";
-    let tier: "monthly" | "lifetime" = "monthly";
-    if (productId.includes("lifetime")) {
-      tier = "lifetime";
-    }
-
-    return {
-      isSubscribed: true,
-      tier,
-      expiresDate: entitlement.expirationDate ?? null,
-    };
+    return subscriptionStatus(customerInfo.entitlements.active);
   } catch (err) {
     console.error("[RevenueCat] Failed to get customer info:", err);
     throw err;
@@ -83,20 +59,7 @@ export async function restorePurchases(): Promise<SubscriptionStatus> {
   try {
     await initRevenueCat();
     const { customerInfo } = await Purchases.restorePurchases();
-    const entitlement = findActiveEntitlement(customerInfo.entitlements.active);
-
-    if (!entitlement) {
-      return { isSubscribed: false, tier: "free", expiresDate: null };
-    }
-
-    const productId = entitlement.productIdentifier?.toLowerCase() ?? "";
-    const tier = productId.includes("lifetime") ? "lifetime" : "monthly";
-
-    return {
-      isSubscribed: true,
-      tier,
-      expiresDate: entitlement.expirationDate ?? null,
-    };
+    return subscriptionStatus(customerInfo.entitlements.active);
   } catch (err) {
     console.error("[RevenueCat] Restore failed:", err);
     throw err;
@@ -155,6 +118,7 @@ export async function presentCustomerCenter(): Promise<void> {
   }
 
   try {
+    await initRevenueCat();
     await RevenueCatUI.presentCustomerCenter();
   } catch (err) {
     console.error("[RevenueCat] Customer Center error:", err);

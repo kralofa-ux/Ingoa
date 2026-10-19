@@ -53,7 +53,7 @@ serve(async (req) => {
       .from("names")
       .select("name")
       .eq("culture", culture);
-    const existingSet = new Set((existing ?? []).map((n: any) => n.name.toLowerCase()));
+    const existingSet = new Set((existing ?? []).map((n: {name:string}) => n.name.toLowerCase()));
 
     // Get max index for ID generation
     const abbrev = CULTURE_ABBREVS[culture];
@@ -119,7 +119,7 @@ Return ONLY a JSON array (no markdown, no explanation) of objects with these fie
       // Strip markdown fences if present
       content = content.replace(/```json\s*/gi, "").replace(/```\s*/gi, "").trim();
 
-      let names: any[];
+      let names: {name?: string;gender?: string;meaning?: string|null;commonality_score?: number}[];
       try {
         names = JSON.parse(content);
       } catch {
@@ -130,7 +130,7 @@ Return ONLY a JSON array (no markdown, no explanation) of objects with these fie
       if (!Array.isArray(names)) continue;
 
       // De-duplicate and build insert rows
-      const rows: any[] = [];
+      const rows: {id:string;name:string;culture:string;gender:string;meaning:string|null;commonality_score:number;status:string}[] = [];
       for (const n of names) {
         if (!n.name || !n.gender) continue;
         const nameLower = n.name.toLowerCase();
