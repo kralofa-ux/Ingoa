@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Check, Crown, Sparkles, ArrowLeft, Lock, Zap, Heart, BookOpen, Loader2, ExternalLink, RotateCcw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +13,8 @@ import {
   restorePurchases,
   isNative,
 } from "@/lib/revenuecat";
+
+const MotionButton = motion(Button);
 
 const PRICES = {
   monthly: "price_1THeOlS2YuVDTyoq2oCosiMb",
@@ -28,14 +31,14 @@ const Subscription = () => {
   const native = isNative();
 
   return (
-    <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg">
-      <button
+    <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto bg-[hsl(var(--ingoa-tone-4))] flower-bg">
+      <Button variant="unstyled"
         onClick={() => navigate(-1)}
         aria-label="Go back"
         className="w-9 h-9 rounded-full frosted-pill flex items-center justify-center text-foreground mb-4"
       >
         <ArrowLeft className="w-4 h-4" />
-      </button>
+      </Button>
 
       <h1 className="text-3xl font-display font-extrabold text-foreground mb-1 tracking-tight uppercase">
         {isSubscribed ? "Your Plan" : "Choose Your Plan"}
@@ -51,8 +54,8 @@ const Subscription = () => {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl p-5 mb-4 border-2 border-[hsl(var(--accent))]/40"
-          style={{ background: "linear-gradient(145deg, hsl(235 50% 22%), hsl(235 55% 14%))" }}
+          className="premium-surface rounded-2xl p-5 mb-4 border-2 border-[hsl(var(--accent))]/40"
+          
         >
           <div className="flex items-center gap-2 mb-2">
             <Crown className="w-5 h-5 text-[hsl(var(--accent))]" />
@@ -66,14 +69,14 @@ const Subscription = () => {
                 : "Active subscription"}
           </p>
           {subscriptionTier === "monthly" && (
-            <button
+            <Button variant="unstyled"
               onClick={native ? handleNativeManage : handleManage}
               disabled={portalLoading}
               className="mt-3 w-full py-3 rounded-full frosted-pill text-foreground text-sm font-body font-bold uppercase tracking-wider flex items-center justify-center gap-2"
             >
               {portalLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ExternalLink className="w-4 h-4" />}
               Manage Subscription
-            </button>
+            </Button>
           )}
         </motion.div>
       )}
@@ -85,8 +88,8 @@ const Subscription = () => {
             initial={{ scale: 0.97, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.1, duration: 0.35 }}
-            className="rounded-2xl p-6 mb-4 relative overflow-hidden"
-            style={{ background: "linear-gradient(145deg, hsl(235 50% 22%), hsl(235 55% 14%))" }}
+            className="premium-surface rounded-2xl p-6 mb-4 relative overflow-hidden"
+            
           >
             <h3 className="font-display font-extrabold text-foreground text-xl uppercase tracking-wide mb-1 flex items-center gap-2">
               <Crown className="w-5 h-5 text-[hsl(var(--accent))]" /> INGOA Pro
@@ -96,25 +99,25 @@ const Subscription = () => {
             </p>
             <PremiumBenefits className="mb-6" />
 
-            <motion.button
+            <MotionButton variant="unstyled"
               whileTap={{ scale: 0.97 }}
               onClick={handleNativePaywall}
               disabled={loadingPrice === "native"}
-              className="w-full py-4 rounded-full bg-[hsl(var(--accent))] text-white text-sm font-body font-bold uppercase tracking-wider shadow-glow-accent active:scale-[0.98] transition-all disabled:opacity-70 flex items-center justify-center gap-2"
+              className="w-full py-4 rounded-full bg-[hsl(var(--accent))] text-foreground text-sm font-body font-bold uppercase tracking-wider shadow-glow-accent active:scale-[0.98] transition-all disabled:opacity-70 flex items-center justify-center gap-2"
             >
               {loadingPrice === "native" ? <Loader2 className="w-4 h-4 animate-spin" /> : "Subscribe Now"}
-            </motion.button>
+            </MotionButton>
           </motion.div>
 
           {/* Restore purchases */}
-          <button
+          <Button variant="unstyled"
             onClick={handleRestore}
             disabled={restoring}
             className="w-full py-3 rounded-full frosted-pill text-foreground text-sm font-body font-bold uppercase tracking-wider flex items-center justify-center gap-2 mb-4"
           >
             {restoring ? <Loader2 className="w-4 h-4 animate-spin" /> : <RotateCcw className="w-4 h-4" />}
             Restore Purchases
-          </button>
+          </Button>
         </>
       )}
 
@@ -126,8 +129,8 @@ const Subscription = () => {
             initial={{ scale: 0.97, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.1, duration: 0.35 }}
-            className="rounded-2xl p-6 mb-4 relative overflow-hidden"
-            style={{ background: "linear-gradient(145deg, hsl(235 50% 22%), hsl(235 55% 14%))" }}
+            className="premium-surface rounded-2xl p-6 mb-4 relative overflow-hidden"
+            
           >
             <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-foreground/10 rounded-full px-2.5 py-1">
               <Sparkles className="w-3 h-3 text-[hsl(var(--accent))]" />
@@ -139,14 +142,14 @@ const Subscription = () => {
             <p className="text-2xl font-display font-extrabold text-foreground mb-1">$9.99<span className="text-sm text-foreground/50 font-body">/mo</span></p>
             <p className="text-xs text-foreground/40 font-body mb-5">Cancel anytime</p>
             <PremiumBenefits />
-            <motion.button
+            <MotionButton variant="unstyled"
               whileTap={{ scale: 0.97 }}
               onClick={() => handleCheckout(PRICES.monthly)}
               disabled={loadingPrice === PRICES.monthly}
-              className="w-full mt-6 py-4 rounded-full bg-[hsl(var(--accent))] text-white text-sm font-body font-bold uppercase tracking-wider shadow-glow-accent active:scale-[0.98] transition-all disabled:opacity-70 flex items-center justify-center gap-2"
+              className="w-full mt-6 py-4 rounded-full bg-[hsl(var(--accent))] text-foreground text-sm font-body font-bold uppercase tracking-wider shadow-glow-accent active:scale-[0.98] transition-all disabled:opacity-70 flex items-center justify-center gap-2"
             >
               {loadingPrice === PRICES.monthly ? <Loader2 className="w-4 h-4 animate-spin" /> : "Subscribe Monthly"}
-            </motion.button>
+            </MotionButton>
           </motion.div>
 
           {/* Lifetime plan */}
@@ -154,8 +157,8 @@ const Subscription = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.3 }}
-            className="rounded-2xl p-6 mb-4 relative overflow-hidden"
-            style={{ background: "linear-gradient(145deg, hsl(235 50% 22%), hsl(235 55% 14%))" }}
+            className="premium-surface rounded-2xl p-6 mb-4 relative overflow-hidden"
+            
           >
             <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-foreground/10 rounded-full px-2.5 py-1">
               <span className="text-[10px] font-body font-bold text-foreground/80 uppercase tracking-wider">Best Value</span>
@@ -179,14 +182,14 @@ const Subscription = () => {
                 No recurring charges
               </li>
             </ul>
-            <motion.button
+            <MotionButton variant="unstyled"
               whileTap={{ scale: 0.97 }}
               onClick={() => handleCheckout(PRICES.lifetime)}
               disabled={loadingPrice === PRICES.lifetime}
               className="w-full mt-6 py-4 rounded-full frosted-pill text-foreground text-sm font-body font-bold uppercase tracking-wider active:scale-[0.98] transition-all disabled:opacity-70 flex items-center justify-center gap-2"
             >
               {loadingPrice === PRICES.lifetime ? <Loader2 className="w-4 h-4 animate-spin" /> : "Buy Lifetime Access"}
-            </motion.button>
+            </MotionButton>
           </motion.div>
         </>
       )}
@@ -231,12 +234,12 @@ const Subscription = () => {
         </motion.div>
       )}
 
-      <button
+      <Button variant="unstyled"
         onClick={() => navigate(-1)}
         className="w-full mt-4 py-3 text-sm text-foreground/50 font-body hover:text-foreground transition-colors"
       >
         {isSubscribed ? "Back" : "Continue with Free"}
-      </button>
+      </Button>
 
       {!isSubscribed && (
         <div className="mt-4 px-2 text-[11px] leading-relaxed font-body text-foreground/40 text-center space-y-2">

@@ -13,6 +13,8 @@ import { Haptics, ImpactStyle } from "@capacitor/haptics";
 import { useDailySwipes, DAILY_SWIPE_LIMIT } from "@/hooks/useDailySwipes";
 import { Button } from "@/components/ui/button";
 
+const MotionButton = motion(Button);
+
 const triggerHaptic = async () => {
   try { await Haptics.impact({ style: ImpactStyle.Medium }); } catch { /* Haptics are optional in browsers. */ }
 };
@@ -142,13 +144,13 @@ const SwipeDeck = () => {
 
           <PremiumBenefits className="mb-6" />
 
-          <motion.button
+          <MotionButton variant="unstyled"
             whileTap={{ scale: 0.97 }}
             onClick={() => navigate("/subscribe")}
-            className="w-full py-4 rounded-full bg-[hsl(var(--accent))] text-white text-sm font-body font-bold uppercase tracking-wider shadow-glow-accent active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+            className="w-full py-4 rounded-full bg-[hsl(var(--accent))] text-foreground text-sm font-body font-bold uppercase tracking-wider shadow-glow-accent active:scale-[0.98] transition-all flex items-center justify-center gap-2"
           >
             Go Premium
-          </motion.button>
+          </MotionButton>
         </motion.div>
 
         {/* Free tier reminder */}
@@ -180,13 +182,13 @@ const SwipeDeck = () => {
         <p className="text-foreground/60 font-body mb-6">
           You've gone through all available names. Refresh to bring back passed names.
         </p>
-        <button
+        <Button variant="unstyled"
           onClick={() => void perform(async()=>{await refreshDeck();ordered.current=[];})}
           className="px-6 py-3 rounded-full bg-primary text-primary-foreground font-body font-bold flex items-center gap-2 uppercase tracking-wider transition-opacity hover:opacity-90">
           
           <RefreshCw className="w-4 h-4" />
           Refresh
-        </button>
+        </Button>
       </div>);
 
   }

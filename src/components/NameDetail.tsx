@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, useMotionValue, useTransform, PanInfo } from "framer-motion";
@@ -72,7 +73,7 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
     >
       {/* Backdrop */}
       <motion.div
-        className="absolute inset-0 bg-black/60 backdrop-blur-xl"
+        className="absolute inset-0 bg-[hsl(var(--overlay))]/60 backdrop-blur-xl"
         style={{ opacity: overlayOpacity }}
       />
 
@@ -91,51 +92,52 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Swipe indicator */}
-        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-10 h-1 rounded-full bg-white/25" />
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-10 h-1 rounded-full bg-foreground/25" />
 
         {/* Close button */}
-        <button
+        <Button variant="unstyled"
           onClick={onClose}
-          className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/15 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/25 transition-colors backdrop-blur-sm"
+          aria-label="Close name"
+          className="absolute top-4 right-4 w-9 h-9 rounded-full bg-foreground/15 flex items-center justify-center text-foreground/70 hover:text-foreground hover:bg-foreground/25 transition-colors backdrop-blur-sm"
         >
           <X className="w-4 h-4" />
-        </button>
+        </Button>
 
         <div className="text-center space-y-5 mt-3">
           {/* Culture */}
           <div className="flex items-center justify-center gap-2">
             <CultureIcon culture={name.culture} size={24} />
-            <span className="text-xs font-body font-bold text-white/60 uppercase tracking-[0.2em]">
+            <span className="text-xs font-body font-bold text-foreground/60 uppercase tracking-[0.2em]">
               {name.culture}
             </span>
           </div>
 
           {/* Name */}
-          <h2 className="text-5xl font-display font-extrabold text-white tracking-tight">
+          <h2 className="text-5xl font-display font-extrabold text-foreground tracking-tight">
             {name.name}
           </h2>
 
           {/* Meaning */}
-          <p className="text-lg text-white/80 font-body leading-relaxed font-medium">
+          <p className="text-lg text-foreground/80 font-body leading-relaxed font-medium">
             {name.meaning}
           </p>
 
           {/* Gender */}
-          <span className="inline-block px-5 py-2 rounded-full text-xs font-body font-bold tracking-widest uppercase bg-white/15 text-white backdrop-blur-sm">
+          <span className="inline-block px-5 py-2 rounded-full text-xs font-body font-bold tracking-widest uppercase bg-foreground/15 text-foreground backdrop-blur-sm">
             {genderLabel[name.gender] || "Unisex"}
           </span>
 
           {/* Name Preview */}
           {showNamePreview && previewLines.length > 1 && (
             <div className="pt-2 space-y-1.5">
-              <p className="text-[10px] font-body font-bold text-white/40 uppercase tracking-[0.2em]">
+              <p className="text-[10px] font-body font-bold text-foreground/40 uppercase tracking-[0.2em]">
                 Name Preview
               </p>
               {previewLines.map((line, i) => (
                 <p
                   key={i}
-                  className={`font-display font-extrabold text-white/90 ${
-                    i === previewLines.length - 1 ? "text-xl" : "text-sm text-white/60"
+                  className={`font-display font-extrabold text-foreground/90 ${
+                    i === previewLines.length - 1 ? "text-xl" : "text-sm text-foreground/60"
                   }`}
                 >
                   {line}
@@ -146,13 +148,13 @@ const NameDetail = ({ name, onClose }: NameDetailProps) => {
 
           {/* Share */}
           <div className="pt-2">
-            <button
+            <Button variant="unstyled"
               onClick={shareName}
-              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/15 text-white hover:bg-white/25 transition-colors backdrop-blur-sm text-xs font-body font-bold tracking-widest uppercase"
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-foreground/15 text-foreground hover:bg-foreground/25 transition-colors backdrop-blur-sm text-xs font-body font-bold tracking-widest uppercase"
             >
               <Share2 className="w-4 h-4" />
               Share
-            </button>
+            </Button>
           </div>
         </div>
       </motion.div>

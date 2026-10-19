@@ -10,3 +10,14 @@ export function reconcileOrder<T extends { id: string }>(ordered: T[], available
  const retained = ordered.flatMap(item => { const current = byId.get(item.id); if (!current) return []; byId.delete(item.id); return [current]; });
  return [...retained, ...byId.values()];
 }
+
+export const preferenceCultureClasses = {
+ 'Cook Islands': 'bg-[hsl(var(--ingoa-tone-7))]',
+ 'Samoa': 'bg-[hsl(var(--ingoa-tone-12))]',
+ 'Aotearoa': 'bg-[hsl(var(--ingoa-tone-9))]',
+ 'Tonga': 'bg-[hsl(var(--ingoa-tone-13))]',
+ 'Fiji': 'bg-[hsl(var(--ingoa-tone-14))]',
+ 'Hawaii': 'bg-[hsl(var(--ingoa-tone-8))]',
+ 'Niue': 'bg-[hsl(var(--ingoa-tone-15))]',
+ 'Tahiti': 'bg-[hsl(var(--ingoa-tone-10))]',
+};

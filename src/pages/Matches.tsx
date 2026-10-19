@@ -15,7 +15,7 @@ import NavMatchesIcon from "@/components/icons/NavMatchesIcon";
 
 // Empty state icon using nav matches icon
 const EmptyIcon = () => (
-  <NavMatchesIcon className="w-16 h-16 mx-auto mb-6 text-white opacity-15" />
+  <NavMatchesIcon className="w-16 h-16 mx-auto mb-6 text-foreground opacity-15" />
 );
 
 const Matches = () => {
@@ -28,7 +28,7 @@ const Matches = () => {
 
   if (partnerLoading || loading) {
     return (
-      <div className="min-h-screen pb-24 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}>
+      <div className="min-h-screen pb-24 px-4 max-w-lg mx-auto bg-[hsl(var(--ingoa-tone-4))] flower-bg" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}>
         <PageTitle className="mb-1">Matched Names</PageTitle>
         <div className="space-y-2 mt-4">
           {[...Array(4)].map((_, i) => (
@@ -41,7 +41,7 @@ const Matches = () => {
 
   if (!status.connected) {
     return (
-      <div className="min-h-screen pb-24 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}>
+      <div className="min-h-screen pb-24 px-4 max-w-lg mx-auto bg-[hsl(var(--ingoa-tone-4))] flower-bg" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}>
         <PageTitle className="mb-1">Matched Names</PageTitle>
         <div className="text-center py-16">
           <EmptyIcon />
@@ -60,7 +60,7 @@ const Matches = () => {
   }
 
   return (
-    <div className="min-h-screen pb-24 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}>
+    <div className="min-h-screen pb-24 px-4 max-w-lg mx-auto bg-[hsl(var(--ingoa-tone-4))] flower-bg" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}>
       <PageTitle className="mb-1">Matched Names</PageTitle>
       <p className="text-sm text-foreground/60 font-body mb-4">
         Names you and {status.partner_name} both loved 💕
@@ -89,11 +89,11 @@ const Matches = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, height: 0, marginBottom: 0 }}
                   transition={{ delay: i * 0.08, duration: 0.3 }}
-                  className={`rounded-full py-4 px-5 ${gColor.bg} text-white cursor-pointer text-center`}
+                  className={`rounded-full py-4 px-5 ${gColor.bg} text-foreground cursor-pointer text-center`}
                   onClick={() => setSelectedName(name)}
                 >
                   <h3 className="text-lg font-display font-extrabold uppercase tracking-wider">{name.name}</h3>
-                  <p className="text-xs text-white/70 font-body mt-0.5">{name.culture}</p>
+                  <p className="text-xs text-foreground/70 font-body mt-0.5">{name.culture}</p>
                 </motion.div>
               );
             })}

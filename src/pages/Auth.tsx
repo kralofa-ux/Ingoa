@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { errorMessage } from "@/lib/errors";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -10,6 +11,8 @@ import { lovable } from "@/integrations/lovable/index";
 import { supabase } from "@/integrations/supabase/client";
 
 type View = "login" | "signup" | "forgot";
+
+const MotionButton = motion(Button);
 
 const Auth = () => {
   const [view, setView] = useState<View>("login");
@@ -67,7 +70,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden bg-[#0012ee] flower-bg">
+    <div className="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden bg-[hsl(var(--ingoa-tone-4))] flower-bg">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -111,14 +114,14 @@ const Auth = () => {
             </div>
           )}
 
-          <motion.button
+          <MotionButton variant="unstyled"
             whileTap={{ scale: 0.97 }}
             type="submit"
             disabled={submitting}
             className="w-full py-3.5 rounded-full bg-primary text-primary-foreground font-body font-bold text-sm uppercase tracking-wider disabled:opacity-50"
           >
             {submitting ? "..." : view === "login" ? "Sign In" : view === "signup" ? "Create Account" : "Send Reset Link"}
-          </motion.button>
+          </MotionButton>
 
           {view !== "forgot" && (
             <>
@@ -128,18 +131,18 @@ const Auth = () => {
                 <div className="flex-1 h-px bg-foreground/20" />
               </div>
 
-              <motion.button
+              <MotionButton variant="unstyled"
                 whileTap={{ scale: 0.97 }}
                 type="button"
                 onClick={handleAppleSignIn}
                 disabled={appleLoading}
-                className="w-full py-3.5 rounded-full bg-white text-black font-body font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-3.5 rounded-full bg-foreground text-black font-body font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
                 </svg>
                 {appleLoading ? "..." : "Sign in with Apple"}
-              </motion.button>
+              </MotionButton>
             </>
           )}
         </form>
@@ -147,25 +150,25 @@ const Auth = () => {
         <div className="mt-6 text-center space-y-2">
           {view === "login" && (
             <>
-              <button onClick={() => setView("forgot")} className="text-xs text-foreground/50 font-body hover:text-foreground transition-colors">
+              <Button variant="unstyled" onClick={() => setView("forgot")} className="text-xs text-foreground/50 font-body hover:text-foreground transition-colors">
                 Forgot password?
-              </button>
+              </Button>
               <p className="text-xs text-foreground/50 font-body">
                 Don't have an account?{" "}
-                <button onClick={() => setView("signup")} className="text-foreground font-bold">Sign up</button>
+                <Button variant="unstyled" onClick={() => setView("signup")} className="text-foreground font-bold">Sign up</Button>
               </p>
             </>
           )}
           {view === "signup" && (
             <p className="text-xs text-foreground/50 font-body">
               Already have an account?{" "}
-              <button onClick={() => setView("login")} className="text-foreground font-bold">Sign in</button>
+              <Button variant="unstyled" onClick={() => setView("login")} className="text-foreground font-bold">Sign in</Button>
             </p>
           )}
           {view === "forgot" && (
-            <button onClick={() => setView("login")} className="text-xs text-foreground font-body flex items-center gap-1 mx-auto">
+            <Button variant="unstyled" onClick={() => setView("login")} className="text-xs text-foreground font-body flex items-center gap-1 mx-auto">
               <ArrowLeft className="w-3 h-3" /> Back to sign in
-            </button>
+            </Button>
           )}
         </div>
       </motion.div>

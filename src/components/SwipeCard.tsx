@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { motion, useMotionValue, useTransform, PanInfo } from "framer-motion";
 import { useRef, useMemo } from "react";
 import { PolynesianName } from "@/data/names";
@@ -68,58 +69,58 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, sw
               className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none rounded-3xl"
               style={{ opacity: likeOpacity }}
             >
-              <div className="bg-white/20 backdrop-blur-sm px-8 py-4 rounded-2xl border-2 border-white/40">
-                <span className="text-4xl font-display font-extrabold text-white tracking-widest">LIKE</span>
+              <div className="bg-foreground/20 backdrop-blur-sm px-8 py-4 rounded-2xl border-2 border-foreground/40">
+                <span className="text-4xl font-display font-extrabold text-foreground tracking-widest">LIKE</span>
               </div>
             </motion.div>
             <motion.div
               className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none rounded-3xl"
               style={{ opacity: passOpacity }}
             >
-              <div className="bg-black/20 backdrop-blur-sm px-8 py-4 rounded-2xl border-2 border-white/20">
-                <span className="text-4xl font-display font-extrabold text-white/80 tracking-widest">PASS</span>
+              <div className="bg-[hsl(var(--overlay))]/20 backdrop-blur-sm px-8 py-4 rounded-2xl border-2 border-foreground/20">
+                <span className="text-4xl font-display font-extrabold text-foreground/80 tracking-widest">PASS</span>
               </div>
             </motion.div>
           </>
         )}
 
         {onUndo && (
-          <button
+          <Button variant="unstyled"
             onClick={(e) => { e.stopPropagation(); onUndo(); }}
             disabled={!canUndo}
-            className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center text-white/70 hover:text-white transition-all active:scale-95 disabled:opacity-25"
+            className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-foreground/15 backdrop-blur-sm flex items-center justify-center text-foreground/70 hover:text-foreground transition-all active:scale-95 disabled:opacity-25"
             title="Undo last swipe"
           >
             <UndoSwipeIcon className="w-6 h-6" />
-          </button>
+          </Button>
         )}
 
         <div className="flex-1 flex flex-col items-center justify-center p-8 relative">
           <div className="flex items-center gap-2 mb-8">
             <CultureIcon culture={name.culture} size={24} />
-            <span className="text-xs font-body font-bold text-white/70 uppercase tracking-[0.2em]">
+            <span className="text-xs font-body font-bold text-foreground/70 uppercase tracking-[0.2em]">
               {name.culture}
             </span>
           </div>
 
           <h2
-            className="font-display font-extrabold text-white mb-3 text-center leading-[1.05] tracking-tight break-words"
+            className="font-display font-extrabold text-foreground mb-3 text-center leading-[1.05] tracking-tight break-words"
             style={{ fontSize: `${nameFontSize}rem` }}
           >
             {name.name}
           </h2>
 
           {namePreview && (
-            <p className="text-base text-white/60 font-body mb-5 text-center">
+            <p className="text-base text-foreground/60 font-body mb-5 text-center">
               {namePreview}
             </p>
           )}
 
-          <p className="text-lg text-white/80 font-body text-center max-w-[280px] leading-relaxed font-medium mb-6">
+          <p className="text-lg text-foreground/80 font-body text-center max-w-[280px] leading-relaxed font-medium mb-6">
             {name.meaning}
           </p>
 
-          <span className="inline-block px-5 py-2 rounded-full text-xs font-body font-bold tracking-widest uppercase bg-white/15 text-white backdrop-blur-sm">
+          <span className="inline-block px-5 py-2 rounded-full text-xs font-body font-bold tracking-widest uppercase bg-foreground/15 text-foreground backdrop-blur-sm">
             {genderLabel[name.gender] || "Unisex"}
           </span>
         </div>

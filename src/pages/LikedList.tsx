@@ -43,7 +43,7 @@ const SwipeToDeleteItem = ({
         className="absolute inset-0 bg-destructive rounded-full flex items-center justify-end pr-6"
         style={{ opacity: bgOpacity }}
       >
-        <span className="text-white font-body font-bold text-sm uppercase tracking-wider">Remove</span>
+        <span className="text-foreground font-body font-bold text-sm uppercase tracking-wider">Remove</span>
       </motion.div>
 
       <Reorder.Item
@@ -59,10 +59,10 @@ const SwipeToDeleteItem = ({
         dragDirectionLock
       >
         <div className="text-center" onClick={() => onSelect(name)}>
-          <h3 className="text-lg font-display font-extrabold text-white uppercase tracking-wider">
+          <h3 className="text-lg font-display font-extrabold text-foreground uppercase tracking-wider">
             {name.name}
           </h3>
-          <p className="text-xs text-white/70 font-body mt-0.5">{name.culture}</p>
+          <p className="text-xs text-foreground/70 font-body mt-0.5">{name.culture}</p>
         </div>
       </Reorder.Item>
     </motion.div>
@@ -71,7 +71,7 @@ const SwipeToDeleteItem = ({
 
 // Empty state icon using nav liked icon
 const EmptyIcon = () => (
-  <NavLikedIcon className="w-16 h-16 mx-auto mb-6 text-white opacity-20" />
+  <NavLikedIcon className="w-16 h-16 mx-auto mb-6 text-foreground opacity-20" />
 );
 
 const LikedList = () => {
@@ -91,7 +91,7 @@ const LikedList = () => {
   };
 
   return (
-    <div className="min-h-screen pb-24 px-4 max-w-lg mx-auto bg-[#0012ee] flower-bg" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}>
+    <div className="min-h-screen pb-24 px-4 max-w-lg mx-auto bg-[hsl(var(--ingoa-tone-4))] flower-bg" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}>
       <PageTitle className="mb-1">Liked Names</PageTitle>
       {displayNames.length === 0 ? (
         <div className="text-center py-16">
