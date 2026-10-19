@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode, useCallback, useEffect, useRef } from 'react';
+import { createContext, useContext, useState, ReactNode, useCallback, useEffect, useRef, useMemo } from 'react';
 import type { PolynesianName, Culture, Gender } from '@/data/names';
 import { useAuth } from '@/context/AuthContext';
 import { supabase } from '@/lib/supabase';
@@ -23,12 +23,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
  const userId = user?.id;
  const activeUser = useRef(userId); activeUser.current = userId;
  const client=useQueryClient();
- const key=['swipes',userId];
+ const key=useMemo(()=>['swipes',userId],[userId]);
  const query=useQuery({queryKey:key,queryFn:()=>userId?loadSwipeData(userId):Promise.resolve({likedNames:[],passedIds:new Set<string>()}),enabled:Boolean(userId),staleTime:0,refetchOnWindowFocus:false});
  const likedNames=query.data?.likedNames??[];
  const passedIds=query.data?.passedIds??new Set<string>();
- const setLikedNames=(update:(previous:PolynesianName[])=>PolynesianName[])=>client.setQueryData(key,(previous:Awaited<ReturnType<typeof loadSwipeData>>|undefined)=>({likedNames:update(previous?.likedNames??[]),passedIds:previous?.passedIds??new Set<string>()}));
- const setPassedIds=(update:Set<string>|((previous:Set<string>)=>Set<string>))=>client.setQueryData(key,(previous:Awaited<ReturnType<typeof loadSwipeData>>|undefined)=>({likedNames:previous?.likedNames??[],passedIds:typeof update==='function'?update(previous?.passedIds??new Set<string>()):update}));
+ const setLikedNames=useCallback((update:(previous:PolynesianName[])=>PolynesianName[])=>client.setQueryData(key,(previous:Awaited<ReturnType<typeof loadSwipeData>>|undefined)=>({likedNames:update(previous?.likedNames??[]),passedIds:previous?.passedIds??new Set<string>()})),[client,key]);
+ const setPassedIds=useCallback((update:Set<string>|((previous:Set<string>)=>Set<string>))=>client.setQueryData(key,(previous:Awaited<ReturnType<typeof loadSwipeData>>|undefined)=>({likedNames:previous?.likedNames??[],passedIds:typeof update==='function'?update(previous?.passedIds??new Set<string>()):update})),[client,key]);
  const [swipeHistory, setHistory] = useState<Swipe[]>([]);
  const [cultureFilter, setCultureFilter] = useState<Culture[]>([]);
  const [genderFilter, setGenderFilter] = useState<Gender | 'all'>('all');
@@ -52,7 +52,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   if (action === 'like') { setLikedNames(prev => prev.some(item=>item.id===name.id) ? prev : [...prev,name]); notifyLiked(name.id); }
   else setPassedIds(prev=>new Set(prev).add(name.id));
   setHistory(prev=>[...prev,{name,action}]);
- }, [userId,client]);
+ }, [userId,setLikedNames,setPassedIds]);
  const likeName = useCallback((name: PolynesianName) => saveSwipe(name,'like'),[saveSwipe]);
  const passName = useCallback(async (id: string, name?: PolynesianName) => {
   if (name) return saveSwipe(name,'pass');
@@ -60,13 +60,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const { error } = await supabase.from('passed_names').upsert({user_id:userId,name_id:id},{onConflict:'user_id,name_id'});
   if (error) throw error;
   if (activeUser.current===userId) setPassedIds(prev=>new Set(prev).add(id));
- },[saveSwipe,userId,client]);
+ },[saveSwipe,userId,setPassedIds]);
  const removeLikedName = useCallback(async (id: string) => {
   if (!userId) throw new Error('Please sign in again');
   const { error } = await supabase.from('liked_names').delete().eq('user_id',userId).eq('name_id',id);
   if (error) throw error;
   if (activeUser.current===userId) setLikedNames(prev=>prev.filter(name=>name.id!==id));
- },[userId,client]);
+ },[userId,setLikedNames]);
  const undoLastSwipe = useCallback(async () => {
   const last = swipeHistory.at(-1);
   if (!last || !userId) return null;
@@ -77,12 +77,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   else setPassedIds(prev=> { const next=new Set(prev); next.delete(last.name.id); return next; });
   setHistory(prev=>prev.slice(0,-1));
   return last.name;
- },[swipeHistory,userId,client]);
+ },[swipeHistory,userId,setLikedNames,setPassedIds]);
  const refreshDeck = useCallback(async () => {
   if (!userId) throw new Error('Please sign in again');
   const { error } = await supabase.from('passed_names').delete().eq('user_id',userId);
   if (error) throw error;
   if (activeUser.current===userId) { setPassedIds(new Set()); setHistory([]); }
- },[userId,client]);
+ },[userId,setPassedIds]);
  return <AppContext.Provider value={{mode:profile?.mode==='couple'?'couple':'solo',likedNames,likedNamesA:likedNames,passedIds,cultureFilter,genderFilter,lastName,middleName,showNamePreview,swipeHistory,swipeLoading,swipeError,retrySwipes:()=>{void query.refetch();},likeName,passName,removeLikedName,undoLastSwipe,refreshDeck,setCultureFilter,setGenderFilter,setLastName,setMiddleName,setShowNamePreview}}>{children}</AppContext.Provider>;
 };
