@@ -3,10 +3,13 @@ import { act } from 'react';
 import { createRoot } from 'react-dom/client';
 import { useEffect } from 'react';
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+const cleanup: (()=>void)[]=[];
+afterEach(()=>{cleanup.splice(0).forEach(dispose=>dispose());});
 function renderHook(hook: typeof useApp, { wrapper: Wrapper }: { wrapper: typeof AppProvider }) {
  const host = document.createElement('div');
  const root = createRoot(host);
  const client=new QueryClient({defaultOptions:{queries:{retry:false}}});
+ cleanup.push(()=>act(()=>{root.unmount();client.clear();}));
  const result = { current: undefined as ReturnType<typeof useApp> | undefined };
  function Probe() { const value = hook(); useEffect(() => { result.current = value; }); return null; }
  const rerender = () => act(() => root.render(<QueryClientProvider client={client}><Wrapper><Probe /></Wrapper></QueryClientProvider>));
@@ -16,7 +19,7 @@ function renderHook(hook: typeof useApp, { wrapper: Wrapper }: { wrapper: typeof
 async function waitFor(assertion: () => void) {
  for (let i = 0; i < 10; i++) { await act(async () => {await new Promise(resolve=>setTimeout(resolve,10));}); try { assertion(); return; } catch (e) { if (i === 9) throw e; } }
 }
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { AppProvider, useApp } from '@/context/AppContext';
 import type { PolynesianName } from '@/data/names';
 const mocks = vi.hoisted(() => ({ user: { id: 'account-a' } as { id: string } | null, requests: [] as string[], likes: [] as { name_id: string }[], error: null as Error | null }));
