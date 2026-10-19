@@ -1,4 +1,5 @@
 # Approved code cleanup
+- [ ] iPhone layout: diagnose viewport/safe-area sizing, fix horizontal overflow without scaling, and verify phone widths and swipe interactions.
 - [x] 1. Regression tests and confirmed unused client code
 - [x] 2. Shared pure conversion and presentation logic
 - [x] 3. Checked persistence, account isolation and deletion cleanup
