@@ -1,5 +1,5 @@
 # Approved code cleanup
-- [ ] iPhone layout: diagnose viewport/safe-area sizing, fix horizontal overflow without scaling, and verify phone widths and swipe interactions.
+- [x] iPhone layout: border-box parent-relative root, document-boundary swipe clipping, shared safe insets, bounded name text and swipe hints; checked 320/375/390/430px, simulated insets, desktop width, and saved swipe/undo. Native simulator confirmation requires a refreshed native build.
 - [x] 1. Regression tests and confirmed unused client code
 - [x] 2. Shared pure conversion and presentation logic
 - [x] 3. Checked persistence, account isolation and deletion cleanup
