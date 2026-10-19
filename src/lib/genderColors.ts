@@ -1,7 +1,7 @@
 export const genderColorMap: Record<string, { bg: string; dot: string }> = {
-  male: { bg: "bg-[hsl(var(--ingoa-tone-1))]", dot: "bg-[hsl(var(--ingoa-tone-1))]" },
-  female: { bg: "bg-[hsl(var(--ingoa-tone-2))]", dot: "bg-[hsl(var(--ingoa-tone-2))]" },
-  unisex: { bg: "bg-[hsl(var(--ingoa-tone-3))]", dot: "bg-[hsl(var(--ingoa-tone-3))]" },
+  male: { bg: "bg-[hsl(var(--gender-male-surface))]", dot: "bg-[hsl(var(--gender-male-surface))]" },
+  female: { bg: "bg-[hsl(var(--gender-female-surface))]", dot: "bg-[hsl(var(--gender-female-surface))]" },
+  unisex: { bg: "bg-[hsl(var(--gender-unisex-surface))]", dot: "bg-[hsl(var(--gender-unisex-surface))]" },
 };
 
 export const getGenderColor = (gender: string) =>

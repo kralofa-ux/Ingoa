@@ -221,7 +221,7 @@ const PartnerConnect = () => {
                   setInputCode(e.target.value.replace(/\D/g, "").slice(0, 6));
                   setJoinError("");
                 }}
-                className={`w-full px-5 py-3.5 rounded-full bg-[hsl(var(--ingoa-tone-11))]/20 text-foreground text-center text-2xl font-display tracking-[0.3em] border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/30 transition-all ${
+                className={`w-full px-5 py-3.5 rounded-full bg-[hsl(var(--partner-input))]/20 text-foreground text-center text-2xl font-display tracking-[0.3em] border-0 focus:outline-none focus:ring-2 focus:ring-foreground/20 placeholder:text-foreground/30 transition-all ${
                   joinError ? "ring-2 ring-destructive/60" : ""
                 }`}
               />

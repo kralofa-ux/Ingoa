@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useState, useCallback, useRef, Re
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import {
-  initRevenueCat,
   loginRevenueCat,
   logoutRevenueCat,
   getSubscriptionStatus,
@@ -64,6 +63,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     subscriptionTier: "free",
     subscriptionEnd: null,
   });
+  const activeUser = useRef<string | undefined>(user?.id);
+  activeUser.current=user?.id;
+  const subscriptionRequest=useRef(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const fetchProfile = async (userId: string) => {
@@ -73,45 +75,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .eq("user_id", userId)
       .single();
     if (error) throw error;
-    setProfile(data);
+    if(activeUser.current===userId)setProfile(data);
   };
 
   const checkSubscription = useCallback(async () => {
-    // App review demo account always has full access
-    const { data: { session: s } } = await supabase.auth.getSession();
-    if (s?.user?.email?.toLowerCase() === "demo@ingoa.app") {
-      setSubState({ isSubscribed: true, subscriptionTier: "lifetime", subscriptionEnd: null });
-      return;
+    const version=++subscriptionRequest.current;
+    const {data:{session:currentSession}}=await supabase.auth.getSession();
+    if(!currentSession)return;
+    const id=currentSession.user.id;
+    let next: SubscriptionState;
+    if(currentSession.user.email?.toLowerCase()==='demo@ingoa.app') next={isSubscribed:true,subscriptionTier:'lifetime',subscriptionEnd:null};
+    else if(isNative()) {
+      const status=await getSubscriptionStatus();
+      next={isSubscribed:status.isSubscribed,subscriptionTier:status.tier,subscriptionEnd:status.expiresDate};
+    } else {
+      const {data,error}=await supabase.functions.invoke('check-subscription');
+      if(error)throw error;
+      if(!data || data.error)throw new Error('Unable to verify premium access');
+      next={isSubscribed:data.subscribed??false,subscriptionTier:data.tier??'free',subscriptionEnd:data.subscription_end??null};
     }
-    // On native platforms, use RevenueCat as source of truth
-    if (isNative()) {
-      const status = await getSubscriptionStatus();
-      setSubState({
-        isSubscribed: status.isSubscribed,
-        subscriptionTier: status.tier,
-        subscriptionEnd: status.expiresDate,
-      });
-      return;
-    }
-
-    // Web fallback: use edge function (Stripe)
-    const { data: { session: currentSession } } = await supabase.auth.getSession();
-    if (!currentSession) return;
-    try {
-      const res = await supabase.functions.invoke("check-subscription", {
-        headers: { Authorization: `Bearer ${currentSession.access_token}` },
-      });
-      if (res.data && !res.error) {
-        setSubState({
-          isSubscribed: res.data.subscribed ?? false,
-          subscriptionTier: res.data.tier ?? "free",
-          subscriptionEnd: res.data.subscription_end ?? null,
-        });
-      }
-    } catch (e) {
-      console.error("check-subscription error", e);
-    }
-  }, []);
+    if(version===subscriptionRequest.current && activeUser.current===id)setSubState(next);
+  },[]);
 
   useEffect(() => {
     let disposed = false;
@@ -123,6 +107,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (nextId === lastUserId) return;
       lastUserId = nextId;
       const current = ++version;
+      activeUser.current=nextId??undefined;subscriptionRequest.current++;
       setLoading(true);setUser(nextSession?.user ?? null);setProfile(null);
       setSubState({isSubscribed:false,subscriptionTier:'free',subscriptionEnd:null});
       try {
@@ -130,7 +115,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           const {data,error}=await supabase.from('profiles').select('*').eq('user_id',nextId).single();
           if (error) throw error;
           if (disposed || current!==version) return;
-          setProfile(data);
+          if(activeUser.current===userId)setProfile(data);
           if (isNative()) await loginRevenueCat(nextId);
           if (disposed || current!==version) return;
           await checkSubscription();
@@ -152,7 +137,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Auto-refresh subscription every 60s while logged in
   useEffect(() => {
     if (user) {
-      intervalRef.current = setInterval(checkSubscription, 60_000);
+      intervalRef.current = setInterval(()=>{void checkSubscription().catch(error=>console.warn("Unable to refresh premium access",error));}, 60_000);
     }
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
@@ -184,6 +169,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
     const {error}=await supabase.auth.signOut({scope:"local"});
     if(error)throw error;
+    activeUser.current=undefined;subscriptionRequest.current++;
     setUser(null);setSession(null);setProfile(null);
     setSubState({ isSubscribed: false, subscriptionTier: "free", subscriptionEnd: null });
   };

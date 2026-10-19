@@ -15,7 +15,7 @@ export function useSubscriptionActions() {
   // Handle success redirect (web/Stripe only)
   useEffect(() => {
     if (searchParams.get("success") === "true") {
-      void checkSubscription();
+      void checkSubscription().catch(error=>toast({title:"Unable to verify premium access",description:errorMessage(error),variant:"destructive"}));
       toast({ title: "Payment received", description: "Checking your premium access." });
       window.history.replaceState({}, "", "/subscribe");
     }

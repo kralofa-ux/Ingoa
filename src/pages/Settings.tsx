@@ -28,9 +28,9 @@ const cultures: { value: Culture; label: string }[] = [
 
 
 const genderOptions: { value: Gender | "all"; label: string; color: string }[] = [
-  { value: "male", label: "Boy", color: "bg-[hsl(var(--ingoa-tone-1))]" },
-  { value: "female", label: "Girl", color: "bg-[hsl(var(--ingoa-tone-2))]" },
-  { value: "all", label: "Both", color: "bg-[hsl(var(--ingoa-tone-3))]" },
+  { value: "male", label: "Boy", color: "bg-[hsl(var(--gender-male-surface))]" },
+  { value: "female", label: "Girl", color: "bg-[hsl(var(--gender-female-surface))]" },
+  { value: "all", label: "Both", color: "bg-[hsl(var(--gender-unisex-surface))]" },
 ];
 
 const Settings = () => {
@@ -75,8 +75,7 @@ const Settings = () => {
   };
 
   const handleSignOut = async () => {
-    await signOut();
-    navigate("/");
+    try { await signOut(); navigate("/"); } catch {toast({title:"Unable to sign out",description:"Please try again",variant:"destructive"});}
   };
 
   const handleDeleteAccount = async () => {
@@ -112,7 +111,7 @@ const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen pb-24 px-4 max-w-lg mx-auto bg-[hsl(var(--ingoa-tone-4))] flower-bg" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}>
+    <div className="min-h-screen pb-24 px-4 max-w-lg mx-auto bg-[hsl(var(--app-surface))] flower-bg" style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}>
       {/* Header — text only, no arrow */}
       <PageTitle className="mb-6">Settings</PageTitle>
 
@@ -235,7 +234,7 @@ const Settings = () => {
             <Button variant="unstyled"
               onClick={async () => {
                 if (isNative()) {
-                  try { await presentCustomerCenter(); } catch { /* ignore */ }
+                  try { await presentCustomerCenter(); } catch { toast({title:"Unable to open plan",description:"Please try again",variant:"destructive"}); }
                 } else {
                   navigate("/subscribe");
                 }
@@ -249,11 +248,11 @@ const Settings = () => {
           <Button variant="unstyled"
             onClick={async () => {
               if (isNative()) {
-                const { presentPaywall: showPaywall } = await import("@/lib/revenuecat");
-                const { purchased, restored } = await showPaywall();
-                if (purchased || restored) {
-                  await checkSubscription();
-                }
+                try {
+                  const { presentPaywall: showPaywall } = await import("@/lib/revenuecat");
+                  const { purchased, restored } = await showPaywall();
+                  if (purchased || restored) await checkSubscription();
+                } catch { toast({title:"Unable to open purchase",description:"Please try again",variant:"destructive"}); }
               } else {
                 navigate("/subscribe");
               }

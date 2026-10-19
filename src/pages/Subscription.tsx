@@ -31,7 +31,7 @@ const Subscription = () => {
   const native = isNative();
 
   return (
-    <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto bg-[hsl(var(--ingoa-tone-4))] flower-bg">
+    <div className="min-h-screen pb-24 pt-6 px-4 max-w-lg mx-auto bg-[hsl(var(--app-surface))] flower-bg">
       <Button variant="unstyled"
         onClick={() => navigate(-1)}
         aria-label="Go back"
