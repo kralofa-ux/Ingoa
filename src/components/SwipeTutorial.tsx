@@ -17,7 +17,7 @@ const SwipeTutorial = ({ swipeCount }: SwipeTutorialProps) => {
         exit={{ opacity: 0 }}
         className="absolute inset-0 z-20 pointer-events-none flex items-end justify-center pb-8"
       >
-        <div className="flex items-center gap-6 px-5 py-3 rounded-full bg-primary/90 backdrop-blur-sm">
+        <div className="max-w-full min-w-0 flex items-center gap-3 px-3 py-3 sm:gap-6 sm:px-5 rounded-full bg-primary/90 backdrop-blur-sm">
           <div className="flex items-center gap-1.5 text-primary-foreground">
             <ArrowLeft className="w-4 h-4" />
             <span className="text-xs font-body font-medium">Pass</span>
