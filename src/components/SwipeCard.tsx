@@ -95,7 +95,7 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, sw
           </Button>
         )}
 
-        <div className="flex-1 flex flex-col items-center justify-center p-8 relative">
+        <div className="min-w-0 flex-1 flex flex-col items-center justify-center p-8 relative">
           <div className="flex items-center gap-2 mb-8">
             <CultureIcon culture={name.culture} size={24} />
             <span className="text-xs font-body font-bold text-foreground/70 uppercase tracking-[0.2em]">
@@ -104,19 +104,19 @@ const SwipeCard = ({ name, onSwipeLeft, onSwipeRight, isTop, onUndo, canUndo, sw
           </div>
 
           <h2
-            className="font-display font-extrabold text-foreground mb-3 text-center leading-[1.05] tracking-tight break-words"
+            className="name-text font-display font-extrabold text-foreground mb-3 text-center leading-[1.05] tracking-tight break-words"
             style={{ fontSize: `${nameFontSize}rem` }}
           >
             {name.name}
           </h2>
 
           {namePreview && (
-            <p className="text-base text-foreground/60 font-body mb-5 text-center">
+            <p className="name-text text-base text-foreground/60 font-body mb-5 text-center">
               {namePreview}
             </p>
           )}
 
-          <p className="text-lg text-foreground/80 font-body text-center max-w-[280px] leading-relaxed font-medium mb-6">
+          <p className="name-text text-lg text-foreground/80 font-body text-center sm:max-w-[280px] leading-relaxed font-medium mb-6">
             {name.meaning}
           </p>
 
